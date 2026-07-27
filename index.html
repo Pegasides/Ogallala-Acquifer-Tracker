@@ -14,7 +14,7 @@
         h2 { color: #c0392b; margin-top: 0; font-size: 1.4em; }
         .tech-box h2 { color: #2c3e50; }
         .img-wrapper { text-align: center; margin: 15px 0; background: #f4f6f7; padding: 10px; border-radius: 8px; }
-        .img-wrapper img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #ddd; }
+        .img-wrapper img { max-width: 100%; max-height: 500px; height: auto; border-radius: 6px; border: 1px solid #ddd; }
         .caption { font-size: 0.9em; color: #95a5a6; font-style: italic; margin-top: 8px; }
         ul { padding-left: 20px; }
         li { margin-bottom: 10px; }
@@ -54,7 +54,8 @@
             <p>Decades of intensive agricultural extraction have introduced severe hydrological changes. The official map below highlights significant drawdown hotspots concentrated heavily across the southern half of the basin.</p>
             
             <div class="img-wrapper">
-                <img src="https://climate.gov" alt="Ogallala Aquifer Depletion Hotspot Map">
+                <!-- Using a highly stable, open-source USGS baseline depletion map from Wikipedia -->
+                <img src="https://wikimedia.org" alt="Ogallala Aquifer Depletion Hotspot Map">
                 <div class="caption">Figure 1: Cumulative water-level changes from predevelopment to recent monitoring intervals. Dark orange/red vectors map net declines exceeding 150 feet.</div>
             </div>
 
@@ -152,6 +153,3 @@
     </div>
 
     <!-- Tab Interactive Logic Engine -->
-    <script>
-        function filterStatus(status) {
-            // Update Active Tab Button Highlights
