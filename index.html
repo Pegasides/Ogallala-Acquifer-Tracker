@@ -1,1 +1,283 @@
-a721eb7216aa8a62e9910cfaa6a2d4ab324ec812
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogallala Aquifer Status & AI Data Center Overlay</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 30px;
+            color: #2c3e50;
+            background-color: #fafbfc;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        .intro {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .visual-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .section-box {
+            background: #ffffff;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+        }
+        .tech-box {
+            border-left: 5px solid #2c3e50;
+            background: #f8f9fa;
+        }
+        h2 {
+            color: #c0392b;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        .tech-box h2 {
+            color: #2c3e50;
+        }
+        .data-panel {
+            height: 200px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        .map-chart {
+            background: linear-gradient(135deg, #c0392b 0%, #d35400 35%, #f39c12 65%, #2980b9 100%);
+        }
+        .pivot-chart {
+            background: linear-gradient(135deg, #27ae60 0%, #16a085 100%);
+        }
+        .server-chart {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+        .panel-title {
+            font-size: 1.6em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .panel-subtitle {
+            font-weight: normal;
+            font-size: 1em;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+        .caption {
+            font-size: 0.9em;
+            color: #95a5a6;
+            font-style: italic;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .map-portal-btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #c0392b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .map-portal-btn:hover {
+            background-color: #f4f6f7;
+            transform: translateY(-1px);
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #2c3e50;
+        }
+        .tab-system {
+            margin-top: 25px;
+        }
+        .tab-inputs {
+            display: none;
+        }
+        .tab-labels-bar {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-lbl {
+            background: #e1e8ed;
+            color: #2c3e50;
+            padding: 10px 20px;
+            font-size: 0.95em;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .tab-lbl:hover {
+            background: #d4dbe1;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e8ed;
+            font-size: 0.95em;
+            color: #2c3e50 !important;
+        }
+        th {
+            background-color: #2c3e50;
+            color: #ffffff !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+        tr {
+            background-color: #ffffff !important;
+        }
+        tr:hover {
+            background-color: #fcfdfd !important;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .status-built {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-building {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-planned {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .btn-action {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-action:hover {
+            background-color: #2980b9;
+        }
+        .console-output {
+            margin-top: 20px;
+            background: #1e272e;
+            color: #2ecc71;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            max-height: 180px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            display: none;
+            line-height: 1.4;
+        }
+        #tab-all:checked ~ .tab-labels-bar #lbl-all, 
+        #tab-built:checked ~ .tab-labels-bar #lbl-built, 
+        #tab-building:checked ~ .tab-labels-bar #lbl-building, 
+        #tab-planned:checked ~ .tab-labels-bar #lbl-planned { 
+            background: #2c3e50; 
+            color: #ffffff; 
+        }
+        #tab-built:checked ~ .table-responsive tr.data-row:not(.built), 
+        #tab-building:checked ~ .table-responsive tr.data-row:not(.building), 
+        #tab-planned:checked ~ .table-responsive tr.data-row:not(.planned) { 
+            display: none !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ogallala Aquifer Status & AI Data Center Overlay</h1>
+    <p class="intro">A visual assessment tracking traditional agricultural drawdown alongside modern industrial technological infrastructure demands across the High Plains Basin.</p>
+
+    <div class="visual-container">
+        
+        <!-- SECTION 1: THE DEPLETION MAP -->
+        <div class="section-box">
+            <h2>1. Regional Decline and Storage Extremes</h2>
+            <p>Decades of intensive agricultural extraction have introduced severe hydrological changes. The matrix below structures drawdown benchmarks across the basin lanes.</p>
+            <div class="data-panel map-chart">
+                <div class="panel-title">USGS Regional Aquifer Drawdown Map System</div>
+                <div class="panel-subtitle">🔴 Red: Critical Drops Over 150ft &nbsp;|&nbsp; 🟠 Orange: Heavy Drawdown &nbsp;|&nbsp; 🔵 Blue: Saturated Base</div>
+                <a href="https://wikipedia.org" target="_blank" class="map-portal-btn">🌐 Launch Live Interactive USGS Digital Map</a>
+            </div>
+            <div class="caption">Figure 1: High Plains Basin saturation thickness anomalies data platform link.</div>
+            <ul>
+                <li><strong>Southern High Plains (Texas & New Mexico):</strong> Massive, contiguous depletion corridors with localized water table collapses.</li>
+                <li><strong>Central High Plains (Kansas & Oklahoma):</strong> High extraction zones matching industrial irrigation networks.</li>
+                <li><strong>Northern High Plains (Nebraska):</strong> Retains a larger percentage of saturated thickness, though developmental pressures scale up.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 2: AGRICULTURAL IMPACT -->
+        <div class="section-box">
+            <h2>2. Center-Pivot Extraction Footprint</h2>
+            <p>The transition to center-pivot sprinkler distribution systems catalyzed massive crop yields but altered the basin's natural water equilibrium. Natural recharge rates from sparse regional precipitation fail to offset current industrial extraction velocities.</p>
+            <div class="data-panel pivot-chart">
+                <div class="panel-title">Center-Pivot Deep-Well Pumping Core Model</div>
+                <div class="panel-subtitle">🚜 Active Submersible Groundwater Extraction Array</div>
+            </div>
+            <div class="caption">Figure 2: Infrastructure architectural layout mapping active irrigation networks pulling directly from groundwater columns.</div>
+        </div>
+
+        <!-- SECTION 3: THE AI DATA CENTER OVERLAY -->
+        <div class="section-box tech-box">
+            <h2>3. Technological Overlay: The AI Data Center Boom</h2>
