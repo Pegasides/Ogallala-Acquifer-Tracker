@@ -89,6 +89,15 @@
             border-radius: 20px;
             margin-bottom: 10px;
         }
+        /* ADDED: Interactive pointer indicator for Section 2 click state */
+        .interactive-subtitle {
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .interactive-subtitle:hover {
+            background: rgba(0,0,0,0.35);
+            transform: scale(1.02);
+        }
         .caption {
             font-size: 0.9em;
             color: #95a5a6;
@@ -215,7 +224,8 @@
         .btn-action:hover {
             background-color: #2980b9;
         }
-        .console-output {
+        /* ADDED: Split panel sub-grids to frame core simulation outputs */
+        .console-output, .model-output-panel {
             margin-top: 20px;
             background: #1e272e;
             color: #2ecc71;
@@ -223,11 +233,13 @@
             padding: 15px;
             border-radius: 6px;
             font-size: 0.9em;
-            max-height: 180px;
-            overflow-y: auto;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
             display: none;
             line-height: 1.4;
+        }
+        .model-output-panel {
+            color: #3498db;
+            border-left: 4px solid #3498db;
         }
         #tab-all:checked ~ .tab-labels-bar #lbl-all, 
         #tab-built:checked ~ .tab-labels-bar #lbl-built, 
@@ -273,11 +285,3 @@
             <p>The transition to center-pivot sprinkler distribution systems catalyzed massive crop yields but altered the basin's natural water equilibrium. Natural recharge rates from sparse regional precipitation fail to offset current industrial extraction velocities.</p>
             <div class="data-panel pivot-chart">
                 <div class="panel-title">Center-Pivot Deep-Well Pumping Core Model</div>
-                <div class="panel-subtitle">🚜 Active Submersible Groundwater Extraction Array</div>
-            </div>
-            <div class="caption">Figure 2: Infrastructure architectural layout mapping active irrigation networks pulling directly from groundwater columns.</div>
-        </div>
-
-        <!-- SECTION 3: THE AI DATA CENTER OVERLAY -->
-        <div class="section-box tech-box">
-            <h2>3. Technological Overlay: The AI Data Center Boom</h2>
