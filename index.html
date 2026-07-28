@@ -182,13 +182,37 @@
         }
         .badge {
             display: inline-block;
-            padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; text-transform: uppercase; text-align: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
         }
-        .status-built { background-color: #d4edda; color: #155724; }
-        .status-building { background-color: #fff3cd; color: #856404; }
-        .status-planned { background-color: #d1ecf1; color: #0c5460; }
-        #tab-all:checked ~ .tab-labels-bar #lbl-all, #tab-built:checked ~ .tab-labels-bar #lbl-built, #tab-building:checked ~ .tab-labels-bar #lbl-building, #tab-planned:checked ~ .tab-labels-bar #lbl-planned { background: #2c3e50; color: #ffffff; }
-        #tab-built:checked ~ table tr.data-row:not(.built), #tab-building:checked ~ table tr.data-row:not(.building), #tab-planned:checked ~ table tr.data-row:not(.planned) { display: none !important; }
+        .status-built {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-building {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-planned {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        #tab-all:checked ~ .tab-labels-bar #lbl-all, 
+        #tab-built:checked ~ .tab-labels-bar #lbl-built, 
+        #tab-building:checked ~ .tab-labels-bar #lbl-building, 
+        #tab-planned:checked ~ .tab-labels-bar #lbl-planned { 
+            background: #2c3e50; 
+            color: #ffffff; 
+        }
+        #tab-built:checked ~ .table-responsive tr.data-row:not(.built), 
+        #tab-building:checked ~ .table-responsive tr.data-row:not(.building), 
+        #tab-planned:checked ~ .table-responsive tr.data-row:not(.planned) { 
+            display: none !important; 
+        }
     </style>
 </head>
 <body>
@@ -240,6 +264,3 @@
             <p>Click the tracking tabs below to instantly filter facilities by their current infrastructure development stage.</p>
             
             <div class="tab-system">
-                <input type="radio" id="tab-all" name="status-toggle" class="tab-inputs" checked>
-                <input type="radio" id="tab-built" name="status-toggle" class="tab-inputs">
-                <input type="radio" id="tab-building" name="status-toggle" class="tab-inputs">
