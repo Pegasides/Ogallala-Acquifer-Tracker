@@ -264,3 +264,59 @@
             <p>Click the tracking tabs below to instantly filter facilities by their current infrastructure development stage.</p>
             
             <div class="tab-system">
+<input type="radio" id="tab-all" name="status-toggle" class="tab-inputs" checked>
+                <input type="radio" id="tab-built" name="status-toggle" class="tab-inputs">
+                <input type="radio" id="tab-building" name="status-toggle" class="tab-inputs">
+                <input type="radio" id="tab-planned" name="status-toggle" class="tab-inputs">
+                
+                <div class="tab-labels-bar">
+                    <label for="tab-all" id="lbl-all" class="tab-lbl">Show All</label>
+                    <label for="tab-built" id="lbl-built" class="tab-lbl">Operating (Built)</label>
+                    <label for="tab-building" id="lbl-building" class="tab-lbl">Being Built</label>
+                    <label for="tab-planned" id="lbl-planned" class="tab-lbl">Planned (To Be Built)</label>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="color: white !important;">Location / Project</th>
+                                <th style="color: white !important;">Operator Block</th>
+                                <th style="color: white !important;">Est. Daily Water Volume</th>
+                                <th style="color: white !important;">Development Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="data-row built">
+                                <td>Council Bluffs Core</td>
+                                <td>Google Facility Array</td>
+                                <td>1.5M - 2.0M Gallons</td>
+                                <td><span class="badge status-built">Operating</span></td>
+                            </tr>
+                            <tr class="data-row building">
+                                <td>Lancaster County Node</td>
+                                <td>Meta Cloud Matrix</td>
+                                <td>1.2M - 1.8M Gallons</td>
+                                <td><span class="badge status-building">Being Built</span></td>
+                            </tr>
+                            <tr class="data-row planned">
+                                <td>Cheyenne Technology Complex</td>
+                                <td>Microsoft Azure Core</td>
+                                <td>2.2M - 3.0M Gallons</td>
+                                <td><span class="badge status-planned">Planned</span></td>
+                            </tr>
+                            <tr class="data-row built">
+                                <td>Omaha Infrastructure Hub</td>
+                                <td>Google Cloud Layout</td>
+                                <td>1.0M - 1.5M Gallons</td>
+                                <td><span class="badge status-built">Operating</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+                
