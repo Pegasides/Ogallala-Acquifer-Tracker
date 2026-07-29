@@ -39,6 +39,7 @@
             top: 25px; left: 50%; transform: translateX(-50%);
         }
         
+        /* State boundaries sitting securely as an interface layer */
         .state-outline {
             position: absolute; border: 2px solid #3f3f46;
             background-color: rgba(255,255,255,0.01);
@@ -57,10 +58,11 @@
         #OK { top: 315px; left: 160px; width: 240px; height: 50px; border-left: none; border-top: none; }
         #TX { top: 375px; left: 120px; width: 200px; height: 150px; border-top: none; }
 
+        /* Transparent layered water reservoirs sitting safely underneath borders */
         .aquifer-basin-formation {
             position: absolute;
             pointer-events: none; 
-            z-index: 10;
+            z-index: 3;
             border: 2px solid rgba(59, 130, 246, 0.6);
             background-color: rgba(59, 130, 246, 0.45);
         }
@@ -68,10 +70,15 @@
         #central-basin { top: 185px; left: 145px; width: 180px; height: 120px; border-radius: 30% 40% 40% 30%; }
         #south-basin { top: 305px; left: 135px; width: 150px; height: 150px; border-radius: 40% 30% 30% 50%; }
 
-        .controls { margin-top: 25px; }
-        input[type="range"] { width: 100%; cursor: pointer; }
-        .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #71717a; font-size: 13px; }
-        .active-label { color: #3b82f6; font-weight: bold; }
+        /* FIXED: Clickable timeline navigation tab buttons */
+        .controls { margin-top: 25px; display: flex; gap: 15px; justify-content: center; }
+        .time-btn {
+            background-color: #1e1e24; color: #a1a1aa; border: 1px solid #3f3f46;
+            padding: 12px 24px; font-weight: bold; font-size: 14px; border-radius: 6px;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .time-btn:hover { background-color: #27272a; color: #ffffff; }
+        .active-btn { background-color: #3b82f6 !important; color: #ffffff !important; border-color: #3b82f6 !important; }
         
         .dc-node {
             width: 14px; height: 14px; background-color: #ef4444;
@@ -97,7 +104,7 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            0 { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
             70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
@@ -114,7 +121,7 @@
     <div id="wrapper">
         <div id="map-canvas">
             <div class="map-grid">
-                <!-- Native State Vector Borders -->
+                <!-- Native State Vector Borders overlaying perfectly over the water pools -->
                 <div class="state-outline" id="SD">SOUTH DAKOTA</div>
                 <div class="state-outline" id="WY">WYOMING</div>
                 <div class="state-outline" id="NE">NEBRASKA</div>
@@ -124,7 +131,7 @@
                 <div class="state-outline" id="OK">OKLAHOMA</div>
                 <div class="state-outline" id="TX">TEXAS</div>
 
-                <!-- See-Through Basins -->
+                <!-- See-Through Water Basins -->
                 <div class="aquifer-basin-formation" id="north-basin"></div>
                 <div class="aquifer-basin-formation" id="central-basin"></div>
                 <div class="aquifer-basin-formation" id="south-basin"></div>
@@ -141,15 +148,12 @@
         </div>
     </div>
 
+    <!-- FIXED: Replaced hidden slider component with explicit, interactive tab navigation buttons -->
     <div class="controls">
-        <!-- FIXED: Simplified slider parameters to match hard layout switch checks -->
-        <input type="range" id="timeline" min="1" max="4" step="1" value="1">
-        <div class="labels">
-            <span id="lbl-1" class="active-label">1950 Historic</span>
-            <span id="lbl-2">1980 Expansion</span>
-            <span id="lbl-3">2026 Present</span>
-            <span id="lbl-4">2050 Project</span>
-        </div>
+        <button class="time-btn active-btn" id="btn-1" onclick="runStateSwitch(1)">1950 Era</button>
+        <button class="time-btn" id="btn-2" onclick="runStateSwitch(2)">1980 Era</button>
+        <button class="time-btn" id="btn-3" onclick="runStateSwitch(3)">2026 Present</button>
+        <button class="time-btn" id="btn-4" onclick="runStateSwitch(4)">2050 Project</button>
     </div>
 </div>
 
@@ -181,16 +185,3 @@
                 <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
             </div>
             <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
-                <strong>Ensuing Local Result:</strong><br>${data.consequence}
-            </div>
-            <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; color: #f43f5e; font-weight: bold; border-top: 1px solid #27272a; padding-top: 12px;">
-                ⚠️ ${data.actionable}
-            </div>
-        `;
-    };
-
-    // FIXED: Bulletproof layout matrices to run with zero background script calculations
-    function runStateSwitch(val) {
-        const nb = document.getElementById('north-basin');
-        const cb = document.getElementById('central-basin');
-        const sb = document.getElementById('south-basin');
