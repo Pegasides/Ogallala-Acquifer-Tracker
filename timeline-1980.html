@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogallala Aquifer Detailed Impact Dashboard - 1980</title>
+    
+    <style>
+        body { margin: 0; padding: 20px; background-color: #0f1015; color: #ffffff; font-family: system-ui, sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
+        h2 { color: #3b82f6; margin: 0; font-size: 1.8rem; }
+        p { color: #a1a1aa; min-height: 40px; line-height: 1.5; font-size: 14px; }
+        #wrapper { display: flex; gap: 20px; }
+        #map-canvas { height: 580px; flex: 1; border-radius: 12px; background: #141419; position: relative; overflow: hidden; border: 1px solid #27272a; }
+        #impact-panel { width: 340px; height: 580px; background: #111116; border: 1px solid #27272a; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+        .panel-title { color: #f59e0b; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
+        .map-grid { position: absolute; width: 550px; height: 530px; top: 25px; left: 50%; transform: translateX(-50%); }
+        .state-outline { position: absolute; border: 2px solid #3f3f46; background-color: rgba(255,255,255,0.01); color: #52525b; font-size: 9px; font-weight: bold; padding: 5px; border-radius: 2px; box-sizing: border-box; display: flex; z-index: 5; }
+        #SD { top: 0px; left: 160px; width: 220px; height: 80px; }
+        #WY { top: 90px; left: 0px; width: 150px; height: 100px; }
+        #NE { top: 90px; left: 160px; width: 240px; height: 100px; border-left: none; }
+        #CO { top: 200px; left: 10px; width: 140px; height: 105px; }
+        #KS { top: 200px; left: 160px; width: 240px; height: 105px; border-left: none; border-top: none; }
+        #NM { top: 315px; left: 10px; width: 140px; height: 120px; }
+        #OK { top: 315px; left: 160px; width: 240px; height: 50px; border-left: none; border-top: none; }
+        #TX { top: 375px; left: 120px; width: 200px; height: 150px; border-top: none; }
+        .aquifer-basin-formation { position: absolute; pointer-events: none; z-index: 3; border: 2px solid rgba(59, 130, 246, 0.6); }
+        #north-basin { top: 50px; left: 165px; width: 190px; height: 120px; border-radius: 40% 50% 40% 40%; background-color: rgba(59, 130, 246, 0.5); border-color: #3b82f6; }
+        #central-basin { top: 185px; left: 145px; width: 160px; height: 105px; border-radius: 30% 40% 40% 30%; background-color: rgba(245, 158, 11, 0.45); border-color: #f59e0b; }
+        #south-basin { top: 305px; left: 135px; width: 130px; height: 130px; border-radius: 40% 30% 30% 50%; background-color: rgba(245, 158, 11, 0.45); border-color: #f59e0b; }
+        .controls { margin-top: 25px; display: flex; gap: 15px; justify-content: center; }
+        .time-link { background-color: #1e1e24; color: #a1a1aa; border: 1px solid #3f3f46; padding: 12px 24px; font-weight: bold; font-size: 14px; border-radius: 6px; text-decoration: none; display: inline-block; }
+        .active-btn { background-color: #3b82f6 !important; color: #ffffff !important; border-color: #3b82f6 !important; }
+        .community-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; z-index: 25; border: 1px solid #111116; box-shadow: 0 0 6px rgba(255,255,255,0.3); }
+        .community-text { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); color: #ffffff; font-size: 9px; font-weight: bold; white-space: nowrap; background: rgba(15,16,21,0.85); padding: 2px 5px; border-radius: 3px; border: 1px solid #3f3f46; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>Geographical Timeline Workspace: Year 1980</h2>
+        <p>1980 Era: High-capacity center pivot irrigation spreads. Central and Southern basins trigger early localized drawdown warning fields.</p>
+    </header>
+    <div id="wrapper">
+        <div id="map-canvas">
+            <div class="map-grid">
+                <div class="state-outline" id="SD">SOUTH DAKOTA</div>
+                <div class="state-outline" id="WY">WYOMING</div>
+                <div class="state-outline" id="NE">NEBRASKA</div>
+                <div class="state-outline" id="CO">COLORADO</div>
+                <div class="state-outline" id="KS">KANSAS</div>
+                <div class="state-outline" id="NM">NEW MEXICO</div>
+                <div class="state-outline" id="OK">OKLAHOMA</div>
+                <div class="state-outline" id="TX">TEXAS</div>
+                <div class="aquifer-basin-formation" id="north-basin"></div>
+                <div class="aquifer-basin-formation" id="central-basin"></div>
+                <div class="aquifer-basin-formation" id="south-basin"></div>
+                <div id="elements-overlay">
+                    <!-- FIXED: Communities are completely hard-baked directly into this specific page layout -->
+                    <div class="community-dot" style="top:115px; left:180px; background-color:#22c55e;"><div class="community-text">Alliance, NE</div></div>
+                    <div class="community-dot" style="top:225px; left:230px; background-color:#f59e0b;"><div class="community-text">Hoxie, KS</div></div>
+                    <div class="community-dot" style="top:445px; left:165px; background-color:#f59e0b;"><div class="community-text">Lubbock, TX</div></div>
+                </div>
+            </div>
+        </div>
+        <div id="impact-panel">
+            <div class="panel-title">1980 Active Infrastructure</div>
+            <p style="font-size: 13px; color: #a1a1aa;">Notice the central and southern aquifer pockets turning <b>Amber</b>. Local communities like Hoxie and Lubbock are entering structural drawdowns.</p>
+        </div>
+    </div>
+    <div class="controls">
+        <a href="timeline.html" class="time-link">1950 Era</a>
+        <a href="timeline-1980.html" class="time-link active-btn">1980 Era</a>
+        <a href="timeline-2026.html" class="time-link">2026 Present</a>
+        <a href="timeline-2050.html" class="time-link">2050 Project</a>
+    </div>
+</div>
+</body>
+</html>
