@@ -3,72 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ogallala Aquifer & AI Data Centers</title>
+    <title>Ogallala Aquifer Timeline Map</title>
     
-    <!-- 1. Include Leaflet Maps CSS -->
-    <link rel="stylesheet" href="https://unpkg.com" />
+    <!-- Leaflet CSS Stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com" crossorigin="" />
     
     <style>
         body {
-            margin: 0;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #1a1a1a;
-            color: #ffffff;
+            margin: 0; padding: 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #111111; color: #ffffff;
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        header {
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        h2 { color: #3b82f6; margin: 0 0 10px 0; font-size: 2rem; }
-        p { color: #cccccc; min-height: 48px; margin: 0; line-height: 1.5; }
-        
-        /* Map styling */
-        #map {
-            height: 500px;
-            width: 100%;
-            border-radius: 8px;
-            background: #111;
-        }
-        
-        /* Timeline Slider styling */
-        .controls {
-            margin-top: 25px;
-            padding: 10px 0;
-        }
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #444;
-            outline: none;
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3b82f6;
-            cursor: pointer;
-        }
-        .labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: #888;
-        }
-        .active-label {
-            color: #3b82f6;
-            font-weight: bold;
-        }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        h2 { color: #3b82f6; margin: 0; font-size: 2rem; }
+        p { color: #cccccc; min-height: 48px; line-height: 1.5; }
+        #map { height: 500px; width: 100%; border-radius: 8px; background: #222; }
+        .controls { margin-top: 25px; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+        .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #888; }
+        .active-label { color: #3b82f6; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -76,13 +30,11 @@
 <div class="container">
     <header>
         <h2>Year: <span id="year-display">2026</span></h2>
-        <p id="desc-display">Present Day. Early clusters of machine learning clusters overlap with heavily depleted water tables.</p>
+        <p id="desc-display">Present Day. Data centers overlap with heavily depleted water tables.</p>
     </header>
 
-    <!-- The Map Element -->
     <div id="map"></div>
 
-    <!-- The Timeline Slider -->
     <div class="controls">
         <input type="range" id="timeline" min="0" max="4" step="1" value="2">
         <div class="labels">
@@ -95,118 +47,55 @@
     </div>
 </div>
 
-<!-- 2. Include Leaflet Maps JavaScript -->
-<script src="https://unpkg.com"></script>
+<!-- Leaflet JavaScript Map Framework -->
+<script src="https://unpkg.com" crossorigin=""></script>
 
 <script>
-    // Initialize the Map centered over the center of the Ogallala Aquifer (Kansas/Nebraska region)
-    const map = L.map('map').setView([39.5, -101.5], 6);
+    // Safe initialization block wrapped in an error catcher
+    try {
+        const map = L.map('map').setView([39.5, -101.5], 6);
 
-    // Add a dark, clean map background layer
-    L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO'
-    }).addTo(map);
+        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; CARTO'
+        }).addTo(map);
 
-    // Timeline Configuration Data
-    const timelineSteps = [
-        { 
-            year: "1950", 
-            desc: "Pre-development aquifer levels. High saturated water thickness across the High Plains.",
-            aquiferOpacity: 0.9, aquiferColor: "#3182bd",
-            centers: [] 
-        },
-        { 
-            year: "1980", 
-            desc: "Booming center-pivot agricultural irrigation begins drawing down southern sectors.",
-            aquiferOpacity: 0.7, aquiferColor: "#3182bd",
-            centers: [] 
-        },
-        { 
-            year: "2026", 
-            desc: "Present Day. Early clusters of machine learning nodes overlap with heavily depleted water tables.",
-            aquiferOpacity: 0.4, aquiferColor: "#3182bd",
-            centers: [
-                { name: "Dallas Suburb Cluster", lat: 32.7767, lng: -96.7970 },
-                { name: "Omaha Infrastructure Hub", lat: 41.2565, lng: -95.9345 }
-            ] 
-        },
-        { 
-            year: "2035", 
-            desc: "Projected. Extended drought patterns push computational centers to seek regional deep-well access.",
-            aquiferOpacity: 0.25, aquiferColor: "#d97706",
-            centers: [
-                { name: "Dallas Suburb Cluster", lat: 32.7767, lng: -96.7970 },
-                { name: "Omaha Infrastructure Hub", lat: 41.2565, lng: -95.9345 },
-                { name: "Cheyenne Northwest Expansion", lat: 41.1400, lng: -104.8203 }
-            ] 
-        },
-        { 
-            year: "2050", 
-            desc: "Projected. Critical saturation failure in Texas Panhandle intersects heavy computing infrastructure grids.",
-            aquiferOpacity: 0.1, aquiferColor: "#ef4444",
-            centers: [
-                { name: "Dallas Suburb Cluster", lat: 32.7767, lng: -96.7970 },
-                { name: "Omaha Infrastructure Hub", lat: 41.2565, lng: -95.9345 },
-                { name: "Cheyenne Northwest Expansion", lat: 41.1400, lng: -104.8203 },
-                { name: "Platte River Grid Node", lat: 40.6995, lng: -99.0817 }
-            ] 
-        }
-    ];
+        const timelineSteps = [
+            { year: "1950", desc: "Pre-development aquifer levels. High water thickness.", opacity: 0.9, color: "#3182bd", centers: [] },
+            { year: "1980", desc: "Agricultural irrigation begins drawing down southern sectors.", opacity: 0.7, color: "#3182bd", centers: [] },
+            { year: "2026", desc: "Present Day. Data center nodes overlap with depleted water tables.", opacity: 0.4, color: "#3182bd", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}] },
+            { year: "2035", desc: "Projected. Extended drought pushes computational centers to seek regional wells.", opacity: 0.25, color: "#d97706", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}] },
+            { year: "2050", desc: "Projected. Severe water depletion zones intersect heavily with critical infrastructure.", opacity: 0.1, color: "#ef4444", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}, {name:"Platte River Node", lat:40.69, lng:-99.08}] }
+        ];
 
-    // Create a temporary visual shape representing the Ogallala Aquifer boundary box
-    // (This acts as a placeholder until you upload real GeoJSON shapes)
-    const aquiferBounds = [[32.0, -104.0], [43.5, -97.0]];
-    let aquiferLayer = L.rectangle(aquiferBounds, { stroke: false }).addTo(map);
-    
-    // Layer group to hold the data center dots
-    let markerLayerGroup = L.layerGroup().addTo(map);
+        const aquiferBounds = [[32.0, -104.0], [43.5, -97.0]];
+        let aquiferLayer = L.rectangle(aquiferBounds, { stroke: false, fillColor: "#3182bd", fillOpacity: 0.4 }).addTo(map);
+        let markerLayerGroup = L.layerGroup().addTo(map);
 
-    // Function to update the map when the slider moves
-    function updateTimeline(index) {
-        const step = timelineSteps[index];
+        function updateTimeline(index) {
+            const step = timelineSteps[index];
+            document.getElementById('year-display').innerText = step.year;
+            document.getElementById('desc-display').innerText = step.desc;
 
-        // Update text headers
-        document.getElementById('year-display').innerText = step.year;
-        document.getElementById('desc-display').innerText = step.desc;
+            aquiferLayer.setStyle({ fillColor: step.color, fillOpacity: step.opacity });
+            markerLayerGroup.clearLayers();
 
-        // Update the Aquifer visual thickness (fading color out over time)
-        aquiferLayer.setStyle({
-            fillColor: step.aquiferColor,
-            fillOpacity: step.aquiferOpacity
-        });
-
-        // Clear old data center markers
-        markerLayerGroup.clearLayers();
-
-        // Add new data center markers for this year
-        step.centers.forEach(center => {
-            const marker = L.circleMarker([center.lat, center.lng], {
-                radius: 8,
-                fillColor: "#ef4444",
-                color: "#ffffff",
-                weight: 2,
-                fillOpacity: 0.9
+            step.centers.forEach(c => {
+                L.circleMarker([c.lat, c.lng], { radius: 8, fillColor: "#ef4444", color: "#fff", weight: 2, fillOpacity: 0.9 })
+                 .bindPopup(`<b>${c.name}</b>`)
+                 .addTo(markerLayerGroup);
             });
-            marker.bindPopup(`<b>${center.name}</b><br>AI Data Center Node`);
-            markerLayerGroup.addLayer(marker);
-        });
 
-        // Simple highlight toggle for the "Present" label text color
-        if(index == 2) {
-            document.getElementById('label-2').classList.add('active-label');
-        } else {
-            document.getElementById('label-2').classList.remove('active-label');
+            document.getElementById('label-2').className = (index == 2) ? 'active-label' : '';
         }
+
+        document.getElementById('timeline').addEventListener('input', (e) => updateTimeline(e.target.value));
+        updateTimeline(2);
+
+    } catch (error) {
+        console.error("Map initialization failed:", error);
+        document.getElementById('desc-display').innerText = "Map loading error: " + error.message;
     }
-
-    // Handle slider input changes
-    document.getElementById('timeline').addEventListener('input', function(e) {
-        updateTimeline(e.target.value);
-    });
-
-    // Run initially for Present Day (Index 2)
-    updateTimeline(2);
 </script>
 
-</body> 
+</body>
 </html>
