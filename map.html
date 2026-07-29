@@ -157,6 +157,7 @@
 </div>
 
 <script>
+    // Exact location coordinates inside our 8-state grid panel
     const localCommunities = [
         { name: "Alliance, NE", top: "115px", left: "160px", basin: "north" },
         { name: "Omaha, NE", top: "140px", left: "310px", basin: "north" },
@@ -196,3 +197,128 @@
     window.showImpactDetails = function(nodeName) {
         const data = impactDatabase[nodeName];
         if (!data) return;
+        document.getElementById('impact-panel').innerHTML = `
+            <div class="panel-title">${nodeName}</div>
+            <div class="impact-stat">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
+                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">${data.consumption}</div>
+            </div>
+            <div class="impact-stat" style="border-left-color: #a855f7;">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
+                <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+                <strong>Ensuing Local Result:</strong><br>${data.consequence}
+            </div>
+            <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; color: #f43f5e; font-weight: bold; border-top: 1px solid #27272a; padding-top: 12px;">
+                ⚠️ ${data.actionable}
+            </div>
+        `;
+    };
+
+    function updateTimeline(year) {
+        document.getElementById('year-display').innerText = year;
+        
+        let nStyle = {}, cStyle = {}, sStyle = {};
+        let descText = "";
+        let dataCenters = [];
+
+        if (year <= 1980) {
+            let pct = (year - 1950) / (1980 - 1950);
+            descText = "1950–1980: Post-WWII agricultural boom transforms the landscape. Aquifer reservoirs remain vibrant transparent light blue layers across all states.";
+            nStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 180, h: 120 };
+            cStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 160, h: 110 };
+            sStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 130, h: 140 };
+        } 
+        else if (year <= 2026) {
+            let pct = (year - 1980) / (2026 - 1980);
+            descText = "2026 Present Day. Notice the distinct split: Nebraska helical centers stay healthy green, while Texas panhandle fields drop into localized crisis thresholds.";
+            dataCenters = [
+                { name: "Omaha Compute Core", top: "115px", left: "285px" },
+                { name: "Dallas Compute Grid", top: "450px", left: "185px" }
+            ];
+            nStyle = { opacity: 0.55, color: "rgba(59, 130, 246, 0.35)", w: 180 - (pct * 20), h: 120 - (pct * 10) };
+            cStyle = { opacity: 0.45, color: "rgba(245, 158, 11, 0.30)", w: 160 - (pct * 30), h: 110 - (pct * 20) };
+            sStyle = { opacity: 0.35, color: "rgba(239, 68, 68, 0.25)",  w: 130 - (pct * 40), h: 140 - (pct * 40) };
+        } 
+        else if (year <= 2035) {
+            let pct = (year - 2026) / (2035 - 2026);
+            descText = "Projected 2035. Machine learning infrastructure footprint accelerates. Central Basin lines turn amber as Kansas community supply lines narrow.";
+            dataCenters = [
+                { name: "Omaha Compute Core", top: "115px", left: "285px" },
+                { name: "Dallas Compute Grid", top: "450px", left: "185px" },
+                { name: "Cheyenne Expansion Node", top: "115px", left: "45px" }
+            ];
+            nStyle = { opacity: 0.45, color: "rgba(245, 158, 11, 0.30)", w: 160 - (pct * 20), h: 110 - (pct * 10) };
+            cStyle = { opacity: 0.25, color: "rgba(239, 68, 68, 0.20)",  w: 130 - (pct * 25), h: 90 - (pct * 20) };
+            sStyle = { opacity: 0.15, color: "rgba(153, 27, 27, 0.15)",  w: 90 - (pct * 30),  h: 100 - (pct * 30) };
+        } 
+        else {
+            let pct = (year - 2035) / (2050 - 2035);
+            descText = "Projected 2050 Critical saturation failure. The Southern aquifer pocket has entirely dissolved away under Texas and Oklahoma.";
+            dataCenters = [
+                { name: "Omaha Compute Core", top: "115px", left: "285px" },
+                { name: "Dallas Compute Grid", top: "450px", left: "185px" },
+                { name: "Cheyenne Expansion Node", top: "115px", left: "45px" },
+                { name: "Platte River Node", top: "145px", left: "195px" }
+            ];
+            // FIXED: Multiplication signs successfully restored
+            nStyle = { opacity: 0.20, color: "rgba(239, 68, 68, 0.15)", w: 140 - (pct * 30), h: 100 - (pct * 20) };
+            cStyle = { opacity: 0.08, color: "rgba(127, 29, 29, 0.10)",  w: 105 - (pct * 45), h: 70 - (pct * 25) };
+            sStyle = { opacity: 0.02, color: "rgba(69, 10, 10, 0.05)",   w: 60 - (pct * 30),  h: 70 - (pct * 45) };
+        }
+
+        const nBasin = document.getElementById('north-basin');
+        nBasin.style.width = nStyle.w + "px"; nBasin.style.height = nStyle.h + "px"; nBasin.style.background = nStyle.color; nBasin.style.opacity = nStyle.opacity;
+
+        const cBasin = document.getElementById('central-basin');
+        cBasin.style.width = cStyle.w + "px"; cBasin.style.height = cStyle.h + "px"; cBasin.style.background = cStyle.color; cBasin.style.opacity = cStyle.opacity;
+
+        const sBasin = document.getElementById('south-basin');
+        sBasin.style.width = sStyle.w + "px"; sBasin.style.height = sStyle.h + "px"; sBasin.style.background = sStyle.color; sBasin.style.opacity = sStyle.opacity;
+
+        const overlay = document.getElementById('elements-overlay');
+        overlay.innerHTML = "";
+        
+        localCommunities.forEach(city => {
+            const cityDot = document.createElement('div');
+            cityDot.className = 'community-dot';
+            cityDot.style.top = city.top;
+            cityDot.style.left = city.left;
+            
+            let status = "#22c55e"; 
+            if (city.basin === 'south') {
+                status = (year <= 1965) ? "#22c55e" : (year <= 2000) ? "#f59e0b" : "#ef4444"; 
+            } else if (city.basin === 'central') {
+                status = (year <= 1995) ? "#22c55e" : (year <= 2030) ? "#f59e0b" : "#ef4444";
+            } else if (city.basin === 'north') {
+                status = (year <= 2035) ? "#22c55e" : "#f59e0b";
+            }
+            
+            cityDot.style.backgroundColor = status;
+            cityDot.innerHTML = `<div class="community-text">${city.name}</div>`;
+            overlay.appendChild(cityDot);
+        });
+
+        dataCenters.forEach(dc => {
+            const dcNode = document.createElement('div');
+            dcNode.className = 'dc-node';
+            dcNode.style.top = dc.top; dcNode.style.left = dc.left;
+            dcNode.setAttribute('onclick', `showImpactDetails("${dc.name}")`);
+            dcNode.innerHTML = `<div class="node-label">${dc.name}</div>`;
+            overlay.appendChild(dcNode);
+        });
+
+        ["1950", "1980", "2026", "2035", "2050"].forEach(lblYear => {
+            document.getElementById(`lbl-${lblYear}`).className = (year == lblYear) ? 'active-label' : '';
+        });
+    }
+
+    document.getElementById('timeline').addEventListener('input', (e) => {
+        updateTimeline(parseInt(e.target.value));
+    });
+
+    updateTimeline(2026);
+</script>
+</body>
+</html>
