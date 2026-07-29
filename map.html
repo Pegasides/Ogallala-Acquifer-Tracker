@@ -3,99 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ogallala Aquifer Timeline Map</title>
+    <title>Ogallala Aquifer Detailed Impact Dashboard</title>
     
     <style>
         body {
             margin: 0; padding: 20px;
             font-family: system-ui, -apple-system, sans-serif;
-            background-color: #111111; color: #ffffff;
+            background-color: #0f1015; color: #ffffff;
         }
-        .container { max-width: 900px; margin: 0 auto; }
-        header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-        h2 { color: #3b82f6; margin: 0; font-size: 2rem; }
-        p { color: #cccccc; min-height: 48px; line-height: 1.5; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
+        h2 { color: #3b82f6; margin: 0; font-size: 1.8rem; }
+        p { color: #a1a1aa; min-height: 40px; line-height: 1.5; font-size: 14px; }
         
         #wrapper { display: flex; gap: 20px; }
-        #map { 
-            height: 550px; flex: 1; 
-            border-radius: 8px; background: #16161a; 
+        
+        /* The main viewport representing the High Plains Region map canvas */
+        #map-canvas { 
+            height: 580px; flex: 1; 
+            border-radius: 12px; background: #18181b; 
             position: relative; overflow: hidden; 
-            border: 1px solid #333;
+            border: 1px solid #27272a;
+            /* REALISTIC BACKGROUND IMAGE: Topographic structural map centering the 8 states */
+            background-image: url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
         }
         
-        /* FIXED: Impact Sidebar Panel UI */
-        #impact-panel {
-            width: 280px; height: 550px; background: #1c1c22;
-            border: 1px solid #333; border-radius: 8px; padding: 20px;
-            box-sizing: border-box; display: flex; flex-direction: column;
+        /* Dark overlay filter to give the map texture a premium dashboard look */
+        .map-texture-overlay {
+            position: absolute; width: 100%; height: 100%;
+            background: rgba(15, 16, 21, 0.88); z-index: 1; pointer-events: none;
         }
-        .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 5px;}
-        .impact-stat { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px; margin: 8px 0; border-left: 3px solid #ef4444; }
-        
-        .map-grid {
-            position: absolute; width: 500px; height: 500px;
-            top: 25px; left: 50%; transform: translateX(-50%);
-        }
-        
-        .state {
-            position: absolute; border: 1px dashed #555562;
-            background-color: rgba(255,255,255,0.01);
-            color: #71717a; font-size: 11px; font-weight: bold;
-            padding: 4px; border-radius: 4px;
-            display: flex; align-items: flex-start; justify-content: flex-start;
-            z-index: 15; pointer-events: none; 
-        }
-        
-        #SD { top: 0px; left: 140px; width: 200px; height: 80px; }
-        #WY { top: 90px; left: 0px; width: 130px; height: 90px; }
-        #NE { top: 90px; left: 140px; width: 220px; height: 90px; }
-        #CO { top: 190px; left: 10px; width: 120px; height: 95px; }
-        #KS { top: 195px; left: 140px; width: 220px; height: 90px; }
-        #NM { top: 295px; left: 10px; width: 120px; height: 110px; }
-        #OK { top: 295px; left: 140px; width: 220px; height: 45px; }
-        #TX { top: 350px; left: 105px; width: 180px; height: 140px; }
 
-        .aquifer-zone {
-            position: absolute; transition: all 0.1s linear;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10; pointer-events: none;
-            font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.25);
-            text-align: center;
+        #impact-panel {
+            width: 320px; height: 580px; background: #111116;
+            border: 1px solid #27272a; border-radius: 12px; padding: 20px;
+            box-sizing: border-box; display: flex; flex-direction: column;
+            z-index: 10;
         }
-        #zone-north { top: 50px; left: 145px; width: 180px; height: 120px; border-radius: 40% 50% 40% 40%; }
-        #zone-central { top: 175px; left: 125px; width: 160px; height: 110px; border-radius: 30% 40% 40% 30%; }
-        #zone-south { top: 290px; left: 115px; width: 130px; height: 140px; border-radius: 40% 30% 30% 50%; }
+        .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
+        .impact-stat { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 4px solid #ef4444; border-top: 1px solid rgba(255,255,255,0.03); }
+        
+        /* Fixed internal scale grid for precise geographical asset placement */
+        .geo-projection-layer {
+            position: absolute; width: 100%; height: 100%; z-index: 5;
+        }
+        
+        /* VISUAL STATE LINE TEXT INDICATORS */
+        .state-label {
+            position: absolute; color: rgba(255,255,255,0.15); font-size: 12px; 
+            font-weight: 800; tracking-letters: 2px; font-style: italic; pointer-events: none;
+        }
+        #lbl-SD { top: 40px; left: 50%; transform: translateX(-50%); }
+        #lbl-WY { top: 140px; left: 15%; }
+        #lbl-CO { top: 260px; left: 12%; }
+        #lbl-NM { top: 420px; left: 10%; }
+        #lbl-NE { top: 130px; left: 55%; }
+        #lbl-KS { top: 260px; left: 55%; }
+        #lbl-OK { top: 360px; left: 60%; }
+        #lbl-TX { top: 460px; left: 48%; }
+
+        /* FIXED: Organic Light Blue Aquifer formation with see-through transparency */
+        .aquifer-basin-formation {
+            position: absolute;
+            transition: all 0.2s ease-in-out;
+            pointer-events: none; z-index: 8;
+            border: 2px dashed rgba(59, 130, 246, 0.4);
+            box-shadow: inset 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+        #north-basin { top: 60px; left: 35%; width: 45%; height: 160px; border-radius: 50% 60% 40% 50% / 40% 50% 60% 50%; }
+        #central-basin { top: 210px; left: 30%; width: 38%; height: 130px; border-radius: 40% 40% 60% 50% / 50% 40% 50% 60%; }
+        #south-basin { top: 320px; left: 25%; width: 32%; height: 190px; border-radius: 30% 50% 40% 60% / 60% 40% 50% 40%; }
 
         .controls { margin-top: 25px; }
         input[type="range"] { width: 100%; cursor: pointer; }
-        .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #888; }
+        .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #71717a; font-size: 13px; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
+        /* Pulse Animation Nodes */
         .dc-node {
             width: 14px; height: 14px; background-color: #ef4444;
             border: 2px solid white; border-radius: 50%; position: absolute;
-            z-index: 25; animation: pulse 1.8s infinite ease-in-out; cursor: pointer;
+            z-index: 30; animation: pulse 1.8s infinite ease-in-out; cursor: pointer;
         }
         .node-label {
-            position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.85); border: 1px solid #ef4444;
-            padding: 1px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; color: #fff;
-            pointer-events: none;
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            background: #111116; border: 1px solid #ef4444; padding: 2px 8px; 
+            border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold;
         }
         
-        .well-node {
-            width: 8px; height: 8px; border-radius: 50%; position: absolute;
-            z-index: 20; transition: background-color 0.2s linear; border: 1px solid #111;
+        /* FIXED: Pronounced Local Community Target Points */
+        .community-dot {
+            width: 6px; height: 6px; border-radius: 50%; position: absolute;
+            z-index: 20; transition: background-color 0.3s ease; border: 2px solid #111116;
+            box-shadow: 0 0 8px rgba(255,255,255,0.2);
         }
-        .well-label {
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            color: #a1a1aa; font-size: 9px; font-weight: 500; pointer-events: none; white-space: nowrap;
+        .community-text {
+            position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+            color: #e4e4e7; font-size: 10px; font-weight: bold; white-space: nowrap;
+            background: rgba(15,16,21,0.75); padding: 1px 5px; border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
     </style>
@@ -104,38 +117,41 @@
 
 <div class="container">
     <header>
-        <h2>Year: <span id="year-display">2026</span></h2>
-        <p id="desc-display">Present Day. Data centers overlap with heavily depleted water tables.</p>
+        <h2>Geographical Timeline: Year <span id="year-display">2026</span></h2>
+        <p id="desc-display">Evaluating municipal water drawdowns alongside computational energy corridors.</p>
     </header>
 
-    <!-- FIXED: Layout Split Wrapper -->
     <div id="wrapper">
-        <div id="map">
-            <div class="map-grid">
-                <!-- Basemap States -->
-                <div class="state" id="SD">SOUTH DAKOTA</div>
-                <div class="state" id="WY">WYOMING</div>
-                <div class="state" id="NE">NEBRASKA</div>
-                <div class="state" id="CO">COLORADO</div>
-                <div class="state" id="KS">KANSAS</div>
-                <div class="state" id="NM">NEW MEXICO</div>
-                <div class="state" id="OK">OKLAHOMA</div>
-                <div class="state" id="TX">TEXAS</div>
+        <!-- The Interactive Map Container -->
+        <div id="map-canvas">
+            <div class="map-texture-overlay"></div>
+            
+            <div class="geo-projection-layer">
+                <!-- Crooked Text Basemap Placement Grid -->
+                <div class="state-label" id="lbl-SD">SOUTH DAKOTA</div>
+                <div class="state-label" id="lbl-WY">WYOMING</div>
+                <div class="state-label" id="lbl-NE">NEBRASKA</div>
+                <div class="state-label" id="lbl-CO">COLORADO</div>
+                <div class="state-label" id="lbl-KS">KANSAS</div>
+                <div class="state-label" id="lbl-NM">NEW MEXICO</div>
+                <div class="state-label" id="lbl-OK">OKLAHOMA</div>
+                <div class="state-label" id="lbl-TX">TEXAS</div>
 
-                <!-- Aquifer Basins -->
-                <div class="aquifer-zone" id="zone-north">North</div>
-                <div class="aquifer-zone" id="zone-central">Central</div>
-                <div class="aquifer-zone" id="zone-south">South</div>
+                <!-- FIXED: Three Layered, Semi-Transparent Light Blue Aquifer Basins -->
+                <div class="aquifer-basin-formation" id="north-basin"></div>
+                <div class="aquifer-basin-formation" id="central-basin"></div>
+                <div class="aquifer-basin-formation" id="south-basin"></div>
                 
-                <div id="infrastructure-container"></div>
+                <!-- Dynamic Interactive Elements Overlay Container -->
+                <div id="elements-overlay"></div>
             </div>
         </div>
 
-        <!-- FIXED: Dynamic Sidebar Panel Display -->
+        <!-- Sidebar Panel -->
         <div id="impact-panel">
             <div id="panel-content">
-                <div class="panel-title" style="color: #3b82f6;">Hydrological Interface</div>
-                <p style="font-size: 13px; color: #a1a1aa;">Click on any pulsing red <b>AI Data Center Node</b> on the map to evaluate its systemic stress footprint on neighboring human communities.</p>
+                <div class="panel-title" style="color: #3b82f6; border-bottom-color: #3b82f6;">Hydrological Readout</div>
+                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any pulsing red <b>AI Data Center Node</b> located inside the state lines to measure direct municipal stress consequences.</p>
             </div>
         </div>
     </div>
@@ -145,7 +161,7 @@
         <div class="labels">
             <span id="lbl-1950">1950</span>
             <span id="lbl-1980">1980</span>
-            <span id="lbl-2026" class="active-label">2026</span>
+            <span id="lbl-2026" class="active-label">2026 (Present)</span>
             <span id="lbl-2035">2035 Proj</span>
             <span id="lbl-2050">2050 Proj</span>
         </div>
@@ -153,53 +169,29 @@
 </div>
 
 <script>
+    // FIXED: True geographic alignment mappings for communities
     const localCommunities = [
-        { name: "Alliance (NE)", top: "110px", left: "160px", basin: "north" },
-        { name: "Hoxie (KS)", top: "215px", left: "190px", basin: "central" },
-        { name: "Goodland (KS)", top: "210px", left: "150px", basin: "central" },
-        { name: "Guymon (OK)", top: "310px", left: "150px", basin: "south" },
-        { name: "Plainview (TX)", top: "380px", left: "140px", basin: "south" },
-        { name: "Lubbock (TX)", top: "410px", left: "150px", basin: "south" }
+        { name: "Alliance, NE", top: "110px", left: "42%", basin: "north" },
+        { name: "Omaha, NE", top: "140px", left: "76%", basin: "north" },
+        { name: "Goodland, KS", top: "240px", left: "38%", basin: "central" },
+        { name: "Hoxie, KS", top: "250px", left: "48%", basin: "central" },
+        { name: "Guymon, OK", top: "340px", left: "42%", basin: "south" },
+        { name: "Lubbock, TX", top: "450px", left: "38%", basin: "south" }
     ];
 
-    // FIXED: Real-world database containing specific impact details per infrastructure location
     const impactDatabase = {
-        "Omaha Hub (NE)": {
-            consumption: "1.2 Billion Gallons/Year",
-            energySource: "Coal & Thermoelectric Gas Power",
-            consequence: "Forces the nearby Platte River grid to accelerate pumping. Municipal wells in Alliance stay green for now, but agricultural crop zones see localized drop-offs.",
-            actionable: "System stress is currently buffered by high natural rainwater recharge rates in Nebraska."
+        "Omaha Compute Core": {
+            consumption: "1.25 Billion Gallons/Year",
+            energySource: "SPP Power Grid / Coal Heavy",
+            consequence: "Draws heavily from local municipal reserves. While Alliance water metrics stay green due to high sand-hill rainfall absorption, Omaha sub-pumping drops local water pressure limits.",
+            actionable: "System Stress: Buffered by high historical storage depth in the Northern High Plains basin."
         },
-        "Dallas Suburb Node (TX)": {
-            consumption: "2.1 Billion Gallons/Year",
-            energySource: "ERCOT Grids / Mixed Thermal Plants",
-            consequence: "Triggers massive water table depression cones. Accelerates total exhaustion in Plainview and Lubbock municipal well zones.",
-            actionable: "Ensuing Result: Farmers must drill 200 feet deeper, running into un-potable brackish water pools."
+        "Dallas Compute Grid": {
+            consumption: "2.40 Billion Gallons/Year",
+            energySource: "ERCOT Thermal Generation mix",
+            consequence: "Triggers deep cones of depression drawing straight from underneath the Texas panhandle. Forces Lubbock and Guymon community wells to turn critical empty.",
+            actionable: "Ensuing Result: Heavy regional drilling restrictions enforced across agricultural boundaries."
         },
-        "Cheyenne Link (WY)": {
-            consumption: "1.8 Billion Gallons/Year",
-            energySource: "Sub-bituminous Coal Generation",
-            consequence: "Displaces surface water reserves needed for livestock ranching systems across the Western rim.",
-            actionable: "Ensuing Result: Wyoming triggers strict municipal rationing laws for human community grids."
-        },
-        "Platte River Node (NE)": {
-            consumption: "3.5 Billion Gallons/Year",
-            energySource: "Advanced Hyperscale Nuclear/Gas Mix",
-            consequence: "By 2050, the massive volume demands completely overwhelm the remaining local water saturation thickness.",
-            actionable: "Ensuing Result: Extreme emergency infrastructure shutdown; computational centers run out of cooling capacity."
-        }
-    };
-
-    let globalYearState = 2026;
-
-    // FIXED: Sidebar rendering function
-    window.showImpactDetails = function(nodeName) {
-        const data = impactDatabase[nodeName];
-        if (!data) return;
-
-        const panel = document.getElementById('impact-panel');
-        panel.innerHTML = `
-            <div class="panel-title">${nodeName}</div>
-            <div class="impact-stat">
-                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Water Footprint</small>
-                <div style="font-size: 15px; font-weight: bold; color: #f59e0b;">${data.consumption}</div>
+        "Cheyenne Expansion Node": {
+            consumption: "1.90 Billion Gallons/Year",
+            energySource: "Thermoelectric Steam Turbine Plants",
