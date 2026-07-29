@@ -39,7 +39,6 @@
             top: 25px; left: 50%; transform: translateX(-50%);
         }
         
-        /* State boundaries sitting securely as an interface layer */
         .state-outline {
             position: absolute; border: 2px solid #3f3f46;
             background-color: rgba(255,255,255,0.01);
@@ -58,7 +57,6 @@
         #OK { top: 315px; left: 160px; width: 240px; height: 50px; border-left: none; border-top: none; }
         #TX { top: 375px; left: 120px; width: 200px; height: 150px; border-top: none; }
 
-        /* Transparent layered water reservoirs sitting safely underneath borders */
         .aquifer-basin-formation {
             position: absolute;
             pointer-events: none; 
@@ -70,44 +68,15 @@
         #central-basin { top: 185px; left: 145px; width: 180px; height: 120px; border-radius: 30% 40% 40% 30%; }
         #south-basin { top: 305px; left: 135px; width: 150px; height: 150px; border-radius: 40% 30% 30% 50%; }
 
-        /* FIXED: Clickable timeline navigation tab buttons */
         .controls { margin-top: 25px; display: flex; gap: 15px; justify-content: center; }
-        .time-btn {
+        
+        .time-link {
             background-color: #1e1e24; color: #a1a1aa; border: 1px solid #3f3f46;
             padding: 12px 24px; font-weight: bold; font-size: 14px; border-radius: 6px;
-            cursor: pointer; transition: all 0.2s ease;
+            text-decoration: none; display: inline-block; transition: all 0.2s ease;
         }
-        .time-btn:hover { background-color: #27272a; color: #ffffff; }
+        .time-link:hover { background-color: #27272a; color: #ffffff; }
         .active-btn { background-color: #3b82f6 !important; color: #ffffff !important; border-color: #3b82f6 !important; }
-        
-        .dc-node {
-            width: 14px; height: 14px; background-color: #ef4444;
-            border: 2px solid white; border-radius: 50%; position: absolute;
-            z-index: 30; animation: pulse 1.8s infinite ease-in-out; cursor: pointer;
-        }
-        .node-label {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            background: #111116; border: 1px solid #ef4444; padding: 2px 8px; 
-            border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold;
-        }
-        
-        .community-dot {
-            width: 8px; height: 8px; border-radius: 50%; position: absolute;
-            z-index: 25; border: 1px solid #111116;
-            box-shadow: 0 0 6px rgba(255,255,255,0.3);
-        }
-        .community-text {
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            color: #ffffff; font-size: 9px; font-weight: bold; white-space: nowrap;
-            background: rgba(15,16,21,0.85); padding: 2px 5px; border-radius: 3px;
-            border: 1px solid #3f3f46; pointer-events: none;
-        }
-
-        @keyframes pulse {
-            0 { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
     </style>
 </head>
 <body>
@@ -121,7 +90,6 @@
     <div id="wrapper">
         <div id="map-canvas">
             <div class="map-grid">
-                <!-- Native State Vector Borders overlaying perfectly over the water pools -->
                 <div class="state-outline" id="SD">SOUTH DAKOTA</div>
                 <div class="state-outline" id="WY">WYOMING</div>
                 <div class="state-outline" id="NE">NEBRASKA</div>
@@ -131,7 +99,7 @@
                 <div class="state-outline" id="OK">OKLAHOMA</div>
                 <div class="state-outline" id="TX">TEXAS</div>
 
-                <!-- See-Through Water Basins -->
+                <!-- 1950 Maximum Aquifer Levels -->
                 <div class="aquifer-basin-formation" id="north-basin"></div>
                 <div class="aquifer-basin-formation" id="central-basin"></div>
                 <div class="aquifer-basin-formation" id="south-basin"></div>
@@ -143,45 +111,19 @@
         <div id="impact-panel">
             <div id="panel-content">
                 <div class="panel-title" style="color: #3b82f6; border-bottom-color: #3b82f6;">Hydrological Readout</div>
-                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any pulsing red <b>AI Data Center Node</b> located inside the state lines to measure direct municipal stress consequences.</p>
+                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any navigation tab block down below to isolate specific chronological environmental drawdown footprints.</p>
             </div>
         </div>
     </div>
 
-    <!-- FIXED: Replaced hidden slider component with explicit, interactive tab navigation buttons -->
+    <!-- FIXED: Permanent hyperlinked routing layout referencing your active high-density files -->
     <div class="controls">
-        <button class="time-btn active-btn" id="btn-1" onclick="runStateSwitch(1)">1950 Era</button>
-        <button class="time-btn" id="btn-2" onclick="runStateSwitch(2)">1980 Era</button>
-        <button class="time-btn" id="btn-3" onclick="runStateSwitch(3)">2026 Present</button>
-        <button class="time-btn" id="btn-4" onclick="runStateSwitch(4)">2050 Project</button>
+        <a href="timeline.html" class="time-link active-btn">1950 Era</a>
+        <a href="timeline-1980.html" class="time-link">1980 Era</a>
+        <a href="present.html" class="time-link">2026 Present</a>
+        <a href="timeline-2050.html" class="time-link">2050 Project</a>
     </div>
 </div>
 
-<script>
-    const impactDatabase = {
-        "Omaha Compute Core": {
-            consumption: "1.25 Billion Gallons/Year", energySource: "SPP Power Grid / Coal Heavy",
-            consequence: "Draws heavily from local municipal reserves. While Alliance water metrics stay green due to high sand-hill rainfall absorption, Omaha sub-pumping drops local water pressure limits.",
-            actionable: "System Stress: Buffered by high historical storage depth in the Northern High Plains basin."
-        },
-        "Dallas Compute Grid": {
-            consumption: "2.40 Billion Gallons/Year", energySource: "ERCOT Thermal Generation mix",
-            consequence: "Triggers deep cones of depression drawing straight from underneath the Texas panhandle. Forces Lubbock and Guymon community wells to turn critical empty.",
-            actionable: "Ensuing Result: Heavy regional drilling restrictions enforced across agricultural boundaries."
-        }
-    };
-
-    window.showImpactDetails = function(nodeName) {
-        const data = impactDatabase[nodeName];
-        if (!data) return;
-        document.getElementById('impact-panel').innerHTML = `
-            <div class="panel-title">${nodeName}</div>
-            <div class="impact-stat">
-                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
-                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">${data.consumption}</div>
-            </div>
-            <div class="impact-stat" style="border-left-color: #a855f7;">
-                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
-                <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
-            </div>
-            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+</body>
+</html>
