@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ogallala Aquifer Detailed Impact Dashboard - 2026</title>
+    
+    <style>
+        body { margin: 0; padding: 20px; background-color: #0f1015; color: #ffffff; font-family: system-ui, sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
+        h2 { color: #3b82f6; margin: 0; font-size: 1.8rem; }
+        p { color: #a1a1aa; min-height: 40px; line-height: 1.5; font-size: 14px; }
+        #wrapper { display: flex; gap: 20px; }
+        #map-canvas { height: 580px; flex: 1; border-radius: 12px; background: #141419; position: relative; overflow: hidden; border: 1px solid #27272a; }
+        #impact-panel { width: 340px; height: 580px; background: #111116; border: 1px solid #27272a; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+        .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
+        .impact-stat { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 4px solid #ef4444; }
+        .map-grid { position: absolute; width: 550px; height: 530px; top: 25px; left: 50%; transform: translateX(-50%); }
+        .state-outline { position: absolute; border: 2px solid #3f3f46; background-color: rgba(255,255,255,0.01); color: #52525b; font-size: 9px; font-weight: bold; padding: 5px; border-radius: 2px; box-sizing: border-box; display: flex; z-index: 5; }
+        #SD { top: 0px; left: 160px; width: 220px; height: 80px; }
+        #WY { top: 90px; left: 0px; width: 150px; height: 100px; }
+        #NE { top: 90px; left: 160px; width: 240px; height: 100px; border-left: none; }
+        #CO { top: 200px; left: 10px; width: 140px; height: 105px; }
+        #KS { top: 200px; left: 160px; width: 240px; height: 105px; border-left: none; border-top: none; }
+        #NM { top: 315px; left: 10px; width: 140px; height: 120px; }
+        #OK { top: 315px; left: 160px; width: 240px; height: 50px; border-left: none; border-top: none; }
+        #TX { top: 375px; left: 120px; width: 200px; height: 150px; border-top: none; }
+        .aquifer-basin-formation { position: absolute; pointer-events: none; z-index: 3; border: 2px solid rgba(59, 130, 246, 0.6); }
+        #north-basin { top: 50px; left: 165px; width: 175px; height: 115px; border-radius: 40% 50% 40% 40%; background-color: rgba(59, 130, 246, 0.4); border-color: #3b82f6; }
+        #central-basin { top: 185px; left: 145px; width: 135px; height: 90px; border-radius: 30% 40% 40% 30%; background-color: rgba(245, 158, 11, 0.4); border-color: #f59e0b; }
+        #south-basin { top: 305px; left: 135px; width: 90px; height: 90px; border-radius: 40% 30% 30% 50%; background-color: rgba(239, 68, 68, 0.35); border-color: #ef4444; }
+        .controls { margin-top: 25px; display: flex; gap: 15px; justify-content: center; }
+        .time-link { background-color: #1e1e24; color: #a1a1aa; border: 1px solid #3f3f46; padding: 12px 24px; font-weight: bold; font-size: 14px; border-radius: 6px; text-decoration: none; display: inline-block; }
+        .active-btn { background-color: #3b82f6 !important; color: #ffffff !important; border-color: #3b82f6 !important; }
+        .community-dot { width: 8px; height: 8px; border-radius: 50%; position: absolute; z-index: 25; border: 1px solid #111116; box-shadow: 0 0 6px rgba(255,255,255,0.3); }
+        .community-text { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); color: #ffffff; font-size: 9px; font-weight: bold; white-space: nowrap; background: rgba(15,16,21,0.85); padding: 2px 5px; border-radius: 3px; border: 1px solid #3f3f46; }
+        .dc-node { width: 14px; height: 14px; background-color: #ef4444; border: 2px solid white; border-radius: 50%; position: absolute; z-index: 30; animation: pulse 1.8s infinite ease-in-out; cursor: pointer; }
+        .node-label { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: #111116; border: 1px solid #ef4444; padding: 2px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>Geographical Timeline Workspace: Year 2026 (Present Day)</h2>
+        <p>2026 Present Day: Hyperscale machine learning clusters scale up. Texas well fields enter critical drawdown thresholds adjacent to compute grids.</p>
+    </header>
+    <div id="wrapper">
+        <div id="map-canvas">
+            <div class="map-grid">
+                <div class="state-outline" id="SD">SOUTH DAKOTA</div>
+                <div class="state-outline" id="WY">WYOMING</div>
+                <div class="state-outline" id="NE">NEBRASKA</div>
+                <div class="state-outline" id="CO">COLORADO</div>
+                <div class="state-outline" id="KS">KANSAS</div>
+                <div class="state-outline" id="NM">NEW MEXICO</div>
+                <div class="state-outline" id="OK">OKLAHOMA</div>
+                <div class="state-outline" id="TX">TEXAS</div>
+                <div class="aquifer-basin-formation" id="north-basin"></div>
+                <div class="aquifer-basin-formation" id="central-basin"></div>
+                <div class="aquifer-basin-formation" id="south-basin"></div>
+                <div id="elements-overlay">
+                    <!-- FIXED: Both local communities and active AI nodes are baked on screen simultaneously -->
+                    <div class="community-dot" style="top:115px; left:180px; background-color:#22c55e;"><div class="community-text">Alliance, NE</div></div>
+                    <div class="community-dot" style="top:225px; left:230px; background-color:#f59e0b;"><div class="community-text">Hoxie, KS</div></div>
+                    <div class="community-dot" style="top:445px; left:165px; background-color:#ef4444;"><div class="community-text">Lubbock, TX</div></div>
+                    
+                    <div class="dc-node" style="top:135px; left:350px;" onclick="showOmaha()"><div class="node-label">Omaha Compute Core</div></div>
+                    <div class="dc-node" style="top:460px; left:220px;" onclick="showDallas()"><div class="node-label">Dallas Compute Grid</div></div>
+                </div>
+            </div>
+        </div>
+        <div id="impact-panel" id="panel-box">
+            <div id="panel-content">
+                <div class="panel-title" style="color: #3b82f6;">Hydrological Readout</div>
+                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any pulsing red <b>AI Data Center Hub</b> on the grid to isolate its hyper-local footprint.</p>
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <a href="timeline.html" class="time-link">1950 Era</a>
+        <a href="timeline-1980.html" class="time-link">1980 Era</a>
+        <a href="timeline-2026.html" class="time-link active-btn">2026 Present</a>
+        <a href="timeline-2050.html" class="time-link">2050 Project</a>
+    </div>
+</div>
+
+<script>
+    function showOmaha() {
+        document.getElementById('panel-box').innerHTML = `
+            <div class="panel-title">Omaha Compute Core</div>
+            <div class="impact-stat">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
+                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">1.25 Billion Gallons/Year</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+                <strong>Ensuing Local Result:</strong><br>Draws heavily from local municipal reserves. While Alliance water metrics stay green due to high sand-hill rainfall absorption, Omaha sub-pumping drops local water pressure limits.
+            </div>
+        `;
+    }
+    function showDallas() {
+        document.getElementById('panel-box').innerHTML = `
+            <div class="panel-title">Dallas Compute Grid</div>
+            <div class="impact-stat">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
+                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">2.40 Billion Gallons/Year</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+                <strong>Ensuing Local Result:</strong><br>Triggers deep cones of depression drawing straight from underneath the Texas panhandle. Forces Lubbock community wells to turn critical empty.
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
