@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ogallala Aquifer Timeline Map</title>
     
-    <!-- EMBEDDED LEAFLET STYLING (No external download needed) -->
     <style>
-        /* Core Leaflet Layout Styles */
-        .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}.leaflet-container{overflow:hidden;-webkit-tap-highlight-color:transparent}.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-user-drag:none}.leaflet-safari .leaflet-tile{image-rendering:optimizeSpeed}.leaflet-safari .leaflet-tile-container{width:1600px;height:1600px;-webkit-transform-origin:0 0}.leaflet-marker-icon,.leaflet-marker-shadow{display:block}.leaflet-container .leaflet-overlay-pane svg{max-width:none!important;max-height:none!important}.leaflet-pane{z-index:400}.leaflet-tile-pane{z-index:200}.leaflet-overlay-pane{z-index:400}.leaflet-shadow-pane{z-index:500}.leaflet-marker-pane{z-index:600}.leaflet-tooltip-pane{z-index:650}.leaflet-popup-pane{z-index:700}.leaflet-map-pane svg{z-index:1}.leaflet-tile{filter:inherit;visibility:hidden}.leaflet-tile-loaded{visibility:inherit}.leaflet-zoom-box{width:0;height:0;-moz-box-sizing:border-box;box-sizing:border-box;z-index:800}.leaflet-overlay-pane svg{position:absolute;pointer-events:none}.leaflet-popup{position:absolute;text-align:center;margin-bottom:20px}.leaflet-popup-content-wrapper{padding:1px;text-align:left;border-radius:12px}.leaflet-popup-content{margin:13px 19px;line-height:1.4}.leaflet-popup-tip-container{width:40px;height:20px;position:absolute;left:50%;margin-left:-20px;overflow:hidden;pointer-events:none}.leaflet-popup-tip{width:17px;height:17px;padding:1px;margin:-10px auto 0;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:white;color:#333;box-shadow:0 3px 14px rgba(0,0,0,0.4)}
-        
-        /* Your Custom Website Page Styling */
         body {
             margin: 0; padding: 20px;
             font-family: system-ui, -apple-system, sans-serif;
@@ -22,16 +17,19 @@
         p { color: #cccccc; min-height: 48px; line-height: 1.5; }
         #map { height: 500px; width: 100%; border-radius: 8px; background: #222; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #333;}
         .controls { margin-top: 25px; }
+        
+        /* Smooth slider aesthetics */
         input[type="range"] { width: 100%; cursor: pointer; }
+        
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #888; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
-        /* Inline Simulation Layout Shapes */
         #simulated-aquifer {
-            width: 70%; height: 70%;
-            background-color: #3182bd;
+            width: 85%; height: 85%;
+            background-color: #2b6cb0;
             border-radius: 12px;
-            transition: all 0.5s ease;
+            /* Ultra-smooth transition for year-by-year shifting */
+            transition: width 0.1s linear, height 0.1s linear, background-color 0.1s linear, opacity 0.1s linear;
             position: relative;
             display: flex;
             align-items: center;
@@ -44,12 +42,13 @@
             border-radius: 50%;
             position: absolute;
             box-shadow: 0 0 10px #ef4444;
-            animation: pulse 2s infinite;
+            animation: pulse 1.8s infinite ease-in-out;
+            transition: opacity 0.2s ease;
         }
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px #ef4444; }
-            100% { transform: scale(1); opacity: 0.9; }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
         .node-label {
             position: absolute; top: -20px; background: rgba(0,0,0,0.8);
@@ -65,7 +64,6 @@
         <p id="desc-display">Present Day. Data centers overlap with heavily depleted water tables.</p>
     </header>
 
-    <!-- The Visual Simulator Container -->
     <div id="map">
         <div id="simulated-aquifer">
             <span id="aquifer-status-label" style="font-weight: bold; font-size: 1.2rem; pointer-events: none; text-shadow: 1px 1px 4px rgba(0,0,0,0.6)">Ogallala Aquifer Grid</span>
@@ -74,84 +72,80 @@
     </div>
 
     <div class="controls">
-        <input type="range" id="timeline" min="0" max="4" step="1" value="2">
+        <!-- FIXED: Min and Max changed to represent every actual numerical year directly -->
+        <input type="range" id="timeline" min="1950" max="2050" step="1" value="2026">
         <div class="labels">
-            <span>1950</span>
-            <span>1980</span>
-            <span id="label-2" class="active-label">2026 (Present)</span>
-            <span>2035 Proj</span>
-            <span>2050 Proj</span>
+            <span id="lbl-1950">1950</span>
+            <span id="lbl-1980">1980</span>
+            <span id="lbl-2026" class="active-label">2026</span>
+            <span id="lbl-2035">2035 Proj</span>
+            <span id="lbl-2050">2050 Proj</span>
         </div>
     </div>
 </div>
 
 <script>
-    // Self-contained visual rendering system (No outside library dependencies required)
-    const timelineSteps = [
-        { 
-            year: "1950", 
-            desc: "Pre-development aquifer levels. High saturated thickness across the High Plains grid.", 
-            opacity: 0.95, size: "85%", color: "#2b6cb0", label: "Healthy Aquifer (95% Volume)",
-            centers: [] 
-        },
-        { 
-            year: "1980", 
-            desc: "Agricultural boom. Heavy center-pivot irrigation lines begin drawdown cycles.", 
-            opacity: 0.75, size: "70%", color: "#3182bd", label: "Sustained Drawdown (75% Volume)",
-            centers: [] 
-        },
-        { 
-            year: "2026", 
-            desc: "Present Day. Early clusters of machine learning nodes expand operations over depleted water tables.", 
-            opacity: 0.50, size: "55%", color: "#4992c2", label: "Stressed Grid (55% Volume)",
-            centers: [
-                { name: "Omaha Hub", top: "25%", left: "75%" },
-                { name: "Dallas Node", top: "75%", left: "65%" }
-            ] 
-        },
-        { 
-            year: "2035", 
-            desc: "Projected. Extended drought patterns push computational corridors to expand deep-well structural access.", 
-            opacity: 0.30, size: "40%", color: "#d97706", label: "Critical Depletion (30% Volume)",
-            centers: [
-                { name: "Omaha Hub", top: "25%", left: "75%" },
-                { name: "Dallas Node", top: "75%", left: "65%" },
-                { name: "Cheyenne Expansion", top: "30%", left: "20%" }
-            ] 
-        },
-        { 
-            year: "2050", 
-            desc: "Projected. Critical saturation threshold failures intersect heavily with scaling compute grid infrastructure.", 
-            opacity: 0.12, size: "25%", color: "#dc2626", label: "Grid Failure Threat (12% Volume)",
-            centers: [
-                { name: "Omaha Hub", top: "25%", left: "75%" },
-                { name: "Dallas Node", top: "75%", left: "65%" },
-                { name: "Cheyenne Expansion", top: "30%", left: "20%" },
-                { name: "Platte River Node", top: "45%", left: "50%" }
-            ] 
-        }
-    ];
-
-    function updateTimeline(index) {
-        const step = timelineSteps[index];
+    // Smooth Mathematical Engine maps a year directly to visual styles
+    function updateTimeline(year) {
+        document.getElementById('year-display').innerText = year;
         
-        // Update header texts
-        document.getElementById('year-display').innerText = step.year;
-        document.getElementById('desc-display').innerText = step.desc;
+        let size, opacity, color, labelText, descText;
+        let centers = [];
 
-        // Animate and alter the Aquifer visual layout boundaries
+        // 1. Math equations to calculate smooth changes between eras
+        if (year <= 1980) {
+            // Era 1: 1950 to 1980 (Agriculture Begins)
+            let pct = (year - 1950) / (1980 - 1950);
+            size = 85 - (pct * 15); // shrinks from 85% to 70%
+            opacity = 0.95 - (pct * 0.20); // drops from 0.95 to 0.75
+            color = "#2b6cb0"; // stays solid blue
+            labelText = `Aquifer Volume: ${Math.round(95 - (pct * 20))}%`;
+            descText = "Post-WWII agricultural expansion brings heavy groundwater pumping layouts to the Plains.";
+        } 
+        else if (year <= 2026) {
+            // Era 2: 1980 to 2026 (Modern Depletion)
+            let pct = (year - 1980) / (2026 - 1980);
+            size = 70 - (pct * 15); // shrinks from 70% to 55%
+            opacity = 0.75 - (pct * 0.25); // drops from 0.75 to 0.50
+            color = "#3182bd"; 
+            labelText = `Aquifer Volume: ${Math.round(75 - (pct * 20))}%`;
+            descText = "Present Day overview. Industrial demand cycles create critical regional drawdown cones.";
+            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }];
+        } 
+        else if (year <= 2035) {
+            // Era 3: 2026 to 2035 (Early Tech Acceleration)
+            let pct = (year - 2026) / (2035 - 2026);
+            size = 55 - (pct * 15); // shrinks from 55% to 40%
+            opacity = 0.50 - (pct * 0.20); // drops from 0.50 to 0.30
+            color = "#d97706"; // turns Warning Amber
+            labelText = `Critical Depletion: ${Math.round(55 - (pct * 25))}%`;
+            descText = "Projected climate shifts force artificial intelligence footprints to compete directly for deep-well security.";
+            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }, { name: "Cheyenne Expansion", top: "30%", left: "20%" }];
+        } 
+        else {
+            // Era 4: 2035 to 2050 (The Threatened Grid)
+            let pct = (year - 2035) / (2050 - 2035);
+            size = 40 - (pct * 15); // shrinks from 40% to 25%
+            opacity = 0.30 - (pct * 0.18); // drops from 0.30 to 0.12
+            color = "#dc2626"; // turns Severe Danger Red
+            labelText = `Grid Failure Threat: ${Math.round(30 - (pct * 18))}%`;
+            descText = "Projected 2050 saturation threshold failure. Computational corridors intersect heavily with depleted water grids.";
+            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }, { name: "Cheyenne Expansion", top: "30%", left: "20%" }, { name: "Platte River Node", top: "45%", left: "50%" }];
+        }
+
+        // 2. Apply calculated values instantly to page elements
         const aquifer = document.getElementById('simulated-aquifer');
-        aquifer.style.width = step.size;
-        aquifer.style.height = step.size;
-        aquifer.style.backgroundColor = step.color;
-        aquifer.style.opacity = step.opacity;
-        document.getElementById('aquifer-status-label').innerText = step.label;
+        aquifer.style.width = size + "%";
+        aquifer.style.height = size + "%";
+        aquifer.style.backgroundColor = color;
+        aquifer.style.opacity = opacity;
+        document.getElementById('aquifer-status-label').innerText = labelText;
+        document.getElementById('desc-display').innerText = descText;
 
-        // Clear and rebuild the Data Center visual dots
+        // 3. Render markers cleanly
         const container = document.getElementById('nodes-container');
         container.innerHTML = "";
-        
-        step.centers.forEach(c => {
+        centers.forEach(c => {
             const node = document.createElement('div');
             node.className = 'dc-node';
             node.style.top = c.top;
@@ -160,17 +154,19 @@
             container.appendChild(node);
         });
 
-        // Toggle label styling
-        document.getElementById('label-2').className = (index == 2) ? 'active-label' : '';
+        // 4. Update timeline typography highlight states
+        ["1950", "1980", "2026", "2035", "2050"].forEach(lblYear => {
+            document.getElementById(`lbl-${lblYear}`).className = (year == lblYear) ? 'active-label' : '';
+        });
     }
 
-    // Attach input timeline listener
+    // Attach tracking listener to look at raw number changes
     document.getElementById('timeline').addEventListener('input', (e) => {
         updateTimeline(parseInt(e.target.value));
     });
 
-    // Initialize map display
-    updateTimeline(2);
+    // Run baseline for 2026 setup
+    updateTimeline(2026);
 </script>
 
 </body>
