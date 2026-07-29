@@ -28,15 +28,14 @@
             top: 25px; left: 50%; transform: translateX(-50%);
         }
         
-        /* FIXED: Added z-index: 15 and pointer-events: none to make them see-through overlays */
+        /* State boundaries sitting securely as an interface layer */
         .state {
             position: absolute; border: 1px dashed #555562;
             background-color: rgba(255,255,255,0.01);
             color: #71717a; font-size: 11px; font-weight: bold;
             padding: 4px; border-radius: 4px;
             display: flex; align-items: flex-start; justify-content: flex-start;
-            z-index: 15; 
-            pointer-events: none; 
+            z-index: 15; pointer-events: none; 
         }
         
         #SD { top: 0px; left: 140px; width: 200px; height: 80px; }
@@ -48,31 +47,24 @@
         #OK { top: 295px; left: 140px; width: 220px; height: 45px; }
         #TX { top: 350px; left: 105px; width: 180px; height: 140px; }
 
-        /* FIXED: Set z-index to 10 so it sits behind the state outlines */
-        #simulated-aquifer {
-            position: absolute;
-            top: 40px; left: 120px; 
-            width: 210px; height: 380px;
-            background-color: #3b82f6;
-            border-radius: 40% 50% 30% 60% / 50% 40% 60% 30%; 
-            transition: all 0.1s linear;
+        /* The background water pockets */
+        .aquifer-zone {
+            position: absolute; transition: all 0.1s linear;
             display: flex; align-items: center; justify-content: center;
-            z-index: 10; 
-            pointer-events: none;
+            z-index: 10; pointer-events: none;
+            font-size: 9px; font-weight: bold; color: rgba(255,255,255,0.25);
+            text-align: center;
         }
-        
-        #aquifer-status-label {
-            font-weight: bold; font-size: 11px; color: #fff; text-align: center;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.8); padding: 5px;
-            z-index: 11;
-        }
+        #zone-north { top: 50px; left: 145px; width: 180px; height: 120px; border-radius: 40% 50% 40% 40%; }
+        #zone-central { top: 175px; left: 125px; width: 160px; height: 110px; border-radius: 30% 40% 40% 30%; }
+        #zone-south { top: 290px; left: 115px; width: 130px; height: 140px; border-radius: 40% 30% 30% 50%; }
 
         .controls { margin-top: 25px; }
         input[type="range"] { width: 100%; cursor: pointer; }
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #888; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
-        /* Data center dots remain on the absolute top layer */
+        /* AI Center Nodes remaining as primary indicators */
         .dc-node {
             width: 12px; height: 12px; background-color: #ef4444;
             border: 2px solid white; border-radius: 50%; position: absolute;
@@ -80,9 +72,20 @@
         }
         .node-label {
             position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.85); border: 1px solid #444;
+            background: rgba(0,0,0,0.85); border: 1px solid #ef4444;
             padding: 1px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; color: #fff;
         }
+        
+        /* FIXED: Community Well Node styles */
+        .well-node {
+            width: 8px; height: 8px; border-radius: 50%; position: absolute;
+            z-index: 20; transition: background-color 0.2s linear; border: 1px solid #111;
+        }
+        .well-label {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            color: #a1a1aa; font-size: 9px; font-weight: 500; pointer-events: none; white-space: nowrap;
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
             70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
@@ -101,7 +104,7 @@
     <div id="map">
         <div class="map-grid">
             
-            <!-- These outlines will now overlay ON TOP of the water pocket -->
+            <!-- Structural Basemap States -->
             <div class="state" id="SD">SOUTH DAKOTA</div>
             <div class="state" id="WY">WYOMING</div>
             <div class="state" id="NE">NEBRASKA</div>
@@ -111,12 +114,13 @@
             <div class="state" id="OK">OKLAHOMA</div>
             <div class="state" id="TX">TEXAS</div>
 
-            <!-- The Aquifer sits safely underneath the state lines now -->
-            <div id="simulated-aquifer">
-                <span id="aquifer-status-label">Ogallala Aquifer</span>
-            </div>
+            <!-- Regional Basins -->
+            <div class="aquifer-zone" id="zone-north">North</div>
+            <div class="aquifer-zone" id="zone-central">Central</div>
+            <div class="aquifer-zone" id="zone-south">South</div>
             
-            <div id="nodes-container"></div>
+            <!-- FIXED: Combined layer container for local community wells and data centers -->
+            <div id="infrastructure-container"></div>
             
         </div>
     </div>
@@ -134,95 +138,73 @@
 </div>
 
 <script>
+    // FIXED: Dictionary mapping specific critical local aquifer communities to their geographic coordinates
+    const localCommunities = [
+        { name: "Alliance (NE)", top: "110px", left: "160px", basin: "north" },
+        { name: "Hoxie (KS)", top: "215px", left: "190px", basin: "central" },
+        { name: "Goodland (KS)", top: "210px", left: "150px", basin: "central" },
+        { name: "Guymon (OK)", top: "310px", left: "150px", basin: "south" },
+        { name: "Plainview (TX)", top: "380px", left: "140px", basin: "south" },
+        { name: "Lubbock (TX)", top: "410px", left: "150px", basin: "south" }
+    ];
+
     function updateTimeline(year) {
         document.getElementById('year-display').innerText = year;
         
-        let width, height, opacity, color, labelText, descText;
-        let centers = [];
+        let north = {}, central = {}, south = {};
+        let descText = "";
+        let dataCenters = [];
 
-        // FIXED: Lightened up maximum opacity parameters to ensure grid lines show through beautifully
+        // Track safety status colors for localized community networks
+        let northStatusColor = "#22c55e"; // green
+        let centralStatusColor = "#22c55e"; 
+        let southStatusColor = "#22c55e";
+
         if (year <= 1980) {
             let pct = (year - 1950) / (1980 - 1950);
-            width = 210 - (pct * 20);      
-            height = 380 - (pct * 30);     
-            opacity = 0.85 - (pct * 0.15); // Lightened starting point to 85% opacity
-            color = "#3b82f6";             // Vibrant, see-through Sky Blue
-            labelText = `Aquifer Status: Healthy<br>Volume: ${Math.round(95 - (pct * 20))}%`;
-            descText = "Post-WWII agriculture introduces deep-well turbine layouts across Nebraska and Kansas.";
+            descText = "Post-WWII agriculture triggers early deep-well turbine layouts. Local municipal networks remain structurally secure.";
+            north   = { w: 180, h: 120, o: 0.85, c: "#3b82f6" };
+            central = { w: 160, h: 110, o: 0.85, c: "#3b82f6" };
+            south   = { w: 130, h: 140, o: 0.85, c: "#3b82f6" };
+            
+            // 1950-1980: Southern sector feels early agricultural drawdowns, turning local wells yellow
+            if (year > 1965) southStatusColor = "#f59e0b"; // yellow
         } 
         else if (year <= 2026) {
             let pct = (year - 1980) / (2026 - 1980);
-            width = 190 - (pct * 30);      
-            height = 350 - (pct * 40);     
-            opacity = 0.70 - (pct * 0.25); 
-            color = "#60a5fa";             
-            labelText = `Aquifer Status: Stressed<br>Volume: ${Math.round(75 - (pct * 20))}%`;
-            descText = "Present Day. Massive irrigation drawdowns combined with early machine learning server footprints.";
-            centers = [
+            descText = "Present Day. Highly uneven safety metrics: Alliance (NE) well grids remain stable, while Texas Panhandle municipal wells turn critical red.";
+            dataCenters = [
                 { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
                 { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" }
             ];
+
+            north   = { w: 180 - pct*10, h: 120 - pct*5,  o: 0.75, c: "#3b82f6" };
+            central = { w: 140 - pct*20, h: 100 - pct*15, o: 0.60, c: "#f59e0b" };
+            south   = { w: 110 - pct*30, h: 115 - pct*35, o: 0.65, c: "#ea580c" };
+
+            northStatusColor = "#22c55e";   // Green (Stable)
+            centralStatusColor = "#f59e0b"; // Yellow (Active Restrictions)
+            southStatusColor = "#ef4444";   // Red (Severe Local Drawdown Emergency)
         } 
         else if (year <= 2035) {
             let pct = (year - 2026) / (2035 - 2026);
-            width = 160 - (pct * 40);      
-            height = 310 - (pct * 60);     
-            opacity = 0.45 - (pct * 0.15); 
-            color = "#f59e0b";             // Warning Amber
-            labelText = `Critical Depletion!<br>Volume: ${Math.round(55 - (pct * 25))}%`;
-            descText = "Projected 2035. Extended droughts push tech grids to claim high-capacity deep infrastructure links.";
-            centers = [
+            descText = "Projected 2035. Machine learning infrastructure clusters multiply. Central Kansas well clusters slip from warning yellow to severe red.";
+            dataCenters = [
                 { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
                 { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" },
                 { name: "Cheyenne Link (WY)", top: "130px", left: "40px" }
             ];
+
+            north   = { w: 170 - pct*15, h: 115 - pct*10, o: 0.65, c: "#f59e0b" };
+            central = { w: 120 - pct*25, h: 85 - pct*20,  o: 0.45, c: "#ef4444" };
+            south   = { w: 80 - pct*20,  h: 80 - pct*25,  o: 0.40, c: "#991b1b" };
+
+            northStatusColor = "#f59e0b";   // Yellow
+            centralStatusColor = "#ef4444"; // Red
+            southStatusColor = "#ef4444";   // Red
         } 
         else {
             let pct = (year - 2035) / (2050 - 2035);
-            width = 120 - (pct * 40);      
-            height = 250 - (pct * 80);     
-            opacity = 0.30 - (pct * 0.15); 
-            color = "#ef4444";             // Threat Level Red
-            labelText = `Grid Threat Alert!<br>Volume: ${Math.round(30 - (pct * 18))}%`;
-            descText = "Projected 2050. Severe saturation baseline failures hit critical tech development corridors.";
-            centers = [
+            descText = "Projected 2050. Only Northern sectors sustain viable yields. Central and Southern community well fields face complete structural depletion.";
+            dataCenters = [
                 { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
-                { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" },
-                { name: "Cheyenne Link (WY)", top: "130px", left: "40px" },
-                { name: "Platte River Node (NE)", top: "150px", left: "230px" }
-            ];
-        }
-
-        const aquifer = document.getElementById('simulated-aquifer');
-        aquifer.style.width = width + "px";
-        aquifer.style.height = height + "px";
-        aquifer.style.backgroundColor = color;
-        aquifer.style.opacity = opacity;
-        document.getElementById('aquifer-status-label').innerHTML = labelText;
-        document.getElementById('desc-display').innerText = descText;
-
-        const container = document.getElementById('nodes-container');
-        container.innerHTML = "";
-        centers.forEach(c => {
-            const node = document.createElement('div');
-            node.className = 'dc-node';
-            node.style.top = c.top;
-            node.style.left = c.left;
-            node.innerHTML = `<div class="node-label">${c.name}</div>`;
-            container.appendChild(node);
-        });
-
-        ["1950", "1980", "2026", "2035", "2050"].forEach(lblYear => {
-            document.getElementById(`lbl-${lblYear}`).className = (year == lblYear) ? 'active-label' : '';
-        });
-    }
-
-    document.getElementById('timeline').addEventListener('input', (e) => {
-        updateTimeline(parseInt(e.target.value));
-    });
-
-    updateTimeline(2026);
-</script>
-
-</body>
-</html>
