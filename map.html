@@ -15,44 +15,79 @@
         header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
         h2 { color: #3b82f6; margin: 0; font-size: 2rem; }
         p { color: #cccccc; min-height: 48px; line-height: 1.5; }
-        #map { height: 500px; width: 100%; border-radius: 8px; background: #222; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #333;}
+        
+        /* Map container setup */
+        #map { 
+            height: 550px; width: 100%; 
+            border-radius: 8px; background: #16161a; 
+            position: relative; overflow: hidden; 
+            border: 1px solid #333;
+        }
+        
+        /* The 8-State Geographic Map Wrapper */
+        .map-grid {
+            position: absolute; width: 500px; height: 500px;
+            top: 25px; left: 50%; transform: translateX(-50%);
+        }
+        
+        /* Stylized outlines for individual states */
+        .state {
+            position: absolute; border: 1px dashed #44444c;
+            background-color: rgba(255,255,255,0.02);
+            color: #55555e; font-size: 11px; font-weight: bold;
+            padding: 4px; border-radius: 4px;
+            display: flex; align-items: flex-start; justify-content: flex-start;
+        }
+        
+        /* Exact proportional layout coordinates for the High Plains Region */
+        #SD { top: 0px; left: 140px; width: 200px; height: 80px; }
+        #WY { top: 90px; left: 0px; width: 130px; height: 90px; }
+        #NE { top: 90px; left: 140px; width: 220px; height: 90px; }
+        #CO { top: 190px; left: 10px; width: 120px; height: 95px; }
+        #KS { top: 195px; left: 140px; width: 220px; height: 90px; }
+        #NM { top: 295px; left: 10px; width: 120px; height: 110px; }
+        #OK { top: 295px; left: 140px; width: 220px; height: 45px; }
+        #TX { top: 350px; left: 105px; width: 180px; height: 140px; }
+
+        /* The Aquifer Shape that sits on top of the states */
+        #simulated-aquifer {
+            position: absolute;
+            top: 40px; left: 120px; /* Centered perfectly over the heart of the 8 states */
+            width: 210px; height: 380px;
+            background-color: #2b6cb0;
+            border-radius: 40% 50% 30% 60% / 50% 40% 60% 30%; /* Curved to look like an organic underground water pocket */
+            transition: all 0.1s linear;
+            opacity: 0.95;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; pointer-events: none;
+        }
+        
+        #aquifer-status-label {
+            font-weight: bold; font-size: 11px; color: #fff; text-align: center;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8); padding: 5px;
+        }
+
+        /* Timeline controls */
         .controls { margin-top: 25px; }
-        
-        /* Smooth slider aesthetics */
         input[type="range"] { width: 100%; cursor: pointer; }
-        
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #888; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
-        #simulated-aquifer {
-            width: 85%; height: 85%;
-            background-color: #2b6cb0;
-            border-radius: 12px;
-            /* Ultra-smooth transition for year-by-year shifting */
-            transition: width 0.1s linear, height 0.1s linear, background-color 0.1s linear, opacity 0.1s linear;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* Active Data Center Dots */
         .dc-node {
-            width: 14px; height: 14px;
-            background-color: #ef4444;
-            border: 2px solid white;
-            border-radius: 50%;
-            position: absolute;
-            box-shadow: 0 0 10px #ef4444;
-            animation: pulse 1.8s infinite ease-in-out;
-            transition: opacity 0.2s ease;
+            width: 12px; height: 12px; background-color: #ef4444;
+            border: 2px solid white; border-radius: 50%; position: absolute;
+            z-index: 20; animation: pulse 1.8s infinite ease-in-out;
+        }
+        .node-label {
+            position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85); border: 1px solid #444;
+            padding: 1px 6px; border-radius: 4px; font-size: 10px; white-space: nowrap; color: #fff;
         }
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-        .node-label {
-            position: absolute; top: -20px; background: rgba(0,0,0,0.8);
-            padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap;
         }
     </style>
 </head>
@@ -65,14 +100,31 @@
     </header>
 
     <div id="map">
-        <div id="simulated-aquifer">
-            <span id="aquifer-status-label" style="font-weight: bold; font-size: 1.2rem; pointer-events: none; text-shadow: 1px 1px 4px rgba(0,0,0,0.6)">Ogallala Aquifer Grid</span>
+        <!-- The Geographic Layout Map Grid -->
+        <div class="map-grid">
+            
+            <!-- Background Map Layer: The 8 Affected States -->
+            <div class="state" id="SD">SOUTH DAKOTA</div>
+            <div class="state" id="WY">WYOMING</div>
+            <div class="state" id="NE">NEBRASKA</div>
+            <div class="state" id="CO">COLORADO</div>
+            <div class="state" id="KS">KANSAS</div>
+            <div class="state" id="NM">NEW MEXICO</div>
+            <div class="state" id="OK">OKLAHOMA</div>
+            <div class="state" id="TX">TEXAS</div>
+
+            <!-- Foreground Layer: The Underground Aquifer Pocket -->
+            <div id="simulated-aquifer">
+                <span id="aquifer-status-label">Ogallala Aquifer</span>
+            </div>
+            
+            <!-- Overlay Layer: AI Infrastructure Node Container -->
             <div id="nodes-container"></div>
+            
         </div>
     </div>
 
     <div class="controls">
-        <!-- FIXED: Min and Max changed to represent every actual numerical year directly -->
         <input type="range" id="timeline" min="1950" max="2050" step="1" value="2026">
         <div class="labels">
             <span id="lbl-1950">1950</span>
@@ -85,64 +137,76 @@
 </div>
 
 <script>
-    // Smooth Mathematical Engine maps a year directly to visual styles
     function updateTimeline(year) {
         document.getElementById('year-display').innerText = year;
         
-        let size, opacity, color, labelText, descText;
+        let width, height, opacity, color, labelText, descText;
         let centers = [];
 
-        // 1. Math equations to calculate smooth changes between eras
+        // Smooth color changing math across historical eras
         if (year <= 1980) {
-            // Era 1: 1950 to 1980 (Agriculture Begins)
             let pct = (year - 1950) / (1980 - 1950);
-            size = 85 - (pct * 15); // shrinks from 85% to 70%
-            opacity = 0.95 - (pct * 0.20); // drops from 0.95 to 0.75
-            color = "#2b6cb0"; // stays solid blue
-            labelText = `Aquifer Volume: ${Math.round(95 - (pct * 20))}%`;
-            descText = "Post-WWII agricultural expansion brings heavy groundwater pumping layouts to the Plains.";
+            width = 210 - (pct * 20);      // Smoothly narrows shape
+            height = 380 - (pct * 30);     // Smoothly shortens shape
+            opacity = 0.95 - (pct * 0.15); 
+            color = "#2b6cb0";             // Healthy Deep Blue
+            labelText = `Aquifer Status: Healthy<br>Volume: ${Math.round(95 - (pct * 20))}%`;
+            descText = "Post-WWII agriculture introduces deep-well turbine layouts across Nebraska and Kansas.";
         } 
         else if (year <= 2026) {
-            // Era 2: 1980 to 2026 (Modern Depletion)
             let pct = (year - 1980) / (2026 - 1980);
-            size = 70 - (pct * 15); // shrinks from 70% to 55%
-            opacity = 0.75 - (pct * 0.25); // drops from 0.75 to 0.50
-            color = "#3182bd"; 
-            labelText = `Aquifer Volume: ${Math.round(75 - (pct * 20))}%`;
-            descText = "Present Day overview. Industrial demand cycles create critical regional drawdown cones.";
-            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }];
+            width = 190 - (pct * 30);      
+            height = 350 - (pct * 40);     
+            opacity = 0.80 - (pct * 0.30); 
+            color = "#3182bd";             // Standard Blue
+            labelText = `Aquifer Status: Stressed<br>Volume: ${Math.round(75 - (pct * 20))}%`;
+            descText = "Present Day. Massive irrigation drawdowns combined with early machine learning server footprints.";
+            // Real placements matching state boundaries inside our map grid
+            centers = [
+                { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
+                { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" }
+            ];
         } 
         else if (year <= 2035) {
-            // Era 3: 2026 to 2035 (Early Tech Acceleration)
             let pct = (year - 2026) / (2035 - 2026);
-            size = 55 - (pct * 15); // shrinks from 55% to 40%
-            opacity = 0.50 - (pct * 0.20); // drops from 0.50 to 0.30
-            color = "#d97706"; // turns Warning Amber
-            labelText = `Critical Depletion: ${Math.round(55 - (pct * 25))}%`;
-            descText = "Projected climate shifts force artificial intelligence footprints to compete directly for deep-well security.";
-            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }, { name: "Cheyenne Expansion", top: "30%", left: "20%" }];
+            width = 160 - (pct * 40);      
+            height = 310 - (pct * 60);     
+            opacity = 0.50 - (pct * 0.20); 
+            color = "#d97706";             // Warning Amber
+            labelText = `Critical Depletion!<br>Volume: ${Math.round(55 - (pct * 25))}%`;
+            descText = "Projected 2035. Extended droughts push tech grids to claim high-capacity deep infrastructure links.";
+            centers = [
+                { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
+                { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" },
+                { name: "Cheyenne Link (WY)", top: "130px", left: "40px" }
+            ];
         } 
         else {
-            // Era 4: 2035 to 2050 (The Threatened Grid)
             let pct = (year - 2035) / (2050 - 2035);
-            size = 40 - (pct * 15); // shrinks from 40% to 25%
-            opacity = 0.30 - (pct * 0.18); // drops from 0.30 to 0.12
-            color = "#dc2626"; // turns Severe Danger Red
-            labelText = `Grid Failure Threat: ${Math.round(30 - (pct * 18))}%`;
-            descText = "Projected 2050 saturation threshold failure. Computational corridors intersect heavily with depleted water grids.";
-            centers = [{ name: "Omaha Hub", top: "25%", left: "75%" }, { name: "Dallas Node", top: "75%", left: "65%" }, { name: "Cheyenne Expansion", top: "30%", left: "20%" }, { name: "Platte River Node", top: "45%", left: "50%" }];
+            width = 120 - (pct * 40);      
+            height = 250 - (pct * 80);     
+            opacity = 0.30 - (pct * 0.18); 
+            color = "#dc2626";             // Threat Level Red
+            labelText = `Grid Threat Alert!<br>Volume: ${Math.round(30 - (pct * 18))}%`;
+            descText = "Projected 2050. Severe saturation baseline failures hit critical tech development corridors.";
+            centers = [
+                { name: "Omaha Hub (NE)", top: "120px", left: "320px" },
+                { name: "Dallas Suburb Node (TX)", top: "430px", left: "220px" },
+                { name: "Cheyenne Link (WY)", top: "130px", left: "40px" },
+                { name: "Platte River Node (NE)", top: "150px", left: "230px" }
+            ];
         }
 
-        // 2. Apply calculated values instantly to page elements
+        // Apply visual updates smoothly
         const aquifer = document.getElementById('simulated-aquifer');
-        aquifer.style.width = size + "%";
-        aquifer.style.height = size + "%";
+        aquifer.style.width = width + "px";
+        aquifer.style.height = height + "px";
         aquifer.style.backgroundColor = color;
         aquifer.style.opacity = opacity;
-        document.getElementById('aquifer-status-label').innerText = labelText;
+        document.getElementById('aquifer-status-label').innerHTML = labelText;
         document.getElementById('desc-display').innerText = descText;
 
-        // 3. Render markers cleanly
+        // Render flashing red data center dots at their exact state positions
         const container = document.getElementById('nodes-container');
         container.innerHTML = "";
         centers.forEach(c => {
@@ -154,20 +218,4 @@
             container.appendChild(node);
         });
 
-        // 4. Update timeline typography highlight states
-        ["1950", "1980", "2026", "2035", "2050"].forEach(lblYear => {
-            document.getElementById(`lbl-${lblYear}`).className = (year == lblYear) ? 'active-label' : '';
-        });
-    }
-
-    // Attach tracking listener to look at raw number changes
-    document.getElementById('timeline').addEventListener('input', (e) => {
-        updateTimeline(parseInt(e.target.value));
-    });
-
-    // Run baseline for 2026 setup
-    updateTimeline(2026);
-</script>
-
-</body>
-</html>
+        // Track text toggle selections
