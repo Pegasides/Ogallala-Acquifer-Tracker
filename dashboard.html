@@ -18,7 +18,6 @@
         
         #wrapper { display: flex; gap: 20px; }
         
-        /* The main map background box */
         #map-canvas { 
             height: 580px; flex: 1; 
             border-radius: 12px; background: #141419; 
@@ -35,13 +34,11 @@
         .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
         .impact-stat { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 4px solid #ef4444; }
         
-        /* The geographic layer grid holding everything */
         .map-grid {
             position: absolute; width: 550px; height: 530px;
             top: 25px; left: 50%; transform: translateX(-50%);
         }
         
-        /* High-visibility native vector state borders sitting securely in place */
         .state-outline {
             position: absolute; border: 2px solid #3f3f46;
             background-color: rgba(255,255,255,0.01);
@@ -51,7 +48,6 @@
             z-index: 5;
         }
         
-        /* Detailed proportional placements mimicking actual map structures */
         #SD { top: 0px; left: 160px; width: 220px; height: 80px; }
         #WY { top: 90px; left: 0px; width: 150px; height: 100px; }
         #NE { top: 90px; left: 160px; width: 240px; height: 100px; border-left: none; }
@@ -61,10 +57,9 @@
         #OK { top: 315px; left: 160px; width: 240px; height: 50px; border-left: none; border-top: none; }
         #TX { top: 375px; left: 120px; width: 200px; height: 150px; border-top: none; }
 
-        /* Transparent layered water reservoirs sitting right over the state borders */
         .aquifer-basin-formation {
             position: absolute;
-            transition: all 0.1s linear;
+            transition: all 0.05s linear;
             pointer-events: none; 
             z-index: 10;
             border: 2px solid rgba(59, 130, 246, 0.5);
@@ -79,7 +74,6 @@
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #71717a; font-size: 13px; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
-        /* Red Data Center Pulsing Nodes */
         .dc-node {
             width: 14px; height: 14px; background-color: #ef4444;
             border: 2px solid white; border-radius: 50%; position: absolute;
@@ -91,7 +85,6 @@
             border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold;
         }
         
-        /* High-Density Community Monitoring Points sitting on the top layer */
         .community-dot {
             width: 8px; height: 8px; border-radius: 50%; position: absolute;
             z-index: 25; transition: background-color 0.1s linear; border: 1px solid #111116;
@@ -122,8 +115,7 @@
     <div id="wrapper">
         <div id="map-canvas">
             <div class="map-grid">
-                
-                <!-- Native Built-In State Vector Borders -->
+                <!-- Native State Vector Borders -->
                 <div class="state-outline" id="SD">SOUTH DAKOTA</div>
                 <div class="state-outline" id="WY">WYOMING</div>
                 <div class="state-outline" id="NE">NEBRASKA</div>
@@ -133,12 +125,11 @@
                 <div class="state-outline" id="OK">OKLAHOMA</div>
                 <div class="state-outline" id="TX">TEXAS</div>
 
-                <!-- See-Through Light Blue Aquifer Reservoir Basins -->
+                <!-- See-Through Basins -->
                 <div class="aquifer-basin-formation" id="north-basin"></div>
                 <div class="aquifer-basin-formation" id="central-basin"></div>
                 <div class="aquifer-basin-formation" id="south-basin"></div>
                 
-                <!-- Dynamic Overlay Elements Container for Cities & Data Centers -->
                 <div id="elements-overlay"></div>
             </div>
         </div>
@@ -164,32 +155,39 @@
 </div>
 
 <script>
-    // Complete 24 High-Density Local Community Monitoring Wells Database
     const localCommunities = [
-        // Nebraska Well Networks
         { name: "Alliance, NE", top: "115px", left: "180px", basin: "north" },
         { name: "Omaha, NE", top: "135px", left: "350px", basin: "north" },
         { name: "Grand Island, NE", top: "155px", left: "290px", basin: "north" },
-        { name: "North Platte, NE", lat: 0, top: "145px", left: "230px", basin: "north" },
+        { name: "North Platte, NE", top: "145px", left: "230px", basin: "north" },
         { name: "Scottsbluff, NE", top: "125px", left: "165px", basin: "north" },
-        // South Dakota Sector
         { name: "Pine Ridge, SD", top: "55px", left: "185px", basin: "north" },
-        // Wyoming Sector
         { name: "Torrington, WY", top: "110px", left: "110px", basin: "north" },
-        // Kansas Well Networks
         { name: "Goodland, KS", top: "215px", left: "175px", basin: "central" },
         { name: "Hoxie, KS", top: "225px", left: "230px", basin: "central" },
         { name: "Colby, KS", top: "210px", left: "200px", basin: "central" },
         { name: "Garden City, KS", top: "270px", left: "210px", basin: "central" },
         { name: "Liberal, KS", top: "290px", left: "215px", basin: "central" },
         { name: "Dodge City, KS", top: "275px", left: "255px", basin: "central" },
-        // Colorado Sector
         { name: "Yuma, CO", top: "210px", left: "115px", basin: "central" },
         { name: "Burlington, CO", top: "245px", left: "120px", basin: "central" },
-        // Oklahoma Panhandle Networks
         { name: "Guymon, OK", top: "325px", left: "190px", basin: "south" },
         { name: "Boise City, OK", top: "325px", left: "165px", basin: "south" },
-        // New Mexico Sector
         { name: "Clovis, NM", top: "390px", left: "110px", basin: "south" },
         { name: "Hobbs, NM", top: "420px", left: "115px", basin: "south" },
-        // Texas Panhandle Networks
+        { name: "Lubbock, TX", top: "465px", left: "175px", basin: "south" },
+        { name: "Plainview, TX", top: "445px", left: "165px", basin: "south" },
+        { name: "Amarillo, TX", top: "395px", left: "170px", basin: "south" },
+        { name: "Dalhart, TX", top: "380px", left: "140px", basin: "south" },
+        { name: "Hereford, TX", top: "415px", left: "150px", basin: "south" }
+    ];
+
+    const impactDatabase = {
+        "Omaha Compute Core": {
+            consumption: "1.25 Billion Gallons/Year",
+            energySource: "SPP Power Grid / Coal Heavy",
+            consequence: "Draws heavily from local municipal reserves. While Alliance water metrics stay green due to high sand-hill rainfall absorption, Omaha sub-pumping drops local water pressure limits.",
+            actionable: "System Stress: Buffered by high historical storage depth in the Northern High Plains basin."
+        },
+        "Dallas Compute Grid": {
+            consumption: "2.40 Billion Gallons/Year",
