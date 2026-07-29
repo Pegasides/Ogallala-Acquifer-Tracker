@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ogallala Aquifer Timeline Map</title>
     
-    <!-- Leaflet CSS Stylesheet -->
+    <!-- Core Mapping Layout Stylesheets -->
     <link rel="stylesheet" href="https://unpkg.com" crossorigin="" />
     
     <style>
@@ -47,54 +47,61 @@
     </div>
 </div>
 
-<!-- Leaflet JavaScript Map Framework -->
+<!-- Core Mapping External Engine Library -->
 <script src="https://unpkg.com" crossorigin=""></script>
 
 <script>
-    // Safe initialization block wrapped in an error catcher
-    try {
-        const map = L.map('map').setView([39.5, -101.5], 6);
+    // SAFETY LATCH: Waits until the window finishes loading the Leaflet script fully
+    window.addEventListener('load', function() {
+        try {
+            // Confirm the mapping variable exists before running commands
+            if (typeof L === 'undefined') {
+                throw new Error("Leaflet script failed to load from network provider.");
+            }
 
-        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; CARTO'
-        }).addTo(map);
+            const map = L.map('map').setView([39.5, -101.5], 6);
 
-        const timelineSteps = [
-            { year: "1950", desc: "Pre-development aquifer levels. High water thickness.", opacity: 0.9, color: "#3182bd", centers: [] },
-            { year: "1980", desc: "Agricultural irrigation begins drawing down southern sectors.", opacity: 0.7, color: "#3182bd", centers: [] },
-            { year: "2026", desc: "Present Day. Data center nodes overlap with depleted water tables.", opacity: 0.4, color: "#3182bd", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}] },
-            { year: "2035", desc: "Projected. Extended drought pushes computational centers to seek regional wells.", opacity: 0.25, color: "#d97706", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}] },
-            { year: "2050", desc: "Projected. Severe water depletion zones intersect heavily with critical infrastructure.", opacity: 0.1, color: "#ef4444", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}, {name:"Platte River Node", lat:40.69, lng:-99.08}] }
-        ];
+            L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CARTO'
+            }).addTo(map);
 
-        const aquiferBounds = [[32.0, -104.0], [43.5, -97.0]];
-        let aquiferLayer = L.rectangle(aquiferBounds, { stroke: false, fillColor: "#3182bd", fillOpacity: 0.4 }).addTo(map);
-        let markerLayerGroup = L.layerGroup().addTo(map);
+            const timelineSteps = [
+                { year: "1950", desc: "Pre-development aquifer levels. High water thickness.", opacity: 0.9, color: "#3182bd", centers: [] },
+                { year: "1980", desc: "Agricultural irrigation begins drawing down southern sectors.", opacity: 0.7, color: "#3182bd", centers: [] },
+                { year: "2026", desc: "Present Day. Data center nodes overlap with depleted water tables.", opacity: 0.4, color: "#3182bd", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}] },
+                { year: "2035", desc: "Projected. Extended drought pushes computational centers to seek regional wells.", opacity: 0.25, color: "#d97706", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}] },
+                { year: "2050", desc: "Projected. Severe water depletion zones intersect heavily with critical infrastructure.", opacity: 0.1, color: "#ef4444", centers: [{name:"Omaha Hub", lat:41.25, lng:-95.93}, {name:"Cheyenne Node", lat:41.14, lng:-104.82}, {name:"Platte River Node", lat:40.69, lng:-99.08}] }
+            ];
 
-        function updateTimeline(index) {
-            const step = timelineSteps[index];
-            document.getElementById('year-display').innerText = step.year;
-            document.getElementById('desc-display').innerText = step.desc;
+            const aquiferBounds = [[32.0, -104.0], [43.5, -97.0]];
+            let aquiferLayer = L.rectangle(aquiferBounds, { stroke: false, fillColor: "#3182bd", fillOpacity: 0.4 }).addTo(map);
+            let markerLayerGroup = L.layerGroup().addTo(map);
 
-            aquiferLayer.setStyle({ fillColor: step.color, fillOpacity: step.opacity });
-            markerLayerGroup.clearLayers();
+            function updateTimeline(index) {
+                const step = timelineSteps[index];
+                document.getElementById('year-display').innerText = step.year;
+                document.getElementById('desc-display').innerText = step.desc;
 
-            step.centers.forEach(c => {
-                L.circleMarker([c.lat, c.lng], { radius: 8, fillColor: "#ef4444", color: "#fff", weight: 2, fillOpacity: 0.9 })
-                 .bindPopup(`<b>${c.name}</b>`)
-                 .addTo(markerLayerGroup);
-            });
+                aquiferLayer.setStyle({ fillColor: step.color, fillOpacity: step.opacity });
+                markerLayerGroup.clearLayers();
 
-            document.getElementById('label-2').className = (index == 2) ? 'active-label' : '';
+                step.centers.forEach(c => {
+                    L.circleMarker([c.lat, c.lng], { radius: 8, fillColor: "#ef4444", color: "#fff", weight: 2, fillOpacity: 0.9 })
+                     .bindPopup(`<b>${c.name}</b><br>AI Data Center Hub`)
+                     .addTo(markerLayerGroup);
+                });
+
+                document.getElementById('label-2').className = (index == 2) ? 'active-label' : '';
+            }
+
+            document.getElementById('timeline').addEventListener('input', (e) => updateTimeline(e.target.value));
+            updateTimeline(2);
+
+        } catch (error) {
+            console.error("Map initialization roadblock encountered:", error);
+            document.getElementById('desc-display').innerText = "System Notification: " + error.message;
         }
-
-        document.getElementById('timeline').addEventListener('input', (e) => updateTimeline(e.target.value));
-        updateTimeline(2);
-
-    } catch (error) {
-        console.error("Map initialization failed:", error);
-        document.getElementById('desc-display').innerText = "Map loading error: " + error.message;
-    }
+    });
 </script>
 
 </body>
