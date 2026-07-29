@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ogallala Aquifer Timeline Map</title>
     
-    <!-- Core Mapping Layout Stylesheets -->
-    <link rel="stylesheet" href="https://unpkg.com" crossorigin="" />
+    <!-- FIXED: Shifted core styling download to the jsDelivr provider network -->
+    <link rel="stylesheet" href="https://jsdelivr.net" crossorigin="" />
     
     <style>
         body {
@@ -47,16 +47,15 @@
     </div>
 </div>
 
-<!-- Core Mapping External Engine Library -->
-<script src="https://unpkg.com" crossorigin=""></script>
+<!-- FIXED: Shifted map software core download to the jsDelivr provider network -->
+<script src="https://jsdelivr.net" crossorigin=""></script>
 
 <script>
-    // SAFETY LATCH: Waits until the window finishes loading the Leaflet script fully
+    // System setup script wrapper triggers only when the page assets are 100% loaded
     window.addEventListener('load', function() {
         try {
-            // Confirm the mapping variable exists before running commands
             if (typeof L === 'undefined') {
-                throw new Error("Leaflet script failed to load from network provider.");
+                throw new Error("The network mapping engine encountered a connection roadblock.");
             }
 
             const map = L.map('map').setView([39.5, -101.5], 6);
@@ -98,7 +97,7 @@
             updateTimeline(2);
 
         } catch (error) {
-            console.error("Map initialization roadblock encountered:", error);
+            console.error("Map system roadblock:", error);
             document.getElementById('desc-display').innerText = "System Notification: " + error.message;
         }
     });
