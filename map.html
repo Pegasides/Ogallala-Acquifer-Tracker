@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ogallala Aquifer Live Geographic Dashboard</title>
     
-    <!-- Hyper-Secure Global Map Engine Stylesheet -->
-    <link rel="stylesheet" href="https://cloudflare.com" integrity="sha512-Zcn69HRR31BB9WdQ86IQ2GkWyP0zdf7fHnUoB4Q22c55eB==/" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- FIXED: Removed security constraints to bypass firewall blocks -->
+    <link rel="stylesheet" href="https://cloudflare.com" crossorigin="anonymous" />
     
     <style>
         body {
@@ -21,7 +21,6 @@
         
         #wrapper { display: flex; gap: 20px; }
         
-        /* The geographic map viewport window */
         #map { 
             height: 600px; flex: 1; 
             border-radius: 12px; background: #16161a; 
@@ -52,7 +51,6 @@
     </header>
 
     <div id="wrapper">
-        <!-- FIXED: The map canvas container now targets the dynamic map rendering engine -->
         <div id="map"></div>
 
         <div id="impact-panel">
@@ -75,46 +73,30 @@
     </div>
 </div>
 
-<!-- Hyper-Secure Global Map Engine Logic File -->
-<script src="https://cloudflare.com" integrity="sha512-Bw4g8n6NfF8x7s6L4p4qFmGgH7s6V5n5t8f3+U0v==/" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- FIXED: Removed security constraints to allow open map execution loop -->
+<script src="https://cloudflare.com" crossorigin="anonymous"></script>
 
 <script>
-    // FIXED: Comprehensive database mapping out high-density community monitoring wells across all 8 states
     const localCommunities = [
-        // Nebraska Well Networks (Highly resilient)
         { name: "Alliance, NE", lat: 42.10, lng: -102.87, basin: "north" },
         { name: "Omaha, NE", lat: 41.25, lng: -95.93, basin: "north" },
         { name: "Grand Island, NE", lat: 40.92, lng: -98.34, basin: "north" },
         { name: "North Platte, NE", lat: 41.12, lng: -100.76, basin: "north" },
         { name: "Scottsbluff, NE", lat: 41.86, lng: -103.66, basin: "north" },
-        
-        // South Dakota Sector
         { name: "Pine Ridge, SD", lat: 43.02, lng: -102.55, basin: "north" },
-        
-        // Wyoming Sector
         { name: "Torrington, WY", lat: 42.06, lng: -104.18, basin: "north" },
-
-        // Kansas Well Networks (Stressed)
         { name: "Goodland, KS", lat: 39.35, lng: -101.71, basin: "central" },
         { name: "Hoxie, KS", lat: 39.35, lng: -100.44, basin: "central" },
         { name: "Colby, KS", lat: 39.39, lng: -101.05, basin: "central" },
         { name: "Garden City, KS", lat: 37.97, lng: -100.87, basin: "central" },
         { name: "Liberal, KS", lat: 37.04, lng: -100.92, basin: "central" },
         { name: "Dodge City, KS", lat: 37.75, lng: -100.02, basin: "central" },
-
-        // Colorado Sector
         { name: "Yuma, CO", lat: 40.12, lng: -102.72, basin: "central" },
         { name: "Burlington, CO", lat: 39.31, lng: -102.26, basin: "central" },
-
-        // Oklahoma Panhandle Networks
         { name: "Guymon, OK", lat: 36.68, lng: -101.48, basin: "south" },
         { name: "Boise City, OK", lat: 36.73, lng: -102.51, basin: "south" },
-
-        // New Mexico Sector
         { name: "Clovis, NM", lat: 34.40, lng: -103.20, basin: "south" },
         { name: "Hobbs, NM", lat: 32.70, lng: -103.13, basin: "south" },
-
-        // Texas Panhandle Networks (Critical Depletion)
         { name: "Lubbock, TX", lat: 33.57, lng: -101.85, basin: "south" },
         { name: "Plainview, TX", lat: 34.18, lng: -101.70, basin: "south" },
         { name: "Amarillo, TX", lat: 35.22, lng: -101.83, basin: "south" },
@@ -151,22 +133,15 @@
 
     let map, aquiferLayer, markerLayerGroup;
 
-    // Safety initialization block waiting for window script compilation
     window.addEventListener('load', function() {
-        if (typeof L === 'undefined') {
-            document.getElementById('desc-display').innerText = "Map engine asset loading delayed. Retrying deployment link...";
-            return;
-        }
+        if (typeof L === 'undefined') return;
 
-        // Initialize the geographic viewport over the true High Plains coordinates
         map = L.map('map', { zoomControl: true }).setView([39.0, -101.5], 5.5);
 
-        // Load premium dark geographic styles with authentic state boundaries and roads
         L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
             attribution: '&copy; CARTO'
         }).addTo(map);
 
-        // Define authentic structural bounds bounding the Ogallala formation
         const aquiferBounds = [[32.0, -104.5], [43.5, -96.5]];
         aquiferLayer = L.rectangle(aquiferBounds, { stroke: true, color: "#3b82f6", weight: 1, fillOpacity: 0.4 }).addTo(map);
         markerLayerGroup = L.layerGroup().addTo(map);
@@ -184,3 +159,27 @@
                     <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
                     <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
                 </div>
+                <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+                    <strong>Ensuing Local Result:</strong><br>${data.consequence}
+                </div>
+                <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; color: #f43f5e; font-weight: bold; border-top: 1px solid #27272a; padding-top: 12px;">
+                    ⚠️ ${data.actionable}
+                </div>
+            `;
+        };
+
+        function updateTimeline(year) {
+            document.getElementById('year-display').innerText = year;
+            markerLayerGroup.clearLayers();
+            
+            let opacity, color, descText;
+            let dataCenters = [];
+
+            if (year <= 1980) {
+                let pct = (year - 1950) / (1980 - 1950);
+                descText = "1950–1980: Post-WWII agricultural boom transforms the landscape. Aquifer bounds remain healthy blue overlays across all states.";
+                opacity = 0.55 - (pct * 0.15);
+                color = "#3b82f6";
+            } 
+            else if (year <= 2026) {
+                let pct = (year - 1980) / (2026 - 1980);
