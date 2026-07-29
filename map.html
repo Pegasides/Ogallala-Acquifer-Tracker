@@ -18,7 +18,6 @@
         
         #wrapper { display: flex; gap: 20px; }
         
-        /* The main map background box */
         #map-canvas { 
             height: 550px; flex: 1; 
             border-radius: 12px; background: #16161a; 
@@ -35,13 +34,12 @@
         .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
         .impact-stat { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 4px solid #ef4444; }
         
-        /* The geographic layer grid holding everything */
         .map-grid {
             position: absolute; width: 500px; height: 500px;
             top: 25px; left: 50%; transform: translateX(-50%);
         }
         
-        /* FIXED: Heavy visible state borders that sit behind the water layers */
+        /* High-visibility native state borders */
         .state-outline {
             position: absolute; border: 2px solid #3f3f46;
             background-color: rgba(255,255,255,0.02);
@@ -51,7 +49,6 @@
             z-index: 5;
         }
         
-        /* Proportional placements mimicking map layout coordinates */
         #SD { top: 0px; left: 140px; width: 200px; height: 80px; }
         #WY { top: 90px; left: 0px; width: 130px; height: 90px; }
         #NE { top: 90px; left: 140px; width: 220px; height: 90px; border-left: none; }
@@ -61,12 +58,12 @@
         #OK { top: 295px; left: 140px; width: 220px; height: 45px; border-left: none; border-top: none; }
         #TX { top: 350px; left: 105px; width: 180px; height: 140px; border-top: none; }
 
-        /* FIXED: Light Blue Aquifer formations made transparent via standard CSS settings */
+        /* Transparent layered water reservoirs */
         .aquifer-basin-formation {
             position: absolute;
             transition: all 0.1s linear;
             pointer-events: none; 
-            z-index: 10; /* Sits over the states, but under the cities */
+            z-index: 10;
             border: 2px solid rgba(59, 130, 246, 0.6);
             box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.3);
         }
@@ -79,7 +76,6 @@
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #71717a; font-size: 13px; }
         .active-label { color: #3b82f6; font-weight: bold; }
         
-        /* Red Data Center Pulsing Nodes */
         .dc-node {
             width: 14px; height: 14px; background-color: #ef4444;
             border: 2px solid white; border-radius: 50%; position: absolute;
@@ -91,7 +87,6 @@
             border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold;
         }
         
-        /* FIXED: Clear Community Points sitting on the top z-index layer */
         .community-dot {
             width: 8px; height: 8px; border-radius: 50%; position: absolute;
             z-index: 25; transition: background-color 0.1s linear; border: 1px solid #111116;
@@ -122,8 +117,7 @@
     <div id="wrapper">
         <div id="map-canvas">
             <div class="map-grid">
-                
-                <!-- FIXED: Built-in State borders (Visible without outside images) -->
+                <!-- Native State borders -->
                 <div class="state-outline" id="SD">SOUTH DAKOTA</div>
                 <div class="state-outline" id="WY">WYOMING</div>
                 <div class="state-outline" id="NE">NEBRASKA</div>
@@ -133,12 +127,11 @@
                 <div class="state-outline" id="OK">OKLAHOMA</div>
                 <div class="state-outline" id="TX">TEXAS</div>
 
-                <!-- See-Through Light Blue Aquifer Reservoir Zones -->
+                <!-- See-Through Light Blue Basins -->
                 <div class="aquifer-basin-formation" id="north-basin"></div>
                 <div class="aquifer-basin-formation" id="central-basin"></div>
                 <div class="aquifer-basin-formation" id="south-basin"></div>
                 
-                <!-- Dynamic Overlay Elements Container -->
                 <div id="elements-overlay"></div>
             </div>
         </div>
@@ -164,7 +157,6 @@
 </div>
 
 <script>
-    // Exact location coordinates inside our 8-state grid panel
     const localCommunities = [
         { name: "Alliance, NE", top: "115px", left: "160px", basin: "north" },
         { name: "Omaha, NE", top: "140px", left: "310px", basin: "north" },
@@ -193,3 +185,14 @@
             consequence: "Diverts crucial surface runoff streams away from rural agricultural community sectors along the western basin lip.",
             actionable: "Ensuing Result: High Plains livestock channels encounter early seasonal supply shortages."
         },
+        "Platte River Node": {
+            consumption: "3.85 Billion Gallons/Year",
+            energySource: "Hyperscale Combined Cycle Systems",
+            consequence: "By 2050, hyper-scale machine learning thermal demand completely matches and exhausts local recovery capacities across Central Nebraska.",
+            actionable: "Ensuing Critical Threat: Grid security collapse as computational facilities exceed local resource boundaries."
+        }
+    };
+
+    window.showImpactDetails = function(nodeName) {
+        const data = impactDatabase[nodeName];
+        if (!data) return;
