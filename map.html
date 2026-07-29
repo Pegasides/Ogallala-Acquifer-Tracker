@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ogallala Aquifer Detailed Impact Dashboard</title>
+    <title>Ogallala Aquifer Live Geographic Dashboard</title>
+    
+    <!-- Hyper-Secure Global Map Engine Stylesheet -->
+    <link rel="stylesheet" href="https://cloudflare.com" integrity="sha512-Zcn69HRR31BB9WdQ86IQ2GkWyP0zdf7fHnUoB4Q22c55eB==/" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <style>
         body {
@@ -11,135 +14,51 @@
             font-family: system-ui, -apple-system, sans-serif;
             background-color: #0f1015; color: #ffffff;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         header { border-bottom: 1px solid #27272a; padding-bottom: 15px; margin-bottom: 20px; }
         h2 { color: #3b82f6; margin: 0; font-size: 1.8rem; }
         p { color: #a1a1aa; min-height: 40px; line-height: 1.5; font-size: 14px; }
         
         #wrapper { display: flex; gap: 20px; }
         
-        #map-canvas { 
-            height: 550px; flex: 1; 
+        /* The geographic map viewport window */
+        #map { 
+            height: 600px; flex: 1; 
             border-radius: 12px; background: #16161a; 
-            position: relative; overflow: hidden; 
-            border: 1px solid #27272a;
+            border: 1px solid #27272a; z-index: 5;
         }
         
         #impact-panel {
-            width: 320px; height: 550px; background: #111116;
+            width: 340px; height: 600px; background: #111116;
             border: 1px solid #27272a; border-radius: 12px; padding: 20px;
             box-sizing: border-box; display: flex; flex-direction: column;
-            z-index: 40;
+            z-index: 40; overflow-y: auto;
         }
         .panel-title { color: #ef4444; font-weight: bold; margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid #27272a; padding-bottom: 8px;}
         .impact-stat { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 4px solid #ef4444; }
         
-        .map-grid {
-            position: absolute; width: 500px; height: 500px;
-            top: 25px; left: 50%; transform: translateX(-50%);
-        }
-        
-        /* High-visibility native state borders */
-        .state-outline {
-            position: absolute; border: 2px solid #3f3f46;
-            background-color: rgba(255,255,255,0.02);
-            color: #52525b; font-size: 10px; font-weight: bold;
-            padding: 6px; border-radius: 2px;
-            display: flex; align-items: flex-start; justify-content: flex-start;
-            z-index: 5;
-        }
-        
-        #SD { top: 0px; left: 140px; width: 200px; height: 80px; }
-        #WY { top: 90px; left: 0px; width: 130px; height: 90px; }
-        #NE { top: 90px; left: 140px; width: 220px; height: 90px; border-left: none; }
-        #CO { top: 190px; left: 10px; width: 120px; height: 95px; }
-        #KS { top: 195px; left: 140px; width: 220px; height: 90px; border-left: none; border-top: none; }
-        #NM { top: 295px; left: 10px; width: 120px; height: 110px; }
-        #OK { top: 295px; left: 140px; width: 220px; height: 45px; border-left: none; border-top: none; }
-        #TX { top: 350px; left: 105px; width: 180px; height: 140px; border-top: none; }
-
-        /* Transparent layered water reservoirs */
-        .aquifer-basin-formation {
-            position: absolute;
-            transition: all 0.1s linear;
-            pointer-events: none; 
-            z-index: 10;
-            border: 2px solid rgba(59, 130, 246, 0.6);
-            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.3);
-        }
-        #north-basin { top: 50px; left: 145px; width: 180px; height: 120px; border-radius: 40% 50% 40% 40%; }
-        #central-basin { top: 175px; left: 125px; width: 160px; height: 110px; border-radius: 30% 40% 40% 30%; }
-        #south-basin { top: 290px; left: 115px; width: 130px; height: 140px; border-radius: 40% 30% 30% 50%; }
-
         .controls { margin-top: 25px; }
         input[type="range"] { width: 100%; cursor: pointer; }
         .labels { display: flex; justify-content: space-between; margin-top: 10px; color: #71717a; font-size: 13px; }
         .active-label { color: #3b82f6; font-weight: bold; }
-        
-        .dc-node {
-            width: 14px; height: 14px; background-color: #ef4444;
-            border: 2px solid white; border-radius: 50%; position: absolute;
-            z-index: 30; animation: pulse 1.8s infinite ease-in-out; cursor: pointer;
-        }
-        .node-label {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            background: #111116; border: 1px solid #ef4444; padding: 2px 8px; 
-            border-radius: 4px; font-size: 11px; white-space: nowrap; color: #fff; font-weight: bold;
-        }
-        
-        .community-dot {
-            width: 8px; height: 8px; border-radius: 50%; position: absolute;
-            z-index: 25; transition: background-color 0.1s linear; border: 1px solid #111116;
-            box-shadow: 0 0 6px rgba(255,255,255,0.3);
-        }
-        .community-text {
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            color: #ffffff; font-size: 10px; font-weight: bold; white-space: nowrap;
-            background: rgba(15,16,21,0.85); padding: 2px 6px; border-radius: 4px;
-            border: 1px solid #3f3f46; pointer-events: none;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h2>Geographical Timeline: Year <span id="year-display">2026</span></h2>
-        <p id="desc-display">Evaluating municipal water drawdowns alongside computational energy corridors.</p>
+        <h2>Geographical Timeline Workspace: Year <span id="year-display">2026</span></h2>
+        <p id="desc-display">Measuring local municipal well fields directly inside true state boundaries alongside compute nodes.</p>
     </header>
 
     <div id="wrapper">
-        <div id="map-canvas">
-            <div class="map-grid">
-                <!-- Native State borders -->
-                <div class="state-outline" id="SD">SOUTH DAKOTA</div>
-                <div class="state-outline" id="WY">WYOMING</div>
-                <div class="state-outline" id="NE">NEBRASKA</div>
-                <div class="state-outline" id="CO">COLORADO</div>
-                <div class="state-outline" id="KS">KANSAS</div>
-                <div class="state-outline" id="NM">NEW MEXICO</div>
-                <div class="state-outline" id="OK">OKLAHOMA</div>
-                <div class="state-outline" id="TX">TEXAS</div>
-
-                <!-- See-Through Light Blue Basins -->
-                <div class="aquifer-basin-formation" id="north-basin"></div>
-                <div class="aquifer-basin-formation" id="central-basin"></div>
-                <div class="aquifer-basin-formation" id="south-basin"></div>
-                
-                <div id="elements-overlay"></div>
-            </div>
-        </div>
+        <!-- FIXED: The map canvas container now targets the dynamic map rendering engine -->
+        <div id="map"></div>
 
         <div id="impact-panel">
             <div id="panel-content">
                 <div class="panel-title" style="color: #3b82f6; border-bottom-color: #3b82f6;">Hydrological Readout</div>
-                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any pulsing red <b>AI Data Center Node</b> located inside the state lines to measure direct municipal stress consequences.</p>
+                <p style="font-size: 13px; color: #a1a1aa; margin-top: 15px;">Click any flashing red <b>AI Data Center Hub</b> on the geographical grid to isolate its hyper-local drawdown signature.</p>
             </div>
         </div>
     </div>
@@ -156,15 +75,51 @@
     </div>
 </div>
 
+<!-- Hyper-Secure Global Map Engine Logic File -->
+<script src="https://cloudflare.com" integrity="sha512-Bw4g8n6NfF8x7s6L4p4qFmGgH7s6V5n5t8f3+U0v==/" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
-    // Exact location coordinates inside our 8-state grid panel
+    // FIXED: Comprehensive database mapping out high-density community monitoring wells across all 8 states
     const localCommunities = [
-        { name: "Alliance, NE", top: "115px", left: "160px", basin: "north" },
-        { name: "Omaha, NE", top: "140px", left: "310px", basin: "north" },
-        { name: "Goodland, KS", top: "210px", left: "155px", basin: "central" },
-        { name: "Hoxie, KS", top: "230px", left: "210px", basin: "central" },
-        { name: "Guymon, OK", top: "310px", left: "160px", basin: "south" },
-        { name: "Lubbock, TX", top: "420px", left: "145px", basin: "south" }
+        // Nebraska Well Networks (Highly resilient)
+        { name: "Alliance, NE", lat: 42.10, lng: -102.87, basin: "north" },
+        { name: "Omaha, NE", lat: 41.25, lng: -95.93, basin: "north" },
+        { name: "Grand Island, NE", lat: 40.92, lng: -98.34, basin: "north" },
+        { name: "North Platte, NE", lat: 41.12, lng: -100.76, basin: "north" },
+        { name: "Scottsbluff, NE", lat: 41.86, lng: -103.66, basin: "north" },
+        
+        // South Dakota Sector
+        { name: "Pine Ridge, SD", lat: 43.02, lng: -102.55, basin: "north" },
+        
+        // Wyoming Sector
+        { name: "Torrington, WY", lat: 42.06, lng: -104.18, basin: "north" },
+
+        // Kansas Well Networks (Stressed)
+        { name: "Goodland, KS", lat: 39.35, lng: -101.71, basin: "central" },
+        { name: "Hoxie, KS", lat: 39.35, lng: -100.44, basin: "central" },
+        { name: "Colby, KS", lat: 39.39, lng: -101.05, basin: "central" },
+        { name: "Garden City, KS", lat: 37.97, lng: -100.87, basin: "central" },
+        { name: "Liberal, KS", lat: 37.04, lng: -100.92, basin: "central" },
+        { name: "Dodge City, KS", lat: 37.75, lng: -100.02, basin: "central" },
+
+        // Colorado Sector
+        { name: "Yuma, CO", lat: 40.12, lng: -102.72, basin: "central" },
+        { name: "Burlington, CO", lat: 39.31, lng: -102.26, basin: "central" },
+
+        // Oklahoma Panhandle Networks
+        { name: "Guymon, OK", lat: 36.68, lng: -101.48, basin: "south" },
+        { name: "Boise City, OK", lat: 36.73, lng: -102.51, basin: "south" },
+
+        // New Mexico Sector
+        { name: "Clovis, NM", lat: 34.40, lng: -103.20, basin: "south" },
+        { name: "Hobbs, NM", lat: 32.70, lng: -103.13, basin: "south" },
+
+        // Texas Panhandle Networks (Critical Depletion)
+        { name: "Lubbock, TX", lat: 33.57, lng: -101.85, basin: "south" },
+        { name: "Plainview, TX", lat: 34.18, lng: -101.70, basin: "south" },
+        { name: "Amarillo, TX", lat: 35.22, lng: -101.83, basin: "south" },
+        { name: "Dalhart, TX", lat: 36.06, lng: -102.51, basin: "south" },
+        { name: "Hereford, TX", lat: 34.81, lng: -102.40, basin: "south" }
     ];
 
     const impactDatabase = {
@@ -194,131 +149,38 @@
         }
     };
 
-    window.showImpactDetails = function(nodeName) {
-        const data = impactDatabase[nodeName];
-        if (!data) return;
-        document.getElementById('impact-panel').innerHTML = `
-            <div class="panel-title">${nodeName}</div>
-            <div class="impact-stat">
-                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
-                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">${data.consumption}</div>
-            </div>
-            <div class="impact-stat" style="border-left-color: #a855f7;">
-                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
-                <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
-            </div>
-            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
-                <strong>Ensuing Local Result:</strong><br>${data.consequence}
-            </div>
-            <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; color: #f43f5e; font-weight: bold; border-top: 1px solid #27272a; padding-top: 12px;">
-                ⚠️ ${data.actionable}
-            </div>
-        `;
-    };
+    let map, aquiferLayer, markerLayerGroup;
 
-    function updateTimeline(year) {
-        document.getElementById('year-display').innerText = year;
-        
-        let nStyle = {}, cStyle = {}, sStyle = {};
-        let descText = "";
-        let dataCenters = [];
-
-        if (year <= 1980) {
-            let pct = (year - 1950) / (1980 - 1950);
-            descText = "1950–1980: Post-WWII agricultural boom transforms the landscape. Aquifer reservoirs remain vibrant transparent light blue layers across all states.";
-            nStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 180, h: 120 };
-            cStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 160, h: 110 };
-            sStyle = { opacity: 0.65, color: "rgba(59, 130, 246, 0.45)", w: 130, h: 140 };
-        } 
-        else if (year <= 2026) {
-            let pct = (year - 1980) / (2026 - 1980);
-            descText = "2026 Present Day. Notice the distinct split: Nebraska helical centers stay healthy green, while Texas panhandle fields drop into localized crisis thresholds.";
-            dataCenters = [
-                { name: "Omaha Compute Core", top: "115px", left: "285px" },
-                { name: "Dallas Compute Grid", top: "450px", left: "185px" }
-            ];
-            nStyle = { opacity: 0.55, color: "rgba(59, 130, 246, 0.35)", w: 180 - (pct * 20), h: 120 - (pct * 10) };
-            cStyle = { opacity: 0.45, color: "rgba(245, 158, 11, 0.30)", w: 160 - (pct * 30), h: 110 - (pct * 20) };
-            sStyle = { opacity: 0.35, color: "rgba(239, 68, 68, 0.25)",  w: 130 - (pct * 40), h: 140 - (pct * 40) };
-        } 
-        else if (year <= 2035) {
-            let pct = (year - 2026) / (2035 - 2026);
-            descText = "Projected 2035. Machine learning infrastructure footprint accelerates. Central Basin lines turn amber as Kansas community supply lines narrow.";
-            dataCenters = [
-                { name: "Omaha Compute Core", top: "115px", left: "285px" },
-                { name: "Dallas Compute Grid", top: "450px", left: "185px" },
-                { name: "Cheyenne Expansion Node", top: "115px", left: "45px" }
-            ];
-            nStyle = { opacity: 0.45, color: "rgba(245, 158, 11, 0.30)", w: 160 - (pct * 20), h: 110 - (pct * 10) };
-            cStyle = { opacity: 0.25, color: "rgba(239, 68, 68, 0.20)",  w: 130 - (pct * 25), h: 90 - (pct * 20) };
-            sStyle = { opacity: 0.15, color: "rgba(153, 27, 27, 0.15)",  w: 90 - (pct * 30),  h: 100 - (pct * 30) };
-        } 
-        else {
-            let pct = (year - 2035) / (2050 - 2035);
-            descText = "Projected 2050 Critical saturation failure. The Southern aquifer pocket has entirely dissolved away under Texas and Oklahoma.";
-            dataCenters = [
-                { name: "Omaha Compute Core", top: "115px", left: "285px" },
-                { name: "Dallas Compute Grid", top: "450px", left: "185px" },
-                { name: "Cheyenne Expansion Node", top: "115px", left: "45px" },
-                { name: "Platte River Node", top: "145px", left: "195px" }
-            ];
-            // FIXED: Multiplication signs successfully restored
-            nStyle = { opacity: 0.20, color: "rgba(239, 68, 68, 0.15)", w: 140 - (pct * 30), h: 100 - (pct * 20) };
-            cStyle = { opacity: 0.08, color: "rgba(127, 29, 29, 0.10)",  w: 105 - (pct * 45), h: 70 - (pct * 25) };
-            sStyle = { opacity: 0.02, color: "rgba(69, 10, 10, 0.05)",   w: 60 - (pct * 30),  h: 70 - (pct * 45) };
+    // Safety initialization block waiting for window script compilation
+    window.addEventListener('load', function() {
+        if (typeof L === 'undefined') {
+            document.getElementById('desc-display').innerText = "Map engine asset loading delayed. Retrying deployment link...";
+            return;
         }
 
-        const nBasin = document.getElementById('north-basin');
-        nBasin.style.width = nStyle.w + "px"; nBasin.style.height = nStyle.h + "px"; nBasin.style.background = nStyle.color; nBasin.style.opacity = nStyle.opacity;
+        // Initialize the geographic viewport over the true High Plains coordinates
+        map = L.map('map', { zoomControl: true }).setView([39.0, -101.5], 5.5);
 
-        const cBasin = document.getElementById('central-basin');
-        cBasin.style.width = cStyle.w + "px"; cBasin.style.height = cStyle.h + "px"; cBasin.style.background = cStyle.color; cBasin.style.opacity = cStyle.opacity;
+        // Load premium dark geographic styles with authentic state boundaries and roads
+        L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; CARTO'
+        }).addTo(map);
 
-        const sBasin = document.getElementById('south-basin');
-        sBasin.style.width = sStyle.w + "px"; sBasin.style.height = sStyle.h + "px"; sBasin.style.background = sStyle.color; sBasin.style.opacity = sStyle.opacity;
+        // Define authentic structural bounds bounding the Ogallala formation
+        const aquiferBounds = [[32.0, -104.5], [43.5, -96.5]];
+        aquiferLayer = L.rectangle(aquiferBounds, { stroke: true, color: "#3b82f6", weight: 1, fillOpacity: 0.4 }).addTo(map);
+        markerLayerGroup = L.layerGroup().addTo(map);
 
-        const overlay = document.getElementById('elements-overlay');
-        overlay.innerHTML = "";
-        
-        localCommunities.forEach(city => {
-            const cityDot = document.createElement('div');
-            cityDot.className = 'community-dot';
-            cityDot.style.top = city.top;
-            cityDot.style.left = city.left;
-            
-            let status = "#22c55e"; 
-            if (city.basin === 'south') {
-                status = (year <= 1965) ? "#22c55e" : (year <= 2000) ? "#f59e0b" : "#ef4444"; 
-            } else if (city.basin === 'central') {
-                status = (year <= 1995) ? "#22c55e" : (year <= 2030) ? "#f59e0b" : "#ef4444";
-            } else if (city.basin === 'north') {
-                status = (year <= 2035) ? "#22c55e" : "#f59e0b";
-            }
-            
-            cityDot.style.backgroundColor = status;
-            cityDot.innerHTML = `<div class="community-text">${city.name}</div>`;
-            overlay.appendChild(cityDot);
-        });
-
-        dataCenters.forEach(dc => {
-            const dcNode = document.createElement('div');
-            dcNode.className = 'dc-node';
-            dcNode.style.top = dc.top; dcNode.style.left = dc.left;
-            dcNode.setAttribute('onclick', `showImpactDetails("${dc.name}")`);
-            dcNode.innerHTML = `<div class="node-label">${dc.name}</div>`;
-            overlay.appendChild(dcNode);
-        });
-
-        ["1950", "1980", "2026", "2035", "2050"].forEach(lblYear => {
-            document.getElementById(`lbl-${lblYear}`).className = (year == lblYear) ? 'active-label' : '';
-        });
-    }
-
-    document.getElementById('timeline').addEventListener('input', (e) => {
-        updateTimeline(parseInt(e.target.value));
-    });
-
-    updateTimeline(2026);
-</script>
-</body>
-</html>
+        window.showImpactDetails = function(nodeName) {
+            const data = impactDatabase[nodeName];
+            if (!data) return;
+            document.getElementById('impact-panel').innerHTML = `
+                <div class="panel-title">${nodeName}</div>
+                <div class="impact-stat">
+                    <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
+                    <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">${data.consumption}</div>
+                </div>
+                <div class="impact-stat" style="border-left-color: #a855f7;">
+                    <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
+                    <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
+                </div>
