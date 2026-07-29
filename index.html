@@ -353,24 +353,29 @@
     </div>
 
     <script>
-        function runHydrologySimulation(projectName, mgdVolume) {
-            const consoleBox = document.getElementById('simulator-console');
-            consoleBox.style.display = 'block';
-            
-            const cubicFeetPerDay = Math.round(mgdVolume * 133680.56); 
-            const calcRadiusFt = Math.round(mgdVolume * 3400); 
-            const maxDrawdownFt = (mgdVolume * 5.1).toFixed(2);
-            
-            consoleBox.innerHTML = `
-                <strong>[INIT]</strong> Launching transient hydrological stress simulation for: <em>${projectName}</em>...<br>
-                <strong>[DATA]</strong> Demand Vector: ${mgdVolume} MGD (${cubicFeetPerDay.toLocaleString()} ft³/day equivalent)<br>
-                <strong>[MODEL]</strong> Solving well equations for local High Plains aquifer parameters...<br>
-                <strong>[RESULT]</strong> ⚠️ Projected Cone of Depression impact radius: ~${calcRadiusFt.toLocaleString()} feet.<br>
-                <strong>[RESULT]</strong> ⚠️ Calculated water table localized drawdown depth: -${maxDrawdownFt} feet.<br>
-                <strong>[STATUS]</strong> Live aquifer stress overlay evaluation committed successfully.
-            `;
-            consoleBox.scrollTop = consoleBox.scrollHeight;
-        }
+     <script>
+    function runHydrologySimulation(projectName, mgdVolume) { 
+        const consoleBox = document.getElementById('simulator-console'); 
+        consoleBox.style.display = 'block'; 
+        const cubicFeetPerDay = Math.round(mgdVolume * 133680.56); 
+        const calcRadiusFt = Math.round(mgdVolume * 3400); 
+        const maxDrawdownFt = (mgdVolume * 5.1).toFixed(2); 
+        consoleBox.innerHTML = ` 
+            <strong>[INIT]</strong> Launching transient hydrological stress simulation for: <em>${projectName}</em>...<br> 
+            <strong>[DATA]</strong> Demand Vector: ${mgdVolume} MGD (${cubicFeetPerDay.toLocaleString()} ft³/day equivalent)<br> 
+            <strong>[MODEL]</strong> Solving well equations for local High Plains aquifer parameters...<br> 
+            <strong>[RESULT]</strong> ⚠️ Projected Cone of Depression impact radius: ~${calcRadiusFt.toLocaleString()} feet.<br> 
+            <strong>[RESULT]</strong> ⚠️ Calculated water table localized drawdown depth: -${maxDrawdownFt} feet.<br> 
+            <strong>[STATUS]</strong> Live aquifer stress overlay evaluation committed successfully. 
+        `; 
+        consoleBox.scrollTop = consoleBox.scrollHeight; 
+    } 
     </script>
-</body>
-</html>
+
+    <!-- NEW MAP BUTTON GOES HERE - OUTSIDE OF THE SCRIPT TAG -->
+    <a href="map.html" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 30px; margin-bottom: 30px;">
+        View Interactive Aquifer & AI Timeline Map
+    </a>
+
+</body> 
+</html>    
