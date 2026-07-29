@@ -59,11 +59,10 @@
 
         .aquifer-basin-formation {
             position: absolute;
-            transition: all 0.05s linear;
             pointer-events: none; 
             z-index: 10;
-            border: 2px solid rgba(59, 130, 246, 0.5);
-            box-shadow: inset 0 0 25px rgba(59, 130, 246, 0.25);
+            border: 2px solid rgba(59, 130, 246, 0.6);
+            background-color: rgba(59, 130, 246, 0.45);
         }
         #north-basin { top: 50px; left: 165px; width: 200px; height: 130px; border-radius: 40% 50% 40% 40%; }
         #central-basin { top: 185px; left: 145px; width: 180px; height: 120px; border-radius: 30% 40% 40% 30%; }
@@ -87,7 +86,7 @@
         
         .community-dot {
             width: 8px; height: 8px; border-radius: 50%; position: absolute;
-            z-index: 25; transition: background-color 0.1s linear; border: 1px solid #111116;
+            z-index: 25; border: 1px solid #111116;
             box-shadow: 0 0 6px rgba(255,255,255,0.3);
         }
         .community-text {
@@ -108,8 +107,8 @@
 
 <div class="container">
     <header>
-        <h2>Geographical Timeline Workspace: Year <span id="year-display">2026</span></h2>
-        <p id="desc-display">Measuring local municipal well fields directly inside true state boundaries alongside compute nodes.</p>
+        <h2>Geographical Timeline Workspace: Year <span id="year-display">1950</span></h2>
+        <p id="desc-display">1950 Era: Post-WWII agricultural expansion brings stable water tables and deep-well turbine layouts across the High Plains.</p>
     </header>
 
     <div id="wrapper">
@@ -143,51 +142,55 @@
     </div>
 
     <div class="controls">
-        <input type="range" id="timeline" min="1950" max="2050" step="1" value="2026">
+        <!-- FIXED: Simplified slider parameters to match hard layout switch checks -->
+        <input type="range" id="timeline" min="1" max="4" step="1" value="1">
         <div class="labels">
-            <span id="lbl-1950">1950</span>
-            <span id="lbl-1980">1980</span>
-            <span id="lbl-2026" class="active-label">2026 (Present)</span>
-            <span id="lbl-2035">2035 Proj</span>
-            <span id="lbl-2050">2050 Proj</span>
+            <span id="lbl-1" class="active-label">1950 Historic</span>
+            <span id="lbl-2">1980 Expansion</span>
+            <span id="lbl-3">2026 Present</span>
+            <span id="lbl-4">2050 Project</span>
         </div>
     </div>
 </div>
 
 <script>
-    const localCommunities = [
-        { name: "Alliance, NE", top: "115px", left: "180px", basin: "north" },
-        { name: "Omaha, NE", top: "135px", left: "350px", basin: "north" },
-        { name: "Grand Island, NE", top: "155px", left: "290px", basin: "north" },
-        { name: "North Platte, NE", top: "145px", left: "230px", basin: "north" },
-        { name: "Scottsbluff, NE", top: "125px", left: "165px", basin: "north" },
-        { name: "Pine Ridge, SD", top: "55px", left: "185px", basin: "north" },
-        { name: "Torrington, WY", top: "110px", left: "110px", basin: "north" },
-        { name: "Goodland, KS", top: "215px", left: "175px", basin: "central" },
-        { name: "Hoxie, KS", top: "225px", left: "230px", basin: "central" },
-        { name: "Colby, KS", top: "210px", left: "200px", basin: "central" },
-        { name: "Garden City, KS", top: "270px", left: "210px", basin: "central" },
-        { name: "Liberal, KS", top: "290px", left: "215px", basin: "central" },
-        { name: "Dodge City, KS", top: "275px", left: "255px", basin: "central" },
-        { name: "Yuma, CO", top: "210px", left: "115px", basin: "central" },
-        { name: "Burlington, CO", top: "245px", left: "120px", basin: "central" },
-        { name: "Guymon, OK", top: "325px", left: "190px", basin: "south" },
-        { name: "Boise City, OK", top: "325px", left: "165px", basin: "south" },
-        { name: "Clovis, NM", top: "390px", left: "110px", basin: "south" },
-        { name: "Hobbs, NM", top: "420px", left: "115px", basin: "south" },
-        { name: "Lubbock, TX", top: "465px", left: "175px", basin: "south" },
-        { name: "Plainview, TX", top: "445px", left: "165px", basin: "south" },
-        { name: "Amarillo, TX", top: "395px", left: "170px", basin: "south" },
-        { name: "Dalhart, TX", top: "380px", left: "140px", basin: "south" },
-        { name: "Hereford, TX", top: "415px", left: "150px", basin: "south" }
-    ];
-
     const impactDatabase = {
         "Omaha Compute Core": {
-            consumption: "1.25 Billion Gallons/Year",
-            energySource: "SPP Power Grid / Coal Heavy",
+            consumption: "1.25 Billion Gallons/Year", energySource: "SPP Power Grid / Coal Heavy",
             consequence: "Draws heavily from local municipal reserves. While Alliance water metrics stay green due to high sand-hill rainfall absorption, Omaha sub-pumping drops local water pressure limits.",
             actionable: "System Stress: Buffered by high historical storage depth in the Northern High Plains basin."
         },
         "Dallas Compute Grid": {
-            consumption: "2.40 Billion Gallons/Year",
+            consumption: "2.40 Billion Gallons/Year", energySource: "ERCOT Thermal Generation mix",
+            consequence: "Triggers deep cones of depression drawing straight from underneath the Texas panhandle. Forces Lubbock and Guymon community wells to turn critical empty.",
+            actionable: "Ensuing Result: Heavy regional drilling restrictions enforced across agricultural boundaries."
+        }
+    };
+
+    window.showImpactDetails = function(nodeName) {
+        const data = impactDatabase[nodeName];
+        if (!data) return;
+        document.getElementById('impact-panel').innerHTML = `
+            <div class="panel-title">${nodeName}</div>
+            <div class="impact-stat">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Direct Pumping Demand</small>
+                <div style="font-size: 15px; font-weight: bold; color: #3b82f6;">${data.consumption}</div>
+            </div>
+            <div class="impact-stat" style="border-left-color: #a855f7;">
+                <small style="color: #a1a1aa; text-transform: uppercase; font-size: 9px; font-weight: bold;">Grid Energy Support</small>
+                <div style="font-size: 13px; font-weight: 600; color: #c084fc;">${data.energySource}</div>
+            </div>
+            <div style="margin-top: 15px; font-size: 12px; line-height: 1.6; color: #e4e4e7;">
+                <strong>Ensuing Local Result:</strong><br>${data.consequence}
+            </div>
+            <div style="margin-top: 15px; font-size: 11px; line-height: 1.5; color: #f43f5e; font-weight: bold; border-top: 1px solid #27272a; padding-top: 12px;">
+                ⚠️ ${data.actionable}
+            </div>
+        `;
+    };
+
+    // FIXED: Bulletproof layout matrices to run with zero background script calculations
+    function runStateSwitch(val) {
+        const nb = document.getElementById('north-basin');
+        const cb = document.getElementById('central-basin');
+        const sb = document.getElementById('south-basin');
