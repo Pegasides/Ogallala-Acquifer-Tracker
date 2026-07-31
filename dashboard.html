@@ -1,41 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Dashboard - Ogallala Aquifer Tracker</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #2c3e50; color: #fff; }
-        header { background-color: #1a252f; color: #fff; padding: 30px; text-align: center; border-bottom: 4px solid #1abc9c; }
-        h1 { margin: 0; font-size: 2.8rem; letter-spacing: 1px; }
-        header p { margin: 5px 0 0 0; font-style: italic; color: #bdc3c7; }
-        .navigation-buttons { background-color: #34495e; display: flex; justify-content: center; flex-wrap: wrap; padding: 15px 0; gap: 10px; }
-        .navigation-buttons .btn { color: #fff; text-decoration: none; padding: 12px 24px; font-weight: bold; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; transition: all 0.3s ease; }
-        .navigation-buttons .btn:hover { background-color: #1abc9c; color: #2c3e50; transform: translateY(-2px); }
-        main { max-width: 1000px; margin: 40px auto; padding: 20px; background: #1a252f; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    </style>
 </head>
-<body>
+<body style="background-color: #2c3e50; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column;">
 
-    <header>
-        <h1>Ogallala Aquifer Tracker</h1>
-        <p>Analytical Data Dashboard</p>
-    </header>
+    <!-- TOP HEADER -->
+    <div style="background-color: #1a252f; padding: 20px; text-align: center; border-bottom: 4px solid #1abc9c; flex-shrink: 0;">
+        <h1 style="margin: 0; font-size: 2.2rem; color: #ffffff;">Ogallala Aquifer Tracker</h1>
+        <h2 style="margin: 5px 0 0 0; color: #1abc9c; font-size: 1.2rem;">Master Analytics Matrix & Data Dashboard</h2>
+    </div>
 
-    <nav>
-        <a href="index.html">Ogallala Aquifer Tracker</a>
-        <a href="map.html">Interactive Map Matrix</a>
-        <a href="timeline-1980.html">1980 Timeline</a>
-        <a href="timeline-2026.html">2026</a>
-        <a href="present.html">Present Day</a>
-        <a href="timeline-projection.html">2050 Projection</a>
-        <a href="dashboard.html">Data Dashboard</a>
-    </nav>
+    <!-- SYNCHRONIZED FLEX-NAV -->
+    <div style="background-color: #34495e; padding: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #2c3e50; flex-shrink: 0;">
+        <a href="index.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Ogallala Aquifer Tracker</a>
+        <a href="map.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Interactive Map Matrix</a>
+        <a href="timeline-1980.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">1980 Timeline</a>
+        <a href="timeline-2026.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">2026</a>
+        <a href="present.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Present Day</a>
+        <a href="timeline-projection.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">2050 Projection</a>
+        <a href="dashboard.html" style="color: #2c3e50; text-decoration: none; padding: 10px 16px; background-color: #1abc9c; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Data Dashboard</a>
+    </div>
 
-    <main>
-        <h2>Live System Metrics Dashboard</h2>
-        <p>This section displays real-time syntax parsing metrics, telemetry layers, and animation loop states built to monitor water tables dynamically.</p>
-    </main>
+    <!-- MAIN FIELD -->
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 960px; margin: 20px auto; border-radius: 8px; width: 95%;">
+        
+        <!-- SIDE-BY-SIDE ANALYTICS GRID -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%; justify-content: center; margin-bottom: 20px;">
+            
+            <!-- COLUMN 1: TRACKING METRICS MATRIX -->
+            <div style="flex: 1; min-width: 280px; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; border-left: 4px solid #1abc9c;">
+                <h3 style="color: #1abc9c; margin-top: 0; margin-bottom: 15px;">📊 Key Volume Anomalies</h3>
+                <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span>Historical Storage Peak (1980):</span>
+                    <strong style="color: #3b82f6;">~3.2 Billion Acre-Ft</strong>
+                </div>
+                <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span>Modern Depletion Index (2026):</span>
+                    <strong style="color: #e67e22;">-30% Total Volume</strong>
+                </div>
+                <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span>Projected Volume Baseline (2050):</span>
+                    <strong style="color: #e74c3c;">~12% Saturated Base</strong>
+                </div>
+                <div style="padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span>Active Monitored Communities:</span>
+                    <strong style="color: #1abc9c;">28 Regional Nodes</strong>
+                </div>
+            </div>
+
+            <!-- COLUMN 2: REGIONAL DRAWDOWN INDEX -->
+            <div style="flex: 1; min-width: 280px; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; border-left: 4px solid #e74c3c;">
+                <h3 style="color: #e74c3c; margin-top: 0; margin-bottom: 15px;">📍 Critical Hotspots (Drops Over 150ft)</h3>
+                <p style="margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.4; color: #bdc3c7;">
+                    Groundwater measurements confirm the heaviest localized drop cones are concentrated across the southern regions:
+                </p>
+                <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.6; color: #ffffff;">
+                    <li><strong style="color: #e74c3c;">Texas High Plains:</strong> Amarillo, Lubbock, Dalhart nodes reporting extreme baseline adjustments.</li>
+                    <li><strong style="color: #e67e22;">West-Central Kansas:</strong> Garden City, Colby, Dodge City showing heavy seasonal drawdowns.</li>
+                    <li><strong style="color: #1abc9c;">Nebraska Core Basin:</strong> Saturated base remains thickest and most stable across North Platte and Ogallala nodes.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- FULL SUMMARY LOG ENTRY -->
+        <div style="width: 100%; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; text-align: left; border-top: 2px solid #34495e;">
+            <h3 style="color: #1abc9c; margin-top: 0; margin-bottom: 10px;">📋 Cross-Platform Aggregation Note</h3>
+            <p style="font-size: 1rem; color: #ffffff; line-height: 1.5; margin: 0;">
+                This database matrix aggregates monitoring metrics across all eight overlying states. For continuous tracking data and interactive modeling configurations, visit the <strong>Interactive Map Matrix</strong> tab to use the un-cached timeline scroll engine to calculate historical and predictive saturation layers live.
+            </p>
+        </div>
+
+    </div>
 
 </body>
 </html>
