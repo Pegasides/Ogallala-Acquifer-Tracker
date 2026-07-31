@@ -30,6 +30,12 @@
             70% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
             100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }
         }
+        @keyframes drawCone {
+            0% { stroke-dashoffset: 40; opacity: 0.4; stroke-width: 1.5px; }
+            50% { stroke-dashoffset: 0; opacity: 0.9; stroke-width: 3px; }
+            100% { stroke-dashoffset: -40; opacity: 0.4; stroke-width: 1.5px; }
+        }
+        .hydraulic-cone { stroke: #ef4444; stroke-width: 2; fill: none; stroke-dasharray: 4, 4; animation: drawCone 2s infinite linear; }
     </style>
 </head>
 <body>
@@ -49,14 +55,11 @@
         <a href="dashboard.html">Data Dashboard</a>
     </nav>
 
-    <!-- TWO COLUMN INTERACTIVE PANEL INTERFACE -->
     <div class="main-flex-row">
         
-        <!-- LEFT: VISUAL TRACKER ENGINE -->
         <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
             <div id="map-viewport">
                 <div class="map-grid">
-                    <!-- States Layout -->
                     <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
                     <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
                     <div class="state" style="top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
@@ -66,13 +69,16 @@
                     <div class="state" style="top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
                     <div class="state" style="top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
                     
-                    <!-- 3 Non-Overlapping Interactive Zones -->
                     <div id="circle-ne" class="health-circle" style="top: 120px; left: 250px;"><div class="circle-label" id="lbl-ne">Nebraska Basin</div></div>
                     <div id="circle-ks" class="health-circle" style="top: 215px; left: 250px;"><div class="circle-label" id="lbl-ks">Kansas Basin</div></div>
                     <div id="circle-tx" class="health-circle" style="top: 360px; left: 220px;"><div class="circle-label" id="lbl-tx">Texas & Oklahoma</div></div>
 
-                    <!-- 28 Stable Community Anchors -->
+                    <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 15; pointer-events: none;">
+                        <g id="cone-vectors-mesh"></g>
+                    </svg>
+
                     <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
+                        <!-- 28 Baseline Communities -->
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
@@ -95,6 +101,3 @@
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 415px; left: 145px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 395px; left: 160px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 350px; left: 130px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 360px; left: 175px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 295px; left: 180px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 300px; left: 230px;"></div>
