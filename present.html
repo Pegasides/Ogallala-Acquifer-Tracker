@@ -10,6 +10,8 @@
             70% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
             100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }
         }
+        .metric-row { border-bottom: 1px solid #34495e; padding: 6px 0; display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .metric-row:last-child { border-bottom: none; }
     </style>
 </head>
 <body style="background-color: #2c3e50; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column;">
@@ -31,14 +33,14 @@
         <a href="dashboard.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Data Dashboard</a>
     </div>
 
-    <!-- MAIN FIELD -->
-    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 960px; margin: 20px auto; border-radius: 8px; width: 95%;">
+    <!-- MAIN FIELD (FLEXIBLE ROW CONTAINER) -->
+    <div style="flex: 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 20px; gap: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 1040px; margin: 20px auto; border-radius: 8px; width: 95%;">
         
-        <!-- FROZEN SNAPSHOT VIEWPORT BOX -->
-        <div style="width: 100%; max-width: 620px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; margin-bottom: 20px; flex-shrink: 0;">
-            <div style="position: absolute; width: 500px; height: 500px; top: 25px; left: 50%; transform: translateX(-50%);">
+        <!-- COLUMN 1: SNAPSHOT VIEWPORT BOX -->
+        <div style="width: 500px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; flex-shrink: 0;">
+            <div style="position: absolute; width: 500px; height: 500px; top: 25px; left: 0;">
                 
-                <!-- Layer 1: 8 States Outlines -->
+                <!-- State Outlines -->
                 <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
                 <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
                 <div style="position: absolute; border: 1px dashed #1abc9c; background: rgba(255,255,255,0.01); color: #1abc9c; font-size: 11px; font-weight: bold; padding: 5px; top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
@@ -48,27 +50,30 @@
                 <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
                 <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
                 
-                <!-- LAYER 2: SEPARATED PRESENT DAY 3 REGIONAL HEALTH CIRCLES -->
-                <!-- Nebraska Basin: Blue (OK) -->
+                <!-- 3 Isolated Non-Overlapping Present Day Circles -->
                 <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 120px; left: 250px; width: 100px; height: 100px; background-color: rgba(43,108,176,0.65); border: 2px solid #2b6cb0; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Nebraska Basin<br>Blue (OK)<br>75%</div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Nebraska Basin<br>Blue (OK)</div>
                 </div>
-                <!-- Kansas Basin: Brown (Danger) -->
                 <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 215px; left: 250px; width: 75px; height: 75px; background-color: rgba(138,90,54,0.65); border: 2px solid #8a5a36; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Kansas Basin<br>Brown (Danger)<br>64%</div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Kansas Basin<br>Brown (Danger)</div>
                 </div>
-                <!-- Texas & Oklahoma Basin: Red (Worst Case) -->
                 <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 360px; left: 220px; width: 65px; height: 65px; background-color: rgba(220,38,38,0.65); border: 2px solid #dc2626; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Texas & OK<br>Red (Worst Case)<br>46%</div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Texas & OK<br>Red (Worst Case)</div>
                 </div>
 
-                <!-- LAYER 3: COMPLETE 28 Static Community Dots Matrix Array -->
+                <!-- 28 Communities Underneath Grid Frame -->
                 <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                    <!-- Nebraska Basin Nodes -->
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Alliance, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Grand Island, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">North Platte, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Ogallala, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Scottsbluff, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Pine Ridge, SD</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Martin, SD</span></div>
+                    <!-- Blue Zone Nodes -->
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 110px; left: 55px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 70px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"></div>
+                    <!-- Brown Zone Nodes -->
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"></div>
