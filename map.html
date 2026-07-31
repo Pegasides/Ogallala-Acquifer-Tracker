@@ -26,7 +26,17 @@
 
         /* LARGE SEPARATED ERA CIRCLES (NO OVERLAP) */
         .health-circle { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; transition: all 0.2s ease-out; z-index: 5; pointer-events: none; display: block; }
-        .circle-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap; }
+        .health-circle { 
+    position: absolute; 
+    width: 90px;
+    height: 90px;
+    transform: translate(-50%, -50%); 
+    border-radius: 50%; 
+    transition: all 0.2s ease-out; 
+    z-index: 5; 
+    pointer-events: none; 
+    display: block; 
+}
         .metric-row { border-bottom: 1px solid #34495e; padding: 6px 0; display: flex; justify-content: space-between; font-size: 0.85rem; }
         .metric-row:last-child { border-bottom: none; }
 
