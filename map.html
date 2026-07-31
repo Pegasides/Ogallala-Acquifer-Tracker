@@ -163,7 +163,16 @@ const aquiferTimeline = {
 document.getElementById("year-display").textContent = aquiferTimeline[2026].year;
 
 console.log("Aquifer Timeline Loaded:", aquiferTimeline);
+function updateAquiferYear(year) {
 
+    const data = aquiferTimeline[year];
+
+    document.getElementById("year-display").textContent = data.year;
+
+    console.log("Showing aquifer status for:", year);
+    console.log(data);
+
+}
 </script>
               
 </body>
