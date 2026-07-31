@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2050 Projections - Ogallala Aquifer Tracker</title>
     <style>
+        body { background-color: #2c3e50 !important; color: #ffffff !important; font-family: Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: #1a252f; padding: 20px; text-align: center; border-bottom: 4px solid #1abc9c; flex-shrink: 0; }
+        h1 { margin: 0; font-size: 2.2rem; color: #ffffff; }
+        h2 { margin: 5px 0 0 0; color: #e74c3c; font-size: 1.2rem; }
+        
+        nav { background-color: #34495e; padding: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #2c3e50; flex-shrink: 0; }
+        nav a { color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px; }
+        nav a:hover { background-color: #1abc9c; color: #2c3e50; }
+        
+        .main-flex-row { flex: 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 20px; gap: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 1080px; margin: 20px auto; border-radius: 8px; width: 95%; }
+        
+        #map-viewport { width: 500px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; flex-shrink: 0; }
+        .map-grid { position: absolute; width: 500px; height: 500px; top: 25px; left: 0; }
+        .state { position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; pointer-events: none; }
+        
+        .health-circle { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; z-index: 5; pointer-events: none; }
+        .circle-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap; }
+        
+        /* FUTURE COMPREHENSIVE HUB PIN EXES */
+        .dc-pin { position: absolute; width: 14px; height: 14px; background-color: #ef4444; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; z-index: 30; box-shadow: 0 0 10px #ef4444; transition: all 0.2s; }
+        .dc-pin:hover { background-color: #ffff00; scale: 1.3; }
+        
+        .hud-panel { width: 480px; background-color: #1a252f; border: 2px solid #34495e; border-radius: 8px; padding: 20px; box-sizing: border-box; flex-shrink: 0; border-top: 4px solid #e74c3c; }
+        .cone-visualizer { width: 100%; height: 160px; background-color: #111827; border: 1px solid #374151; border-radius: 6px; margin: 15px 0; position: relative; overflow: hidden; }
+        .water-line { position: absolute; left: 0; width: 100%; height: 2px; background-color: #3b82f6; top: 90px; }
+        
+        .metric-row { border-bottom: 1px solid #34495e; padding: 7px 0; display: flex; justify-content: space-between; font-size: 0.9rem; }
+        .metric-row:last-child { border-bottom: none; }
+
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
             70% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
@@ -12,7 +41,7 @@
         }
     </style>
 </head>
-<body style="background-color: #2c3e50; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column;">
+<body>
 
     <!-- TOP HEADER -->
     <div style="background-color: #1a252f; padding: 20px; text-align: center; border-bottom: 4px solid #1abc9c; flex-shrink: 0;">
@@ -20,55 +49,60 @@
         <h2 style="margin: 5px 0 0 0; color: #e74c3c; font-size: 1.2rem;">Predictive Analytics Model: Year 2050 Projection</h2>
     </div>
 
-    <!-- SYNCHRONIZED CHRONOLOGICAL NAV BAR -->
+    <!-- CHRONOLOGICAL NAV BAR -->
     <div style="background-color: #34495e; padding: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #2c3e50; flex-shrink: 0;">
-        <a href="index.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Ogallala Aquifer Tracker</a>
-        <a href="map.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Interactive Map Matrix</a>
-        <a href="timeline-1950.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">1950 Baseline</a>
-        <a href="timeline-1980.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">1980 Timeline</a>
-        <a href="present.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Present Day 2026</a>
-        <a href="timeline-projection.html" style="color: #2c3e50; text-decoration: none; padding: 10px 16px; background-color: #1abc9c; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">2050 Projection</a>
-        <a href="dashboard.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Data Dashboard</a>
+        <a href="index.html">Ogallala Aquifer Tracker</a>
+        <a href="map.html">Interactive Map Matrix</a>
+        <a href="timeline-1950.html">1950 Baseline</a>
+        <a href="timeline-1980.html">1980 Timeline</a>
+        <a href="present.html">Present Day 2026</a>
+        <a href="timeline-projection.html" style="background-color: #1abc9c; color: #2c3e50;">2050 Projection</a>
+        <a href="dashboard.html">Data Dashboard</a>
     </div>
 
-    <!-- MAIN FIELD -->
-    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 960px; margin: 20px auto; border-radius: 8px; width: 95%;">
+    <div class="main-flex-row">
         
-        <!-- FROZEN SNAPSHOT VIEWPORT BOX -->
-        <div style="width: 100%; max-width: 620px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; margin-bottom: 20px; flex-shrink: 0;">
-            <div style="position: absolute; width: 500px; height: 500px; top: 25px; left: 50%; transform: translateX(-50%);">
+        <!-- LEFT: SPATIAL DATA PANEL MODULE -->
+        <div id="map-viewport">
+            <div class="map-grid">
+                <!-- State Layout Borders -->
+                <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
+                <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
+                <div class="state" style="top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
+                <div class="state" style="top: 170px; left: 10px; width: 120px; height: 95px;">COLORADO</div>
+                <div class="state" style="top: 170px; left: 140px; width: 220px; height: 90px;">KANSAS</div>
+                <div class="state" style="top: 270px; left: 10px; width: 120px; height: 110px;">NEW MEXICO</div>
+                <div class="state" style="top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
+                <div class="state" style="top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
                 
-                <!-- Layer 1: 8 States Outlines -->
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
-                <div style="position: absolute; border: 1px dashed #1abc9c; background: rgba(255,255,255,0.01); color: #1abc9c; font-size: 11px; font-weight: bold; padding: 5px; top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 170px; left: 10px; width: 120px; height: 95px;">COLORADO</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 170px; left: 140px; width: 220px; height: 90px;">KANSAS</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 270px; left: 10px; width: 120px; height: 110px;">NEW MEXICO</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
-                <div style="position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
-                
-                <!-- LAYER 2: SEPARATED DEDEPLETED 2050 FUTURE HEALTH CIRCLES -->
-                <!-- Nebraska Basin: Blue (OK) Shrunk Profile -->
-                <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 120px; left: 250px; width: 60px; height: 60px; background-color: rgba(43,108,176,0.65); border: 2px solid #2b6cb0; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Nebraska Basin<br>Blue (OK)<br>35%</div>
+                <!-- 3 Severely Compressed Non-Overlapping Predictive Future Aquifer Zones -->
+                <div class="health-circle" style="top: 110px; left: 260px; width: 90px; height: 90px; background-color: rgba(43,108,176,0.65); border: 2px solid #2b6cb0;">
+                    <div class="circle-label">Northern Basin<br>Blue (OK)<br>35%</div>
                 </div>
-                <!-- Kansas Basin: Brown (Danger) Shrunk Profile -->
-                <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 215px; left: 250px; width: 45px; height: 45px; background-color: rgba(138,90,54,0.65); border: 2px solid #8a5a36; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Kansas Basin<br>Brown (Danger)<br>24%</div>
+                <div class="health-circle" style="top: 230px; left: 280px; width: 75px; height: 75px; background-color: rgba(138,90,54,0.65); border: 2px solid #8a5a36;">
+                    <div class="circle-label">Central Basin<br>Brown (Danger)<br>24%</div>
                 </div>
-                <!-- Texas & Oklahoma Basin: Red (Worst Case) Shrunk Profile -->
-                <div style="position: absolute; transform: translate(-50%, -50%); border-radius: 50%; top: 360px; left: 220px; width: 35px; height: 35px; background-color: rgba(220,38,38,0.65); border: 2px solid #dc2626; z-index: 5;">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 8px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Texas & OK<br>Red (Worst Case)<br>12%</div>
+                <div class="health-circle" style="top: 385px; left: 180px; width: 60px; height: 60px; background-color: rgba(220,38,38,0.65); border: 2px solid #dc2626;">
+                    <div class="circle-label">Southern Plains<br>Red (Worst Case)<br>12%</div>
                 </div>
 
-                <!-- LAYER 3: COMPLETE 28 Static Community Dots Matrix Array -->
+                <!-- 28 Full Complement True Communities Present Simultaneously -->
                 <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                    <!-- Nebraska Basin Nodes -->
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Alliance, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Grand Island, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">North Platte, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Ogallala, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Scottsbluff, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Pine Ridge, SD</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Martin, SD</span></div>
+                    <!-- Northern Zone -->
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 155px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 150px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"></div>
+                    <!-- Central Zone -->
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 230px; left: 210px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 200px; left: 145px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 250px; left: 180px;"></div>
+                    <div style="position: absolute; width: 4px; height: 4px; background: #fff; border: 1px solid #000; border-radius: 50%; top: 205px; left: 75px;"></div>
