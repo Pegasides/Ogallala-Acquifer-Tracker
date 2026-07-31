@@ -13,14 +13,13 @@
         <h2 style="margin: 5px 0 0 0; color: #1abc9c; font-size: 1.2rem;">Master Analytics Matrix & Data Dashboard</h2>
     </div>
 
-    <!-- SYNCHRONIZED FLEX-NAV -->
+    <!-- SYNCHRONIZED CHRONOLOGICAL NAV BAR -->
     <div style="background-color: #34495e; padding: 10px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #2c3e50; flex-shrink: 0;">
         <a href="index.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Ogallala Aquifer Tracker</a>
         <a href="map.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Interactive Map Matrix</a>
         <a href="timeline-1950.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">1950 Baseline</a>
         <a href="timeline-1980.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">1980 Timeline</a>
-        <a href="timeline-2026.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">2026</a>
-        <a href="present.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Present Day</a>
+        <a href="present.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Present Day 2026</a>
         <a href="timeline-projection.html" style="color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">2050 Projection</a>
         <a href="dashboard.html" style="color: #2c3e50; text-decoration: none; padding: 10px 16px; background-color: #1abc9c; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px;">Data Dashboard</a>
     </div>
@@ -35,12 +34,12 @@
             <div style="flex: 1; min-width: 280px; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; border-left: 4px solid #1abc9c;">
                 <h3 style="color: #1abc9c; margin-top: 0; margin-bottom: 15px;">📊 Key Volume Anomalies</h3>
                 <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
-                    <span>Historical Storage Peak (1980):</span>
+                    <span>Historical Storage Peak (1950):</span>
                     <strong style="color: #3b82f6;">~3.2 Billion Acre-Ft</strong>
                 </div>
                 <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
                     <span>Modern Depletion Index (2026):</span>
-                    <strong style="color: #e67e22;">-30% Total Volume</strong>
+                    <strong style="color: #e67e22;">-30% Total Capacity</strong>
                 </div>
                 <div style="border-bottom: 1px solid #34495e; padding: 10px 0; display: flex; justify-content: space-between;">
                     <span>Projected Volume Baseline (2050):</span>
@@ -52,16 +51,16 @@
                 </div>
             </div>
 
-            <!-- COLUMN 2: REGIONAL DRAWDOWN INDEX -->
-            <div style="flex: 1; min-width: 280px; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; border-left: 4px solid #e74c3c;">
-                <h3 style="color: #e74c3c; margin-top: 0; margin-bottom: 15px;">📍 Critical Hotspots (Drops Over 150ft)</h3>
+            <!-- COLUMN 2: REGIONAL DRAWDOWN INDEX (COLOR SPECIFICATIONS LOCKED) -->
+            <div style="flex: 1; min-width: 280px; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; border-left: 4px solid #ef4444;">
+                <h3 style="color: #ef4444; margin-top: 0; margin-bottom: 15px;">📍 Critical Hotspots (Drops Over 150ft)</h3>
                 <p style="margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.4; color: #bdc3c7;">
-                    Groundwater measurements confirm the heaviest localized drop cones are concentrated across the southern regions:
+                    Groundwater measurements confirm the heaviest localized drop cones are split across three environmental health configurations:
                 </p>
                 <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; line-height: 1.6; color: #ffffff;">
-                    <li><strong style="color: #e74c3c;">Texas High Plains:</strong> Amarillo, Lubbock, Dalhart nodes reporting extreme baseline adjustments.</li>
-                    <li><strong style="color: #e67e22;">West-Central Kansas:</strong> Garden City, Colby, Dodge City showing heavy seasonal drawdowns.</li>
-                    <li><strong style="color: #1abc9c;">Nebraska Core Basin:</strong> Saturated base remains thickest and most stable across North Platte and Ogallala nodes.</li>
+                    <li><strong style="color: #ef4444;">Texas High Plains (Red):</strong> Amarillo, Lubbock, Dalhart, Plainview, and Pampa nodes tracking extreme, worst-case drawdown baselines.</li>
+                    <li><strong style="color: #d97706;">West-Central Kansas (Brown):</strong> Garden City, Colby, Dodge City, Goodland, and Liberal tracking active danger-zone extraction depletion.</li>
+                    <li><strong style="color: #3b82f6;">Nebraska Core Basin (Blue):</strong> Alliance, Grand Island, North Platte, Ogallala, and Scottsbluff maintaining stable, healthy saturated support parameters.</li>
                 </ul>
             </div>
 
@@ -71,7 +70,7 @@
         <div style="width: 100%; background-color: #2c3e50; padding: 20px; border-radius: 6px; box-sizing: border-box; text-align: left; border-top: 2px solid #34495e;">
             <h3 style="color: #1abc9c; margin-top: 0; margin-bottom: 10px;">📋 Cross-Platform Aggregation Note</h3>
             <p style="font-size: 1rem; color: #ffffff; line-height: 1.5; margin: 0;">
-                This database matrix aggregates monitoring metrics across all eight overlying states. For continuous tracking data and interactive modeling configurations, visit the <strong>Interactive Map Matrix</strong> tab to use the un-cached timeline scroll engine to calculate historical and predictive saturation layers live.
+                This database matrix aggregates monitoring metrics across all eight overlying states. For continuous tracking data and interactive modeling configurations, visit the <strong>Interactive Map Matrix</strong> tab to use the un-cached timeline scroll engine to calculate historical and predictive saturation layers live across the 28 communities.
             </p>
         </div>
 
