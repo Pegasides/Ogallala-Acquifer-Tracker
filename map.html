@@ -124,10 +124,47 @@
 document.getElementById("year-display").textContent = "2026";
 
 console.log("Ogallala Aquifer Tracker engine loaded.");
-</script>
-document.getElementById("year-display").textContent = "2026";
+ <script>
 
-console.log("Ogallala Aquifer Tracker engine loaded.");
-</script>                    
+const aquiferTimeline = {
+    1950: {
+        year: "1950",
+        overallHealth: 100,
+        northern: "Healthy",
+        central: "Healthy",
+        southern: "Healthy"
+    },
+
+    1980: {
+        year: "1980",
+        overallHealth: 85,
+        northern: "Good",
+        central: "Declining",
+        southern: "Declining"
+    },
+
+    2026: {
+        year: "2026",
+        overallHealth: 60,
+        northern: "Stable",
+        central: "Stressed",
+        southern: "Critical"
+    },
+
+    2050: {
+        year: "2050",
+        overallHealth: 40,
+        northern: "Stressed",
+        central: "Critical",
+        southern: "Severe"
+    }
+};
+
+document.getElementById("year-display").textContent = aquiferTimeline[2026].year;
+
+console.log("Aquifer Timeline Loaded:", aquiferTimeline);
+
+</script>
+              
 </body>
 </html>
