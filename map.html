@@ -14,14 +14,16 @@
         nav a { color: #ffffff; text-decoration: none; padding: 10px 16px; background-color: #2c3e50; border: 2px solid #1abc9c; border-radius: 5px; font-weight: bold; font-size: 13px; }
         nav a:hover { background-color: #1abc9c; color: #2c3e50; }
         
-        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 960px; margin: 20px auto; border-radius: 8px; width: 95%; }
+        .main-flex-row { flex: 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; padding: 20px; gap: 20px; box-sizing: border-box; background-color: #1a252f; max-width: 1040px; margin: 20px auto; border-radius: 8px; width: 95%; }
         
-        #map-viewport { width: 100%; max-width: 620px; height: 580px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; margin-bottom: 20px; flex-shrink: 0; }
-        .map-grid { position: absolute; width: 500px; height: 500px; top: 25px; left: 50%; transform: translateX(-50%); }
+        #map-viewport { width: 500px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; flex-shrink: 0; }
+        .map-grid { position: absolute; width: 500px; height: 500px; top: 25px; left: 0; }
         .state { position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; pointer-events: none; }
         
         .health-circle { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; transition: background-color 0.2s, width 0.2s, height 0.2s, border-color 0.2s; z-index: 5; pointer-events: none; }
         .circle-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap; }
+        .metric-row { border-bottom: 1px solid #34495e; padding: 6px 0; display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .metric-row:last-child { border-bottom: none; }
 
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.7); }
@@ -47,48 +49,52 @@
         <a href="dashboard.html">Data Dashboard</a>
     </nav>
 
-    <main>
-        <div id="map-viewport">
-            <div class="map-grid">
-                
-                <!-- LAYER 1: States Boundaries Layout -->
-                <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
-                <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
-                <div class="state" style="top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
-                <div class="state" style="top: 170px; left: 10px; width: 120px; height: 95px;">COLORADO</div>
-                <div class="state" style="top: 170px; left: 140px; width: 220px; height: 90px;">KANSAS</div>
-                <div class="state" style="top: 270px; left: 10px; width: 120px; height: 110px;">NEW MEXICO</div>
-                <div class="state" style="top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
-                <div class="state" style="top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
-                
-                <!-- LAYER 2: GEOGRAPHICALLY SEPARATED NON-OVERLAPPING ZONES -->
-                <div id="circle-ne" class="health-circle" style="top: 120px; left: 250px;">
-                    <div class="circle-label" id="lbl-ne">Nebraska Basin</div>
-                </div>
-                <div id="circle-ks" class="health-circle" style="top: 215px; left: 250px;">
-                    <div class="circle-label" id="lbl-ks">Kansas Basin</div>
-                </div>
-                <div id="circle-tx" class="health-circle" style="top: 360px; left: 220px;">
-                    <div class="circle-label" id="lbl-tx">Texas & Oklahoma</div>
-                </div>
-
-                <!-- LAYER 3: COMPLETE 28 COMMUNITIES RENDERED SIMULTANEOUSLY -->
-                <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                    <!-- Nebraska Basin Nodes -->
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Alliance, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Grand Island, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">North Platte, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Ogallala, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Scottsbluff, NE</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Pine Ridge, SD</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Martin, SD</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 110px; left: 55px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Cheyenne, WY</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 70px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Torrington, WY</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Yuma, CO</span></div>
+    <!-- TWO COLUMN INTERACTIVE PANEL INTERFACE -->
+    <div class="main-flex-row">
+        
+        <!-- LEFT: VISUAL TRACKER ENGINE -->
+        <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
+            <div id="map-viewport">
+                <div class="map-grid">
+                    <!-- States Layout -->
+                    <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
+                    <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
+                    <div class="state" style="top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
+                    <div class="state" style="top: 170px; left: 10px; width: 120px; height: 95px;">COLORADO</div>
+                    <div class="state" style="top: 170px; left: 140px; width: 220px; height: 90px;">KANSAS</div>
+                    <div class="state" style="top: 270px; left: 10px; width: 120px; height: 110px;">NEW MEXICO</div>
+                    <div class="state" style="top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
+                    <div class="state" style="top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
                     
-                    <!-- Kansas Basin Nodes -->
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Garden City, KS</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Colby, KS</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 230px; left: 210px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Dodge City, KS</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 200px; left: 145px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Goodland, KS</span></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 250px; left: 180px;"><span style="position: absolute; top: 6px; left: -5px; font-size: 7px; color: #777; white-space: nowrap;">Liberal, KS</span></div>
+                    <!-- 3 Non-Overlapping Interactive Zones -->
+                    <div id="circle-ne" class="health-circle" style="top: 120px; left: 250px;"><div class="circle-label" id="lbl-ne">Nebraska Basin</div></div>
+                    <div id="circle-ks" class="health-circle" style="top: 215px; left: 250px;"><div class="circle-label" id="lbl-ks">Kansas Basin</div></div>
+                    <div id="circle-tx" class="health-circle" style="top: 360px; left: 220px;"><div class="circle-label" id="lbl-tx">Texas & Oklahoma</div></div>
+
+                    <!-- 28 Stable Community Anchors -->
+                    <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 130px; left: 180px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 110px; left: 55px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 70px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 230px; left: 210px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 200px; left: 145px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 250px; left: 180px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 205px; left: 75px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 210px; left: 105px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 300px; left: 35px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 370px; left: 150px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 415px; left: 145px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 395px; left: 160px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 350px; left: 130px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 360px; left: 175px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 295px; left: 180px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 300px; left: 230px;"></div>
