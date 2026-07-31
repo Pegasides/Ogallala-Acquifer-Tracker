@@ -131,7 +131,7 @@
 document.getElementById("year-display").textContent = "2026";
 
 console.log("Ogallala Aquifer Tracker engine loaded.");
- <script>
+ 
 
 const aquiferTimeline = {
     1950: {
@@ -170,8 +170,11 @@ const aquiferTimeline = {
 document.getElementById("year-display").textContent = aquiferTimeline[2026].year;
 
 console.log("Aquifer Timeline Loaded:", aquiferTimeline);
-function updateAquiferYear(year) {
 
+    function updateAquiferYear(year) {
+
+       
+    
     const data = aquiferTimeline[year];
 
     document.getElementById("year-display").textContent = data.year;
