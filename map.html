@@ -20,7 +20,12 @@
         .map-grid { position: absolute; width: 500px; height: 500px; top: 25px; left: 0; }
         .state { position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; pointer-events: none; }
         
-        .health-circle { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; transition: background-color 0.2s, width 0.2s, height 0.2s, border-color 0.2s; z-index: 5; pointer-events: none; }
+        /* OVERALL Aquifer Shape Layer (For 1950) */
+        #total-aquifer-1950 { position: absolute; top: 35px; left: 130px; width: 220px; height: 420px; background-color: rgba(43,108,176,0.7); border: 3px solid #2b6cb0; border-radius: 40% 50% 45% 60%; z-index: 4; display: none; pointer-events: none; }
+        .total-label { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-weight: bold; color: #fff; text-shadow: 1px 1px 4px #000; text-align: center; }
+
+        /* LARGE SEPARATED ERA CIRCLES (NO OVERLAP) */
+        .health-circle { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; transition: all 0.2s ease-out; z-index: 5; pointer-events: none; display: block; }
         .circle-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap; }
         .metric-row { border-bottom: 1px solid #34495e; padding: 6px 0; display: flex; justify-content: space-between; font-size: 0.85rem; }
         .metric-row:last-child { border-bottom: none; }
@@ -30,12 +35,6 @@
             70% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
             100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }
         }
-        @keyframes drawCone {
-            0% { stroke-dashoffset: 40; opacity: 0.4; stroke-width: 1.5px; }
-            50% { stroke-dashoffset: 0; opacity: 0.9; stroke-width: 3px; }
-            100% { stroke-dashoffset: -40; opacity: 0.4; stroke-width: 1.5px; }
-        }
-        .hydraulic-cone { stroke: #ef4444; stroke-width: 2; fill: none; stroke-dasharray: 4, 4; animation: drawCone 2s infinite linear; }
     </style>
 </head>
 <body>
@@ -57,9 +56,11 @@
 
     <div class="main-flex-row">
         
+        <!-- LEFT COLUMN: MAP GRAPHICS ENGINE -->
         <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
             <div id="map-viewport">
                 <div class="map-grid">
+                    <!-- States Matrix Boundary Layout -->
                     <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
                     <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
                     <div class="state" style="top: 80px; left: 140px; width: 220px; height: 80px;">NEBRASKA</div>
@@ -69,16 +70,25 @@
                     <div class="state" style="top: 270px; left: 140px; width: 220px; height: 45px;">OKLAHOMA</div>
                     <div class="state" style="top: 325px; left: 110px; width: 180px; height: 165px;">TEXAS</div>
                     
-                    <div id="circle-ne" class="health-circle" style="top: 120px; left: 250px;"><div class="circle-label" id="lbl-ne">Nebraska Basin</div></div>
-                    <div id="circle-ks" class="health-circle" style="top: 215px; left: 250px;"><div class="circle-label" id="lbl-ks">Kansas Basin</div></div>
-                    <div id="circle-tx" class="health-circle" style="top: 360px; left: 220px;"><div class="circle-label" id="lbl-tx">Texas & Oklahoma</div></div>
+                    <!-- 1950 TOTAL AQUIFER VIEWPORT BLOB -->
+                    <div id="total-aquifer-1950">
+                        <div class="total-label">Ogallala Aquifer<br>Unified Baseline (OK)<br>Volume: 100%</div>
+                    </div>
 
-                    <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 15; pointer-events: none;">
-                        <g id="cone-vectors-mesh"></g>
-                    </svg>
+                    <!-- 3 LARGE CHRONOLOGICAL HEALTH CIRCLES (POSITIONED TO NEVER OVERLAP) -->
+                    <div id="circle-ne" class="health-circle" style="top: 110px; left: 260px; background-color: rgba(43,108,176,0.65); border: 2px solid #2b6cb0;">
+                        <div class="circle-label" id="lbl-ne">Northern Basin</div>
+                    </div>
+                    <div id="circle-ks" class="health-circle" style="top: 230px; left: 280px; background-color: rgba(138,90,54,0.65); border: 2px solid #8a5a36;">
+                        <div class="circle-label" id="lbl-ks">Central Basin</div>
+                    </div>
+                    <div id="circle-tx" class="health-circle" style="top: 385px; left: 180px; background-color: rgba(220,38,38,0.65); border: 2px solid #dc2626;">
+                        <div class="circle-label" id="lbl-tx">Southern Plains</div>
+                    </div>
 
+                    <!-- COMPLETE 28 CORRECTED MUNICIPAL NODES ARRAY FRAME -->
                     <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                        <!-- 28 Baseline Communities -->
+                        <!-- Northern Zone (10 Nodes) -->
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
@@ -86,9 +96,11 @@
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 110px; left: 55px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 70px;"></div>
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 155px;"></div> <!-- Torrington WY -->
+                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 150px;"></div> <!-- Pine Bluffs WY -->
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"></div>
+                        
+                        <!-- Central Zone (8 Nodes) -->
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 230px; left: 210px;"></div>
@@ -96,8 +108,3 @@
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 250px; left: 180px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 205px; left: 75px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 210px; left: 105px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 300px; left: 35px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 370px; left: 150px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 415px; left: 145px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 395px; left: 160px;"></div>
-                        <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 350px; left: 130px;"></div>
