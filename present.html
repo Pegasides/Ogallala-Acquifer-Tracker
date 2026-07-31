@@ -10,8 +10,15 @@
             70% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 0 10px rgba(239,68,68,0); }
             100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0); }
         }
+        /* LIQUID SUCTION CONE WAVE ANIMATION */
+        @keyframes drawCone {
+            0% { stroke-dashoffset: 40; opacity: 0.4; stroke-width: 1.5px; }
+            50% { stroke-dashoffset: 0; opacity: 0.9; stroke-width: 3px; }
+            100% { stroke-dashoffset: -40; opacity: 0.4; stroke-width: 1.5px; }
+        }
         .metric-row { border-bottom: 1px solid #34495e; padding: 6px 0; display: flex; justify-content: space-between; font-size: 0.85rem; }
         .metric-row:last-child { border-bottom: none; }
+        .hydraulic-cone { stroke: #ef4444; stroke-width: 2; fill: none; stroke-dasharray: 4, 4; animation: drawCone 2s infinite linear; }
     </style>
 </head>
 <body style="background-color: #2c3e50; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column;">
@@ -61,9 +68,16 @@
                     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: bold; color: #ffffff; text-shadow: 1px 1px 3px #000; text-align: center; white-space: nowrap;">Texas & OK<br>Red (Worst Case)</div>
                 </div>
 
+                <!-- HYDRAULIC VECTOR CONE OVERLAY NETWORK LAYER -->
+                <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 15; pointer-events: none;">
+                    <!-- Omaha Suction Draw Funnel (Pulls upward from Nebraska Basin circle) -->
+                    <path class="hydraulic-cone" d="M 250,120 Q 260,125 270,125" />
+                    <!-- Dallas Suction Draw Funnel (Pulls upward from Texas basin circle) -->
+                    <path class="hydraulic-cone" d="M 220,360 Q 185,385 145,415" />
+                </svg>
+
                 <!-- 28 Communities Underneath Grid Frame -->
                 <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                    <!-- Blue Zone Nodes -->
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
@@ -71,9 +85,3 @@
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 100px; left: 145px;"></div>
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 35px; left: 205px;"></div>
                     <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 40px; left: 245px;"></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 110px; left: 55px;"></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 95px; left: 70px;"></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 185px; left: 90px;"></div>
-                    <!-- Brown Zone Nodes -->
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 220px; left: 185px;"></div>
-                    <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 195px; left: 165px;"></div>
