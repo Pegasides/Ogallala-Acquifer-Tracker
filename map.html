@@ -281,6 +281,22 @@ if (data.central === "Stressed") {
 if (data.southern === "Critical") {
     document.getElementById("circle-tx").style.background = "rgba(220,38,38,0.65)";
 }
+
+
+// 2050 status colors
+
+if (data.northern === "Stressed") {
+    document.getElementById("circle-ne").style.background = "rgba(255,165,0,0.65)";
+}
+
+if (data.central === "Critical") {
+    document.getElementById("circle-ks").style.background = "rgba(220,38,38,0.65)";
+}
+
+if (data.southern === "Severe") {
+    document.getElementById("circle-tx").style.background = "rgba(139,0,0,0.65)";
+}
+
           
           const markers = document.querySelectorAll("#community-layer div");   
           markers.forEach(marker => {
