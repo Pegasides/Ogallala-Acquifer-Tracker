@@ -240,6 +240,7 @@ drawCommunities();
     function updateAquiferYear(year) {
 
     const data = aquiferTimeline[year];
+          
 // Update basin colors based on health status
 
 if (data.northern === "Healthy") {
@@ -267,7 +268,21 @@ if (data.central === "Declining") {
 if (data.southern === "Declining") {
     document.getElementById("circle-tx").style.background = "rgba(200,80,60,0.65)";
 }       
-       const markers = document.querySelectorAll("#community-layer div");   
+       // 2026 status colors
+
+if (data.northern === "Stable") {
+    document.getElementById("circle-ne").style.background = "rgba(43,108,176,0.65)";
+}
+
+if (data.central === "Stressed") {
+    document.getElementById("circle-ks").style.background = "rgba(255,165,0,0.65)";
+}
+
+if (data.southern === "Critical") {
+    document.getElementById("circle-tx").style.background = "rgba(220,38,38,0.65)";
+}
+          
+          const markers = document.querySelectorAll("#community-layer div");   
           markers.forEach(marker => {
 
     if (year === 1950) {
