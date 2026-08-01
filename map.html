@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -73,8 +74,7 @@
 
      <div class="main-flex-row">
         
-        <!-- LEFT COLUMN: MAP GRAPHICS ENGINE -->
-        <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
+        <!-- LEFT COLUMN: MAP GRAPHICS ENGINE -->  <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
             <div id="map-viewport">
                 <div class="map-grid">
                     <!-- States Matrix Boundary Layout -->
@@ -131,7 +131,57 @@
 document.getElementById("year-display").textContent = "2026";
 
 console.log("Ogallala Aquifer Tracker engine loaded.");
- 
+ const communities = [
+    {
+        id: 1,
+        name: "Torrington",
+        state: "WY",
+        x: 155,
+        y: 95
+    },
+    {
+        id: 2,
+        name: "Pine Bluffs",
+        state: "WY",
+        x: 150,
+        y: 115
+    },
+    {
+        id: 3,
+        name: "Scottsbluff",
+        state: "NE",
+        x: 170,
+        y: 105
+    },
+    {
+        id: 4,
+        name: "Gering",
+        state: "NE",
+        x: 180,
+        y: 130
+    },
+    {
+        id: 5,
+        name: "Alliance",
+        state: "NE",
+        x: 205,
+        y: 35
+    }
+];
+
+console.log("Communities Loaded:", communities);
+
+So that section will look like this:
+
+console.log("Ogallala Aquifer Tracker engine loaded.");
+
+const communities = [
+    ...
+];
+
+console.log("Communities Loaded:", communities);
+
+const aquiferTimeline = {
 
 const aquiferTimeline = {
     1950: {
