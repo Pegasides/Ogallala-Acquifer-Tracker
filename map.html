@@ -246,7 +246,9 @@ drawCommunities();
     console.log("Showing aquifer status for:", year);
 console.log(data);
 
-alert("Aquifer year changed to " + year);
+document.getElementById("lbl-ne").textContent = data.northern;
+document.getElementById("lbl-ks").textContent = data.central;
+document.getElementById("lbl-tx").textContent = data.southern;
 
 }
 </script>
