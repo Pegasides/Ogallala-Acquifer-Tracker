@@ -105,6 +105,7 @@
 
                     <!-- COMPLETE 28 CORRECTED MUNICIPAL NODES ARRAY FRAME -->
                     <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
+                          <div id="community-layer" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index:20; pointer-events:none;"></div>
                         <!-- Northern Zone (10 Nodes) -->
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
@@ -171,18 +172,6 @@ console.log("Ogallala Aquifer Tracker engine loaded.");
 
 console.log("Communities Loaded:", communities);
 
-So that section will look like this:
-
-console.log("Ogallala Aquifer Tracker engine loaded.");
-
-const communities = [
-    ...
-];
-
-console.log("Communities Loaded:", communities);
-
-const aquiferTimeline = {
-
 const aquiferTimeline = {
     1950: {
         year: "1950",
@@ -221,10 +210,35 @@ document.getElementById("year-display").textContent = aquiferTimeline[2026].year
 
 console.log("Aquifer Timeline Loaded:", aquiferTimeline);
 
+     function drawCommunities() {
+
+    const layer = document.getElementById("community-layer");
+
+    communities.forEach(city => {
+
+        const marker = document.createElement("div");
+
+        marker.style.position = "absolute";
+        marker.style.width = "10px";
+        marker.style.height = "10px";
+        marker.style.background = "#00ff00";
+        marker.style.border = "2px solid #ffffff";
+        marker.style.borderRadius = "50%";
+        marker.style.left = city.x + "px";
+        marker.style.top = city.y + "px";
+
+        marker.title = city.name + ", " + city.state;
+
+        layer.appendChild(marker);
+
+    });
+
+}
+
+drawCommunities(); 
+      
     function updateAquiferYear(year) {
 
-       
-    
     const data = aquiferTimeline[year];
 
     document.getElementById("year-display").textContent = data.year;
