@@ -172,6 +172,19 @@ console.log("Ogallala Aquifer Tracker engine loaded.");
 
 console.log("Communities Loaded:", communities);
 
+// Community monitoring status framework
+
+const communityStatus = {
+    Torrington: {
+        region: "Northern Basin",
+        note: "Ogallala monitoring point"
+    },
+    "Pine Bluffs": {
+        region: "Northern Basin",
+        note: "Ogallala monitoring point"
+    }
+};
+      
 const aquiferTimeline = {
     1950: {
         year: "1950",
@@ -299,6 +312,7 @@ if (data.southern === "Severe") {
 
           
           const markers = document.querySelectorAll("#community-layer div");   
+          
           markers.forEach(marker => {
 
     if (year === 1950) {
