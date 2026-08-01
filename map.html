@@ -243,6 +243,8 @@ console.log("Aquifer Timeline Loaded:", aquiferTimeline);
         marker.title = city.name + ", " + city.state;
 marker.dataset.city = city.name;
        marker.dataset.state = city.state;   
+marker.dataset.region = "Ogallala Aquifer";
+          
         layer.appendChild(marker);
 
     });
@@ -255,7 +257,27 @@ drawCommunities();
 
     const data = aquiferTimeline[year];
 
+const markers = document.querySelectorAll("#community-layer div");
 
+markers.forEach(marker => {
+
+    if (year === 1950) {
+        marker.style.background = "#00ff00";
+    }
+
+    if (year === 1980) {
+        marker.style.background = "#ffff00";
+    }
+
+    if (year === 2026) {
+        marker.style.background = "#ff9900";
+    }
+
+    if (year === 2050) {
+        marker.style.background = "#ff0000";
+    }
+
+});
 
           
 // Update basin colors based on health status
