@@ -254,7 +254,19 @@ if (data.southern === "Healthy") {
     document.getElementById("circle-tx").style.background = "rgba(220,38,38,0.65)";
 }
 
-          
+   // 1980 status colors
+
+if (data.northern === "Good") {
+    document.getElementById("circle-ne").style.background = "rgba(43,108,176,0.65)";
+}
+
+if (data.central === "Declining") {
+    document.getElementById("circle-ks").style.background = "rgba(200,150,60,0.65)";
+}
+
+if (data.southern === "Declining") {
+    document.getElementById("circle-tx").style.background = "rgba(200,80,60,0.65)";
+}       
        const markers = document.querySelectorAll("#community-layer div");   
           markers.forEach(marker => {
 
