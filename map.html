@@ -254,12 +254,8 @@ drawCommunities();
     function updateAquiferYear(year) {
 
     const data = aquiferTimeline[year];
-// Update community marker year state
-const markers = document.querySelectorAll("#community-layer div");
 
-markers.forEach(marker => {
-    marker.dataset.year = year;
-});
+
 
           
 // Update basin colors based on health status
