@@ -240,7 +240,21 @@ drawCommunities();
     function updateAquiferYear(year) {
 
     const data = aquiferTimeline[year];
+// Update basin colors based on health status
 
+if (data.northern === "Healthy") {
+    document.getElementById("circle-ne").style.background = "rgba(43,108,176,0.65)";
+}
+
+if (data.central === "Healthy") {
+    document.getElementById("circle-ks").style.background = "rgba(138,90,54,0.65)";
+}
+
+if (data.southern === "Healthy") {
+    document.getElementById("circle-tx").style.background = "rgba(220,38,38,0.65)";
+}
+
+          
        const markers = document.querySelectorAll("#community-layer div");   
           markers.forEach(marker => {
 
