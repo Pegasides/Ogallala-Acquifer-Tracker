@@ -241,7 +241,8 @@ console.log("Aquifer Timeline Loaded:", aquiferTimeline);
         marker.style.top = city.y + "px";
 
         marker.title = city.name + ", " + city.state;
-
+marker.dataset.city = city.name;
+          
         layer.appendChild(marker);
 
     });
