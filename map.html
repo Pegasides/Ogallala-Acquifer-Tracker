@@ -110,8 +110,17 @@
                     </div>
 
                     <!-- COMPLETE 28 CORRECTED MUNICIPAL NODES ARRAY FRAME -->
-                    <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
-                          <div id="community-layer" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index:20; pointer-events:none;"></div>
+                    <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 50; pointer-events: none;">
+                       <div id="community-layer"
+style="
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:200;
+pointer-events:none;
+"></div>
 
                            <!--
                           
@@ -241,9 +250,9 @@ console.log("Aquifer Timeline Loaded:", aquiferTimeline);
         const marker = document.createElement("div");
 
         marker.style.position = "absolute";
-        marker.style.width = "10px";
-        marker.style.height = "10px";
-       marker.style.background = "lime";
+       marker.style.width = "20px";
+marker.style.height = "20px";
+   marker.style.background = "magenta";    
 marker.style.border = "2px solid #ffffff";
 marker.style.zIndex = "999";
         marker.style.borderRadius = "50%";
