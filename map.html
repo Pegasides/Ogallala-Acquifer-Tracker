@@ -430,7 +430,28 @@ const timelineYears = [
     2050
 ];
       
+function setTimelineYear(year) {
 
+    const index = timelineYears.indexOf(year);
+
+    if (index === -1) return;
+
+    document.getElementById("yearSlider").value = index;
+
+    document.getElementById("sliderYear").textContent = year;
+
+    updateAquiferYear(year);
+
+    updateCommunityMarkers(year);
+
+}
+
+
+
+
+
+
+      
 
 document.getElementById("yearSlider").addEventListener("input", function() {
 
