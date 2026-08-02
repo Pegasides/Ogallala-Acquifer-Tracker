@@ -187,7 +187,8 @@ const communityStatus = {
 };
       
 const aquiferTimeline = {
-    1950: {
+
+1950: {
         year: "1950",
         overallHealth: 100,
         northern: "Healthy",
@@ -211,6 +212,38 @@ const aquiferTimeline = {
         southern: "Critical"
     },
 
+    2030: {
+        year: "2030",
+        overallHealth: 55,
+        northern: "Stable",
+        central: "Stressed",
+        southern: "Critical"
+    },
+
+    2035: {
+        year: "2035",
+        overallHealth: 50,
+        northern: "Stressed",
+        central: "Stressed",
+        southern: "Severe"
+    },
+
+    2040: {
+        year: "2040",
+        overallHealth: 45,
+        northern: "Stressed",
+        central: "Critical",
+        southern: "Severe"
+    },
+
+    2045: {
+        year: "2045",
+        overallHealth: 42,
+        northern: "Stressed",
+        central: "Critical",
+        southern: "Severe"
+    },
+
     2050: {
         year: "2050",
         overallHealth: 40,
@@ -218,8 +251,15 @@ const aquiferTimeline = {
         central: "Critical",
         southern: "Severe"
     }
+
 };
 
+
+
+
+
+
+      
 document.getElementById("year-display").textContent = aquiferTimeline[2026].year;
 
 console.log("Aquifer Timeline Loaded:", aquiferTimeline);
