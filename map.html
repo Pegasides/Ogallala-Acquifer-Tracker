@@ -112,7 +112,9 @@
                     <!-- COMPLETE 28 CORRECTED MUNICIPAL NODES ARRAY FRAME -->
                     <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 10; pointer-events: none;">
                           <div id="community-layer" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index:20; pointer-events:none;"></div>
-                        <!-- Northern Zone (10 Nodes) -->
+
+                           <!--
+                          
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 105px; left: 170px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 125px; left: 270px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 115px; left: 210px;"></div>
@@ -133,48 +135,49 @@
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 205px; left: 75px;"></div>
                         <div style="position: absolute; width: 4px; height: 4px; background: #ffffff; border: 1px solid #000; border-radius: 50%; top: 210px; left: 105px;"></div>
 
+-->
+
 </div>
 <script>
 document.getElementById("year-display").textContent = "2026";
 
 console.log("Ogallala Aquifer Tracker engine loaded.");
- const communities = [
-    {
-        id: 1,
-        name: "Torrington",
-        state: "WY",
-        x: 155,
-        y: 95
-    },
-    {
-        id: 2,
-        name: "Pine Bluffs",
-        state: "WY",
-        x: 150,
-        y: 115
-    },
-    {
-        id: 3,
-        name: "Scottsbluff",
-        state: "NE",
-        x: 170,
-        y: 105
-    },
-    {
-        id: 4,
-        name: "Gering",
-        state: "NE",
-        x: 180,
-        y: 130
-    },
-    {
-        id: 5,
-        name: "Alliance",
-        state: "NE",
-        x: 205,
-        y: 35
-    }
+
+const communities = [
+    { id: 1, name: "Alliance", state: "NE", x: 205, y: 35 },
+    { id: 2, name: "Omaha", state: "NE", x: 310, y: 140 },
+    { id: 3, name: "Grand Island", state: "NE", x: 250, y: 145 },
+    { id: 4, name: "North Platte", state: "NE", x: 210, y: 135 },
+    { id: 5, name: "Scottsbluff", state: "NE", x: 170, y: 105 },
+
+    { id: 6, name: "Pine Ridge", state: "SD", x: 190, y: 45 },
+
+    { id: 7, name: "Torrington", state: "WY", x: 155, y: 95 },
+
+    { id: 8, name: "Goodland", state: "KS", x: 155, y: 210 },
+    { id: 9, name: "Hoxie", state: "KS", x: 210, y: 230 },
+    { id: 10, name: "Colby", state: "KS", x: 180, y: 220 },
+    { id: 11, name: "Garden City", state: "KS", x: 240, y: 255 },
+    { id: 12, name: "Liberal", state: "KS", x: 220, y: 280 },
+    { id: 13, name: "Dodge City", state: "KS", x: 270, y: 260 },
+
+    { id: 14, name: "Yuma", state: "CO", x: 90, y: 205 },
+    { id: 15, name: "Burlington", state: "CO", x: 100, y: 240 },
+
+    { id: 16, name: "Guymon", state: "OK", x: 160, y: 310 },
+    { id: 17, name: "Boise City", state: "OK", x: 130, y: 320 },
+
+    { id: 18, name: "Clovis", state: "NM", x: 90, y: 350 },
+    { id: 19, name: "Hobbs", state: "NM", x: 100, y: 420 },
+
+    { id: 20, name: "Lubbock", state: "TX", x: 145, y: 420 },
+    { id: 21, name: "Plainview", state: "TX", x: 160, y: 390 },
+    { id: 22, name: "Amarillo", state: "TX", x: 190, y: 360 },
+    { id: 23, name: "Dalhart", state: "TX", x: 170, y: 330 },
+    { id: 24, name: "Hereford", state: "TX", x: 180, y: 400 }
 ];
+
+      
 
 console.log("Communities Loaded:", communities);
 
