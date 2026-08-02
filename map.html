@@ -261,23 +261,64 @@ marker.dataset.region = "Ogallala Aquifer";
 }
 
 drawCommunities(); 
-  function updateCommunityMarkers(year) {
+ function updateCommunityMarkers(year) {
 
     const markers = document.querySelectorAll("#community-layer div");
 
     markers.forEach(marker => {
 
+        const state = marker.dataset.state;
+
+        // Default baseline colors
+        let color = "#00ff00";
+
         if (year === 1950) {
-            marker.style.background = "#00ff00";
-        } else if (year === 1980) {
-            marker.style.background = "#ffff00";
-        } else if (year === 2026) {
-            marker.style.background = "#ff9900";
-        } else if (year === 2050) {
-            marker.style.background = "#ff0000";
+            color = "#00ff00";
         }
 
+        if (year === 1980) {
+
+            if (state === "TX" || state === "KS") {
+                color = "#d4a017";   // early stress
+            } else {
+                color = "#ffff00";   // stable
+            }
+
+        }
+
+        if (year === 2026) {
+
+            if (state === "TX") {
+                color = "#ff3300";   // critical
+            } 
+            else if (state === "KS") {
+                color = "#ff9900";   // stressed
+            } 
+            else {
+                color = "#ffcc00";   // moderate
+            }
+
+        }
+
+        if (year === 2050) {
+
+            if (state === "TX" || state === "NM" || state === "OK") {
+                color = "#990000";   // severe
+            }
+            else if (state === "KS") {
+                color = "#ff0000";   // critical
+            }
+            else {
+                color = "#ff9900";   // stressed
+            }
+
+        }
+
+        marker.style.background = color;
+
     });
+
+}
 
 }
       
