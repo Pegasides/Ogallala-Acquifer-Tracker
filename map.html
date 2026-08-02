@@ -88,21 +88,11 @@
 
 
       
-<br>
-
+<br>   
+  
 <input 
     type="range"
     id="yearSlider"
-
-<br><br>
-
-<button id="playTimeline">
-    ▶ Play Forecast
-</button>
-
-
-
-      
     min="0"
     max="7"
     value="2"
@@ -110,6 +100,13 @@
     style="width:300px;"
 >
 
+<br><br>
+
+<button id="playTimeline">
+    ▶ Play Forecast
+</button>
+
+      
 <div style="width:320px; margin:auto; display:flex; justify-content:space-between; font-size:12px;">
     <span>1950</span>
     <span>1980</span>
@@ -146,10 +143,6 @@
 
 </div>
 
-
-
-
-
       
 Overall Health: 60%
 </p>
@@ -167,28 +160,6 @@ Southern Plains: Critical
 </p>
 
 </div>
-
-Do only this first.
-
-After you insert it:
-
-Save.
-Preview.
-Make sure the panel appears.
-Do not commit yet.
-
-Then tell me:
-
-"Status panel inserted"
-
-and we will connect it to the slider and buttons. 👍
-
-
-
-
-
-
-
       
      <div class="main-flex-row">
         
@@ -365,13 +336,7 @@ const aquiferTimeline = {
     }
 
 };
-
-
-
-
-
-
-      
+    
 document.getElementById("year-display").textContent = aquiferTimeline[2026].year;
 
 console.log("Aquifer Timeline Loaded:", aquiferTimeline);
@@ -453,18 +418,8 @@ setTimeout(function() {
 
 drawCommunities(); 
 
-imelineTimer);
-
-    }
-
-});
-      
-It should look like this:
-drawCommunities();
-
 
 const timelineYears = [
-    1950,const timelineYears = [
     1950,
     1980,
     2026,
@@ -474,6 +429,7 @@ const timelineYears = [
     2045,
     2050
 ];
+      
 
 
 document.getElementById("yearSlider").addEventListener("input", function() {
@@ -487,64 +443,6 @@ document.getElementById("yearSlider").addEventListener("input", function() {
 
 });
 
-let timelinePlaying = false;
-let timelineTimer;
-
-document.getElementById("playTimeline").addEventListener("click", function() {
-
-    timelinePlaying = !timelinePlaying;
-
-    if (timelinePlaying) {
-
-        this.textContent = "⏸ Pause Forecast";
-
-        let currentIndex = Number(
-            document.getElementById("yearSlider").value
-        );
-
-        timelineTimer = setInterval(function() {
-
-            currentIndex++;
-
-            if (currentIndex > timelineYears.length - 1) {
-                currentIndex = 0;
-            }
-
-            document.getElementById("yearSlider").value = currentIndex;
-
-            const year = timelineYears[currentIndex];
-
-            document.getElementById("sliderYear").textContent = year;
-
-            updateAquiferYear(year);
-            updateCommunityMarkers(year);
-
-        }, 2000);
-
-    } else {
-
-        this.textContent = "▶ Play Forecast";
-
-        clearInterval(t
-    1980,
-    2026,
-    2030,
-    2035,
-    2040,
-    2045,
-    2050
-];
-
-document.getElementById("yearSlider").addEventListener("input", function() {
-
-    const year = timelineYears[this.value];
-
-    document.getElementById("sliderYear").textContent = year;
-
-    updateAquiferYear(year);
-    updateCommunityMarkers(year);
-
-});
 
 
 
@@ -591,29 +489,6 @@ document.getElementById("playTimeline").addEventListener("click", function() {
     }
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       
  function updateCommunityMarkers(year) {
@@ -695,16 +570,6 @@ function updateAquiferYear(year) {
     else {
         healthBar.style.background = "#990000";
     }
-
-
-
-
-
-
-      
-   
-
-
           
 // Update basin colors based on health status
 
