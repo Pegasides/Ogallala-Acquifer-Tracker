@@ -66,18 +66,130 @@
     </nav>
     
 <div style="text-align:center; padding:10px;">
-<button onclick="updateAquiferYear(1950); updateCommunityMarkers(1950)">1950</button>
 
-<button onclick="updateAquiferYear(1980); updateCommunityMarkers(1980)">1980</button>
 
-<button onclick="updateAquiferYear(2026); updateCommunityMarkers(2026)">2026</button>
+<button onclick="setTimelineYear(1950)">1950</button>
 
-<button onclick="updateAquiferYear(2050); updateCommunityMarkers(2050)">2050</button>
+<button onclick="setTimelineYear(1980)">1980</button>
+
+<button onclick="setTimelineYear(2026)">2026</button>
+
+<button onclick="setTimelineYear(2050)">2050</button>
 
 
       
+
+<br><br>
+
+<label for="yearSlider">
+    Forecast Year:
+    <span id="sliderYear">2026</span>
+</label>
+
+
+      
+<br>
+
+<input 
+    type="range"
+    id="yearSlider"
+
+<br><br>
+
+<button id="playTimeline">
+    ▶ Play Forecast
+</button>
+
+
+
+      
+    min="0"
+    max="7"
+    value="2"
+    step="1"
+    style="width:300px;"
+>
+
+<div style="width:320px; margin:auto; display:flex; justify-content:space-between; font-size:12px;">
+    <span>1950</span>
+    <span>1980</span>
+    <span>2026</span>
+    <span>2030</span>
+    <span>2035</span>
+    <span>2040</span>
+    <span>2045</span>
+    <span>2050</span>
+</div>
+
+</div>
+    
+      
     </div>
 
+<p id="status-health">
+
+<div style="
+    width:250px;
+    height:20px;
+    border:1px solid #333;
+    border-radius:10px;
+    margin:10px auto;
+    overflow:hidden;
+">
+
+<div id="health-bar" style="
+    height:100%;
+    width:60%;
+    background:#ff9900;
+">
+</div>
+
+</div>
+
+
+
+
+
+      
+Overall Health: 60%
+</p>
+
+<p id="status-north">
+Northern Basin: Stable
+</p>
+
+<p id="status-central">
+Central Basin: Stressed
+</p>
+
+<p id="status-south">
+Southern Plains: Critical
+</p>
+
+</div>
+
+Do only this first.
+
+After you insert it:
+
+Save.
+Preview.
+Make sure the panel appears.
+Do not commit yet.
+
+Then tell me:
+
+"Status panel inserted"
+
+and we will connect it to the slider and buttons. 👍
+
+
+
+
+
+
+
+      
      <div class="main-flex-row">
         
         <!-- LEFT COLUMN: MAP GRAPHICS ENGINE -->  <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
@@ -331,13 +443,8 @@ setTimeout(function() {
         info.style.display = "none";
     }
 }, 5000);
-
-
-      
-});
-
-          
-          
+ 
+});    
         layer.appendChild(marker);
 
     });
@@ -345,6 +452,170 @@ setTimeout(function() {
 }
 
 drawCommunities(); 
+
+imelineTimer);
+
+    }
+
+});
+      
+It should look like this:
+drawCommunities();
+
+
+const timelineYears = [
+    1950,const timelineYears = [
+    1950,
+    1980,
+    2026,
+    2030,
+    2035,
+    2040,
+    2045,
+    2050
+];
+
+
+document.getElementById("yearSlider").addEventListener("input", function() {
+
+    const year = timelineYears[this.value];
+
+    document.getElementById("sliderYear").textContent = year;
+
+    updateAquiferYear(year);
+    updateCommunityMarkers(year);
+
+});
+
+let timelinePlaying = false;
+let timelineTimer;
+
+document.getElementById("playTimeline").addEventListener("click", function() {
+
+    timelinePlaying = !timelinePlaying;
+
+    if (timelinePlaying) {
+
+        this.textContent = "⏸ Pause Forecast";
+
+        let currentIndex = Number(
+            document.getElementById("yearSlider").value
+        );
+
+        timelineTimer = setInterval(function() {
+
+            currentIndex++;
+
+            if (currentIndex > timelineYears.length - 1) {
+                currentIndex = 0;
+            }
+
+            document.getElementById("yearSlider").value = currentIndex;
+
+            const year = timelineYears[currentIndex];
+
+            document.getElementById("sliderYear").textContent = year;
+
+            updateAquiferYear(year);
+            updateCommunityMarkers(year);
+
+        }, 2000);
+
+    } else {
+
+        this.textContent = "▶ Play Forecast";
+
+        clearInterval(t
+    1980,
+    2026,
+    2030,
+    2035,
+    2040,
+    2045,
+    2050
+];
+
+document.getElementById("yearSlider").addEventListener("input", function() {
+
+    const year = timelineYears[this.value];
+
+    document.getElementById("sliderYear").textContent = year;
+
+    updateAquiferYear(year);
+    updateCommunityMarkers(year);
+
+});
+
+
+
+let timelinePlaying = false;
+let timelineTimer;
+
+document.getElementById("playTimeline").addEventListener("click", function() {
+
+    timelinePlaying = !timelinePlaying;
+
+    if (timelinePlaying) {
+
+        this.textContent = "⏸ Pause Forecast";
+
+        let currentIndex = Number(
+            document.getElementById("yearSlider").value
+        );
+
+        timelineTimer = setInterval(function() {
+
+            currentIndex++;
+
+            if (currentIndex > timelineYears.length - 1) {
+                currentIndex = 0;
+            }
+
+            document.getElementById("yearSlider").value = currentIndex;
+
+            const year = timelineYears[currentIndex];
+
+            document.getElementById("sliderYear").textContent = year;
+
+            updateAquiferYear(year);
+            updateCommunityMarkers(year);
+
+        }, 2000);
+
+    } else {
+
+        this.textContent = "▶ Play Forecast";
+
+        clearInterval(timelineTimer);
+
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
  function updateCommunityMarkers(year) {
 
     const markers = document.querySelectorAll("#community-layer div");
@@ -404,11 +675,34 @@ drawCommunities();
 
 }
       
-     
-    function updateAquiferYear(year) {
+function updateAquiferYear(year) {
 
     const data = aquiferTimeline[year];
 
+    const healthBar = document.getElementById("health-bar");
+
+    healthBar.style.width = data.overallHealth + "%";
+
+    if (data.overallHealth >= 80) {
+        healthBar.style.background = "#00aa00";
+    }
+    else if (data.overallHealth >= 60) {
+        healthBar.style.background = "#ffcc00";
+    }
+    else if (data.overallHealth >= 40) {
+        healthBar.style.background = "#ff9900";
+    }
+    else {
+        healthBar.style.background = "#990000";
+    }
+
+
+
+
+
+
+      
+   
 
 
           
@@ -471,6 +765,19 @@ if (data.southern === "Severe") {
    
 
     document.getElementById("year-display").textContent = data.year;
+
+document.getElementById("status-health").textContent =
+    "Overall Health: " + data.overallHealth + "%";
+
+document.getElementById("status-north").textContent =
+    "Northern Basin: " + data.northern;
+
+document.getElementById("status-central").textContent =
+    "Central Basin: " + data.central;
+
+document.getElementById("status-south").textContent =
+    "Southern Plains: " + data.southern;
+          
 
     console.log("Showing aquifer status for:", year);
 console.log(data);
