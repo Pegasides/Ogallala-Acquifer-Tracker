@@ -244,6 +244,41 @@ marker.style.zIndex = "999";
 marker.dataset.city = city.name;
        marker.dataset.state = city.state;   
 marker.dataset.region = "Ogallala Aquifer";
+
+marker.addEventListener("click", function() {
+
+    const existing = document.getElementById("community-info");
+
+    if (existing) {
+        existing.remove();
+    }
+
+    const info = document.createElement("div");
+
+    info.id = "community-info";
+
+    info.style.position = "absolute";
+    info.style.left = (city.x + 15) + "px";
+    info.style.top = (city.y + 15) + "px";
+    info.style.background = "#ffffff";
+    info.style.color = "#000000";
+    info.style.border = "2px solid #333";
+    info.style.borderRadius = "6px";
+    info.style.padding = "10px";
+    info.style.zIndex = "500";
+    info.style.fontSize = "14px";
+    info.style.boxShadow = "2px 2px 6px rgba(0,0,0,0.4)";
+
+    info.innerHTML =
+        "<b>" + city.name + ", " + city.state + "</b><br>" +
+        "Ogallala Aquifer Community<br>" +
+        "Monitoring Region: " + marker.dataset.region;
+
+    document.getElementById("map-viewport").appendChild(info);
+
+});
+
+          
           
         layer.appendChild(marker);
 
