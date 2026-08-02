@@ -252,7 +252,25 @@ marker.dataset.region = "Ogallala Aquifer";
 }
 
 drawCommunities(); 
-      
+   function updateCommunityMarkers(year) {
+
+    const markers = document.querySelectorAll("#community-layer div");
+
+    markers.forEach(marker => {
+
+        if (year === 1950) {
+            marker.style.background = "#00ff00";
+        } else if (year === 1980) {
+            marker.style.background = "#ffff00";
+        } else if (year === 2026) {
+            marker.style.background = "#ff9900";
+        } else if (year === 2050) {
+            marker.style.background = "#ff0000";
+        }
+
+    });
+
+}   
     function updateAquiferYear(year) {
 
     const data = aquiferTimeline[year];
