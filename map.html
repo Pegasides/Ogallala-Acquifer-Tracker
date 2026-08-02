@@ -279,7 +279,9 @@ marker.addEventListener("click", function() {
     document.getElementById("map-viewport").appendChild(info);
 
 setTimeout(function() {
-    info.remove();
+    if (info) {
+        info.style.display = "none";
+    }
 }, 5000);
 
 
