@@ -19,6 +19,15 @@
         
         #map-viewport { width: 500px; height: 550px; background-color: #16161a; border: 2px solid #34495e; border-radius: 8px; position: relative; overflow: hidden; flex-shrink: 0; }
         .map-grid { position: absolute; width: 500px; height: 500px; top: 25px; left: 0; }
+          #map-engine-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+    z-index: 1;
+    pointer-events: none;
+}
         .state { position: absolute; border: 1px dashed #44444c; background: rgba(255,255,255,0.01); color: #444; font-size: 11px; font-weight: bold; padding: 5px; pointer-events: none; }
         
         /* OVERALL Aquifer Shape Layer (For 1950) */
@@ -166,6 +175,7 @@ Southern Plains: Critical
         <!-- LEFT COLUMN: MAP GRAPHICS ENGINE -->  <div style="display: flex; flex-direction: column; align-items: center; width: 500px;">
             <div id="map-viewport">
                 <div class="map-grid">
+                      <div id="map-engine-layer" aria-label="Map Engine 2.0 geographic layer"></div>
                     <!-- States Matrix Boundary Layout -->
                     <div class="state" style="top: 10px; left: 140px; width: 200px; height: 60px;">SOUTH DAKOTA</div>
                     <div class="state" style="top: 80px; left: 10px; width: 120px; height: 80px;">WYOMING</div>
