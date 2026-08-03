@@ -389,7 +389,15 @@ marker.dataset.longitude = city.lon;
 
           
 
-const position = Geography.project(city.lat, city.lon);
+const projected = MapEngine.projection([
+    city.lon,
+    city.lat
+]);
+
+const position = {
+    x: projected[0],
+    y: projected[1]
+};
           
 
         marker.style.position = "absolute";
