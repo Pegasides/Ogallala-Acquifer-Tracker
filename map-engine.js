@@ -18,10 +18,17 @@ const MapEngine = {
     version: "2.0",
     initialized: false,
 
-    initialize() {
-        console.log("Initializing Map Engine 2.0...");
-        this.initialized = true;
+   initialize() {
+    console.log("Initializing Map Engine 2.0...");
+
+    this.layer = document.getElementById("map-engine-layer");
+
+    if (this.layer) {
+        this.layer.style.border = "2px dashed #00ffff";
     }
+
+    this.initialized = true;
+}
 };
 
 window.addEventListener("DOMContentLoaded", () => {
