@@ -219,38 +219,52 @@ document.getElementById("year-display").textContent = "2026";
 console.log("Ogallala Aquifer Tracker engine loaded.");
 
 const communities = [
-    { id: 1, name: "Alliance", state: "NE", x: 205, y: 35 },
-    { id: 2, name: "Omaha", state: "NE", x: 310, y: 140 },
-    { id: 3, name: "Grand Island", state: "NE", x: 250, y: 145 },
-    { id: 4, name: "North Platte", state: "NE", x: 210, y: 135 },
-    { id: 5, name: "Scottsbluff", state: "NE", x: 170, y: 105 },
+    { id: 1, name: "Alliance", state: "NE", basin: "Northern", lat: 42.102567, lon: -102.876188, x: 137, y: 86 },
+    { id: 2, name: "Grand Island", state: "NE", basin: "Northern", lat: 40.921352, lon: -98.358559, x: 441, y: 138 },
+    { id: 3, name: "North Platte", state: "NE", basin: "Northern", lat: 41.124960, lon: -100.750359, x: 280, y: 129 },
+    { id: 4, name: "Ogallala", state: "NE", basin: "Northern", lat: 41.129595, lon: -101.720677, x: 215, y: 129 },
+    { id: 5, name: "Scottsbluff", state: "NE", basin: "Northern", lat: 41.868088, lon: -103.662035, x: 85, y: 96 },
 
-    { id: 6, name: "Pine Ridge", state: "SD", x: 190, y: 45 },
+    { id: 6, name: "Pine Ridge", state: "SD", basin: "Northern", lat: 43.026919, lon: -102.552352, x: 159, y: 46 },
+    { id: 7, name: "Martin", state: "SD", basin: "Northern", lat: 43.174875, lon: -101.732315, x: 214, y: 39 },
 
-    { id: 7, name: "Torrington", state: "WY", x: 155, y: 95 },
+    { id: 8, name: "Torrington", state: "WY", basin: "Northern", lat: 42.065050, lon: -104.173528, x: 50, y: 88 },
+    { id: 9, name: "Pine Bluffs", state: "WY", basin: "Northern", lat: 41.180212, lon: -104.074782, x: 57, y: 126 },
 
-    { id: 8, name: "Goodland", state: "KS", x: 155, y: 210 },
-    { id: 9, name: "Hoxie", state: "KS", x: 210, y: 230 },
-    { id: 10, name: "Colby", state: "KS", x: 180, y: 220 },
-    { id: 11, name: "Garden City", state: "KS", x: 240, y: 255 },
-    { id: 12, name: "Liberal", state: "KS", x: 220, y: 280 },
-    { id: 13, name: "Dodge City", state: "KS", x: 270, y: 260 },
+    { id: 10, name: "Yuma", state: "CO", basin: "Northern", lat: 40.122511, lon: -102.715636, x: 148, y: 173 },
 
-    { id: 14, name: "Yuma", state: "CO", x: 90, y: 205 },
-    { id: 15, name: "Burlington", state: "CO", x: 100, y: 240 },
+    { id: 11, name: "Garden City", state: "KS", basin: "Central", lat: 37.975876, lon: -100.850884, x: 273, y: 266 },
+    { id: 12, name: "Dodge City", state: "KS", basin: "Central", lat: 37.760670, lon: -100.017863, x: 329, y: 276 },
+    { id: 13, name: "Liberal", state: "KS", basin: "Central", lat: 37.046108, lon: -100.927706, x: 268, y: 307 },
+    { id: 14, name: "Goodland", state: "KS", basin: "Central", lat: 39.348512, lon: -101.713819, x: 215, y: 206 },
+    { id: 15, name: "Colby", state: "KS", basin: "Central", lat: 39.384564, lon: -101.044978, x: 260, y: 205 },
 
-    { id: 16, name: "Guymon", state: "OK", x: 160, y: 310 },
-    { id: 17, name: "Boise City", state: "OK", x: 130, y: 320 },
+    { id: 16, name: "Burlington", state: "CO", basin: "Central", lat: 39.304169, lon: -102.271412, x: 178, y: 208 },
+    { id: 17, name: "Wray", state: "CO", basin: "Central", lat: 40.079920, lon: -102.228597, x: 181, y: 174 },
 
-    { id: 18, name: "Clovis", state: "NM", x: 90, y: 350 },
-    { id: 19, name: "Hobbs", state: "NM", x: 100, y: 420 },
+    { id: 18, name: "Tucumcari", state: "NM", basin: "Central", lat: 35.170291, lon: -103.705046, x: 82, y: 389 },
 
-    { id: 20, name: "Lubbock", state: "TX", x: 145, y: 420 },
-    { id: 21, name: "Plainview", state: "TX", x: 160, y: 390 },
-    { id: 22, name: "Amarillo", state: "TX", x: 190, y: 360 },
-    { id: 23, name: "Dalhart", state: "TX", x: 170, y: 330 },
-    { id: 24, name: "Hereford", state: "TX", x: 180, y: 400 }
+    { id: 19, name: "Amarillo", state: "TX", basin: "Southern", lat: 35.198064, lon: -101.833107, x: 207, y: 388 },
+    { id: 20, name: "Dalhart", state: "TX", basin: "Southern", lat: 36.057423, lon: -102.512212, x: 162, y: 350 },
+    { id: 21, name: "Pampa", state: "TX", basin: "Southern", lat: 35.547852, lon: -100.965032, x: 266, y: 372 },
+    { id: 22, name: "Plainview", state: "TX", basin: "Southern", lat: 34.191119, lon: -101.723501, x: 215, y: 432 },
+    { id: 23, name: "Lubbock", state: "TX", basin: "Southern", lat: 33.561901, lon: -101.888883, x: 204, y: 459 },
+
+    { id: 24, name: "Guymon", state: "OK", basin: "Southern", lat: 36.690101, lon: -101.477046, x: 231, y: 323 },
+    { id: 25, name: "Beaver", state: "OK", basin: "Southern", lat: 36.815087, lon: -100.523543, x: 295, y: 317 },
+    { id: 26, name: "Boise City", state: "OK", basin: "Southern", lat: 36.731336, lon: -102.509522, x: 162, y: 321 },
+
+    { id: 27, name: "Clovis", state: "NM", basin: "Southern", lat: 34.438569, lon: -103.194194, x: 116, y: 421 },
+
+    { id: 28, name: "Hereford", state: "TX", basin: "Southern", lat: 34.822603, lon: -102.400159, x: 169, y: 404 }
 ];
+
+
+
+
+
+
+      
 
       
 
