@@ -2,16 +2,7 @@
 ==========================================================
 MAP ENGINE 2.0
 
-Purpose:
-- Render the geographic Ogallala Aquifer map
-- Draw official state boundaries
-- Display the official aquifer footprint
-- Position communities using latitude and longitude
-- Overlay AI data centers
-- Animate the timeline from 1950 to 2050
 
-This file will replace the legacy graphics engine gradually.
-==========================================================
 */
 
 const MapEngine = {
@@ -23,8 +14,39 @@ const MapEngine = {
     this.layer = document.getElementById("map-engine-layer");
 
 if (this.layer) {
-console.log("Map Engine layer found.");
+    console.log("Map Engine layer found.");
+
+    const svg = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+    );
+
+    svg.setAttribute("id", "geographic-map");
+    svg.setAttribute("viewBox", "0 0 500 500");
+    svg.setAttribute("width", "500");
+    svg.setAttribute("height", "500");
+
+    this.layer.appendChild(svg);
+
+    const testRect = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+    );
+
+    testRect.setAttribute("x", "25");
+    testRect.setAttribute("y", "25");
+    testRect.setAttribute("width", "450");
+    testRect.setAttribute("height", "450");
+    testRect.setAttribute("fill", "none");
+    testRect.setAttribute("stroke", "#ffffff");
+    testRect.setAttribute("stroke-width", "2");
+    testRect.setAttribute("stroke-dasharray", "8 6");
+
+    svg.appendChild(testRect);
+
+       console.log("Geographic SVG layer created.");
 }
+
     this.initialized = true;
 }
 };
