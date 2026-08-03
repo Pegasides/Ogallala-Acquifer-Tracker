@@ -467,8 +467,13 @@ setTimeout(function() {
 
 }
 
-drawCommunities(); 
-
+window.addEventListener(
+    "mapengine:geography-ready",
+   window.addEventListener(
+    "mapengine:geography-ready",
+    drawCommunities
+);
+);
 
 const timelineYears = [
     1950,
