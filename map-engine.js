@@ -84,7 +84,7 @@ svg.appendChild(testCircle);
             )
         };
 
-       const projection = d3.geoMercator()
+      const projection = d3.geoMercator()
     .fitExtent(
         [[20, 20], [480, 480]],
         selectedStates
