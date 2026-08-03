@@ -84,12 +84,11 @@ svg.appendChild(testCircle);
             )
         };
 
-        const projection = d3.geoAlbers()
-            .fitExtent(
-                [[20, 20], [480, 480]],
-                selectedStates
-            );
-
+       const projection = d3.geoMercator()
+    .fitExtent(
+        [[20, 20], [480, 480]],
+        selectedStates
+    );
         const path = d3.geoPath(projection);
 
         d3.select(svg)
