@@ -18,8 +18,7 @@ const MapEngine = {
     version: "2.0",
     initialized: false,
 
-   initialize() {
-    console.log("Initializing Map Engine 2.0...");
+   initialize() {console.log("Initializing Map Engine 2.0 - deployment test");
 
     this.layer = document.getElementById("map-engine-layer");
 
