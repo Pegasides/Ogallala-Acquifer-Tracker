@@ -22,8 +22,8 @@ const MapEngine = {
 
     this.layer = document.getElementById("map-engine-layer");
 
- if (this.layer) {
-    console.log("Map Engine layer found.");
+if (this.layer) {
+console.log("Map Engine layer found.");
 }
     this.initialized = true;
 }
