@@ -28,26 +28,19 @@ if (this.layer) {
 
     this.layer.appendChild(svg);
 
-    const testRect = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "rect"
-    );
 
-    testRect.setAttribute("x", "25");
-    testRect.setAttribute("y", "25");
-    testRect.setAttribute("width", "450");
-    testRect.setAttribute("height", "450");
-    testRect.setAttribute("fill", "none");
-    testRect.setAttribute("stroke", "#ffffff");
-    testRect.setAttribute("stroke-width", "2");
-    testRect.setAttribute("stroke-dasharray", "8 6");
+this.drawStateBoundaries(svg);
 
-    svg.appendChild(testRect);
 
+    
        console.log("Geographic SVG layer created.");
 }
 
-    this.initialized = true;
+  this.initialized = true;
+},
+
+async drawStateBoundaries(svg) {
+    console.log("State boundary drawing method connected.");
 }
 };
 
