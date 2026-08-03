@@ -40,8 +40,63 @@ this.drawStateBoundaries(svg);
 },
 
 async drawStateBoundaries(svg) {
-    console.log("State boundary drawing method connected.");
+    const stateIds = [
+        "08",
+        "20",
+        "31",
+        "35",
+        "40",
+        "46",
+        "48",
+        "56"
+    ];
+
+    try {
+        const usa = await d3.json(
+            "https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json"
+        );
+
+        const allStates = topojson.feature(
+            usa,
+            usa.objects.states
+        );
+
+        const selectedStates = {
+            type: "FeatureCollection",
+            features: allStates.features.filter((state) =>
+                stateIds.includes(
+                    String(state.id).padStart(2, "0")
+                )
+            )
+        };
+
+        const projection = d3.geoAlbers()
+            .fitExtent(
+                [[20, 20], [480, 480]],
+                selectedStates
+            );
+
+        const path = d3.geoPath(projection);
+
+        d3.select(svg)
+            .selectAll(".geographic-state")
+            .data(selectedStates.features)
+            .join("path")
+            .attr("class", "geographic-state")
+            .attr("d", path)
+            .attr("fill", "rgba(255,255,255,0.06)")
+            .attr("stroke", "#ffffff")
+            .attr("stroke-width", "1.5");
+
+        console.log("Eight geographic state boundaries drawn.");
+    } catch (error) {
+        console.error(
+            "Unable to draw state boundaries:",
+            error
+        );
+    }
 }
+   
 };
 
 MapEngine.initialize();
