@@ -30,6 +30,4 @@ const MapEngine = {
 }
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-    MapEngine.initialize();
-});
+MapEngine.initialize();
