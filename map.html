@@ -393,7 +393,8 @@ const position = Geography.project(city.lat, city.lon);
           
 marker.style.width = "10px";
 marker.style.height = "10px";
-marker.style.height = "20px";
+     marker.style.transition = "all 0.2s ease";     
+
    marker.style.background = "magenta";    
 marker.style.border = "2px solid #ffffff";
 marker.style.zIndex = "999";
@@ -405,7 +406,17 @@ marker.style.top = position.y + "px";
 marker.dataset.city = city.name;
        marker.dataset.state = city.state;   
 marker.dataset.region = "Ogallala Aquifer";
+marker.addEventListener("mouseenter", function() {
+    marker.style.width = "16px";
+    marker.style.height = "16px";
+    marker.style.zIndex = "1200";
+});
 
+marker.addEventListener("mouseleave", function() {
+    marker.style.width = "10px";
+    marker.style.height = "10px";
+    marker.style.zIndex = "999";
+});
 marker.addEventListener("click", function() {
 
     const existing = document.getElementById("community-info");
