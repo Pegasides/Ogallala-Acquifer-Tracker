@@ -16,7 +16,14 @@ This file will replace the legacy graphics engine gradually.
 
 const MapEngine = {
     version: "2.0",
-    initialized: false
+    initialized: false,
+
+    initialize() {
+        console.log("Initializing Map Engine 2.0...");
+        this.initialized = true;
+    }
 };
 
-console.log("Map Engine 2.0 loaded.");
+window.addEventListener("DOMContentLoaded", () => {
+    MapEngine.initialize();
+});
