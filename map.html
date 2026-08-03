@@ -389,10 +389,9 @@ marker.dataset.longitude = city.lon;
 
           
 
-const projected = MapEngine.projection([
-    city.lon,
-    city.lat
-]);
+const projected = MapEngine.projection
+    ? MapEngine.projection([city.lon, city.lat])
+    : [city.x, city.y];
 
 const position = {
     x: projected[0],
@@ -467,13 +466,13 @@ setTimeout(function() {
 
 }
 
-window.addEventListener(
-    "mapengine:geography-ready",
-   window.addEventListener(
-    "mapengine:geography-ready",
-    drawCommunities
-);
-);
+
+drawCommunities();
+
+
+
+
+      
 
 const timelineYears = [
     1950,
