@@ -383,6 +383,11 @@ console.log("Aquifer Timeline Loaded:", aquiferTimeline);
     communities.forEach(city => {
 
         const marker = document.createElement("div");
+marker.className = "community-marker";
+marker.dataset.latitude = city.lat;
+marker.dataset.longitude = city.lon;
+
+          
 
 const position = Geography.project(city.lat, city.lon);
           
