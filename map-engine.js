@@ -22,10 +22,9 @@ const MapEngine = {
 
     this.layer = document.getElementById("map-engine-layer");
 
-    if (this.layer) {
-        this.layer.style.border = "2px dashed #00ffff";
-    }
-
+ if (this.layer) {
+    console.log("Map Engine layer found.");
+}
     this.initialized = true;
 }
 };
