@@ -1,4 +1,9 @@
 GEOGRAPHY.JS
+Version 1.0 Stable
+Baseline before Map Engine 2.0
+Protected Recovery Checkpoint
+
+
 Ogallala Aquifer Impact Project
 
 Purpose:
