@@ -213,6 +213,9 @@ pointer-events:auto;
 -->
 
 </div>
+
+<script src="geography.js"></script>
+                      
 <script>
 document.getElementById("year-display").textContent = "2026";
 
@@ -363,6 +366,9 @@ console.log("Aquifer Timeline Loaded:", aquiferTimeline);
 
         const marker = document.createElement("div");
 
+const position = Geography.project(city.lat, city.lon);
+          
+
         marker.style.position = "absolute";
        marker.style.width = "20px";
 marker.style.height = "20px";
@@ -370,8 +376,8 @@ marker.style.height = "20px";
 marker.style.border = "2px solid #ffffff";
 marker.style.zIndex = "999";
         marker.style.borderRadius = "50%";
-        marker.style.left = city.x + "px";
-        marker.style.top = city.y + "px";
+      marker.style.left = position.x + "px";
+marker.style.top = position.y + "px"; 
 
         marker.title = city.name + ", " + city.state;
 marker.dataset.city = city.name;
@@ -391,8 +397,8 @@ marker.addEventListener("click", function() {
     info.id = "community-info";
 
     info.style.position = "absolute";
-    info.style.left = (city.x + 15) + "px";
-    info.style.top = (city.y + 15) + "px";
+   info.style.left = (position.x + 15) + "px";
+info.style.top = (position.y + 15) + "px";
     info.style.background = "#ffffff";
     info.style.color = "#000000";
     info.style.border = "2px solid #333";
