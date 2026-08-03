@@ -42,17 +42,13 @@ this.drawStateBoundaries(svg);
 async drawStateBoundaries(svg) {
 
 
-const testCircle = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "circle"
-);
 
-testCircle.setAttribute("cx", "250");
-testCircle.setAttribute("cy", "250");
-testCircle.setAttribute("r", "20");
-testCircle.setAttribute("fill", "#ffff00");
 
-svg.appendChild(testCircle);
+
+
+
+
+    
     
     const stateIds = [
         "08",
