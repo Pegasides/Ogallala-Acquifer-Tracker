@@ -462,7 +462,43 @@ setTimeout(function() {
 
 drawCommunities();
 
+function positionCommunitiesOnGeographicMap() {
 
+    if (!MapEngine.projection) {
+        return;
+    }
+
+    document.querySelectorAll(".community-marker").forEach(marker => {
+
+        const latitude = Number(marker.dataset.latitude);
+        const longitude = Number(marker.dataset.longitude);
+
+        const projected = MapEngine.projection([
+            longitude,
+            latitude
+        ]);
+
+        if (!projected) {
+            return;
+        }
+
+        marker.style.left = projected[0] + "px";
+        marker.style.top = projected[1] + "px";
+        marker.style.transform = "translate(-50%, -50%)";
+    });
+
+    console.log("Communities positioned on geographic map.");
+}
+
+if (MapEngine.projection) {
+    positionCommunitiesOnGeographicMap();
+} else {
+    window.addEventListener(
+        "mapengine:geography-ready",
+        positionCommunitiesOnGeographicMap,
+        { once: true }
+    );
+}
 
 
       
