@@ -83,13 +83,15 @@ svg.appendChild(testCircle);
                 )
             )
         };
-
-      const projection = d3.geoMercator()
+const projection = d3.geoMercator()
     .fitExtent(
         [[20, 20], [480, 480]],
         selectedStates
     );
-        const path = d3.geoPath(projection);
+
+this.projection = projection;
+
+const path = d3.geoPath(projection);
 
         d3.select(svg)
             .selectAll(".geographic-state")
@@ -102,6 +104,11 @@ svg.appendChild(testCircle);
             .attr("stroke-width", "1.5");
 
         console.log("Eight geographic state boundaries drawn.");
+
+window.dispatchEvent(
+    new CustomEvent("mapengine:geography-ready")
+);
+        
     } catch (error) {
         console.error(
             "Unable to draw state boundaries:",
