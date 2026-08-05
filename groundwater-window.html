@@ -363,14 +363,41 @@
     filter 700ms ease;
 }
 
-    .aquifer-glow::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 20% 40%, rgba(133, 233, 255, 0.18), transparent 33%),
-        radial-gradient(ellipse at 68% 35%, rgba(133, 233, 255, 0.16), transparent 30%);
-    }
+  .aquifer-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at 15% 28%,
+      rgba(255,255,255,0.32) 0%,
+      rgba(180,245,255,0.18) 18%,
+      transparent 42%
+    ),
+
+    radial-gradient(
+      ellipse at 50% 55%,
+      rgba(110,220,255,0.20) 0%,
+      transparent 34%
+    ),
+
+    radial-gradient(
+      ellipse at 82% 30%,
+      rgba(255,255,255,0.20) 0%,
+      transparent 32%
+    ),
+
+    repeating-linear-gradient(
+      -25deg,
+      transparent 0 12px,
+      rgba(255,255,255,0.05) 13px 14px,
+      transparent 15px 28px
+    );
+
+  mix-blend-mode: screen;
+  opacity: .95;
+}
 
     .depth-scale {
       position: absolute;
