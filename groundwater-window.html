@@ -313,22 +313,55 @@
     }
 
     .aquifer-glow {
-      position: absolute;
-      z-index: 3;
-      left: 0;
-      right: 0;
-      top: 45%;
-      bottom: 20%;
-      opacity: 0.82;
-      background:
-        repeating-linear-gradient(
-          168deg,
-          rgba(104, 227, 255, 0.15) 0 4px,
-          transparent 5px 22px
-        ),
-        linear-gradient(to bottom, rgba(32, 173, 227, 0.52), rgba(3, 66, 101, 0.8));
-      transition: top 700ms ease, opacity 700ms ease;
-    }
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 45%;
+  bottom: 20%;
+  opacity: 0.92;
+
+  background:
+    radial-gradient(
+      ellipse at 20% 35%,
+      rgba(170,245,255,0.30) 0%,
+      transparent 38%
+    ),
+
+    radial-gradient(
+      ellipse at 72% 40%,
+      rgba(120,220,255,0.24) 0%,
+      transparent 34%
+    ),
+
+    radial-gradient(
+      ellipse at 48% 82%,
+      rgba(0,170,255,0.18) 0%,
+      transparent 52%
+    ),
+
+    repeating-linear-gradient(
+      165deg,
+      rgba(255,255,255,0.08) 0 2px,
+      transparent 3px 18px
+    ),
+
+    linear-gradient(
+      to bottom,
+      rgba(70,210,255,0.55),
+      rgba(18,120,180,0.72),
+      rgba(8,66,108,0.92)
+    );
+
+  filter:
+    drop-shadow(0 0 14px rgba(70,220,255,0.35))
+    saturate(120%);
+
+  transition:
+    top 700ms ease,
+    opacity 700ms ease,
+    filter 700ms ease;
+}
 
     .aquifer-glow::after {
       content: "";
